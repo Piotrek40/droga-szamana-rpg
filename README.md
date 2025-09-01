@@ -1,5 +1,11 @@
 # 🎮 DROGA SZAMANA RPG
 
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![Lines of Code](https://img.shields.io/badge/Lines%20of%20Code-50k%2B-green)
+![Status](https://img.shields.io/badge/Status-Active%20Development-yellow)
+![License](https://img.shields.io/badge/License-MIT-purple)
+[![GitHub Issues](https://img.shields.io/github/issues/Piotrek40/droga-szamana-rpg)](https://github.com/Piotrek40/droga-szamana-rpg/issues)
+
 **Pełnowymiarowy tekstowy RPG inspirowany serią książek Vasily'ego Mahanenko**
 
 ## ✨ Cechy Gry
