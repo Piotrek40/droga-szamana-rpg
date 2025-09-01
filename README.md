@@ -36,10 +36,42 @@
 
 ## 🚀 Uruchomienie
 
+### Lokalnie na swoim komputerze:
 ```bash
-# Podstawowe uruchomienie
-python main.py
+# Sklonuj repozytorium
+git clone https://github.com/Piotrek40/droga-szamana-rpg.git
+cd droga-szamana-rpg
 
+# Uruchom grę
+python main.py
+```
+
+### Online bez instalacji:
+
+#### 🌐 **GitHub Codespaces** (zalecane)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Piotrek40/droga-szamana-rpg)
+
+1. Kliknij przycisk powyżej lub idź na: https://github.com/Piotrek40/droga-szamana-rpg
+2. Kliknij zielony przycisk "Code" → "Codespaces" → "Create codespace"
+3. Poczekaj aż środowisko się załaduje (1-2 minuty)
+4. W terminalu wpisz: `python main.py`
+
+#### 🚀 **Gitpod** (50h darmowe/miesiąc)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Piotrek40/droga-szamana-rpg)
+
+1. Kliknij przycisk powyżej
+2. Zaloguj się przez GitHub
+3. W terminalu wpisz: `python main.py`
+
+#### 🎯 **Replit**
+[![Run on Replit](https://replit.com/badge/github/Piotrek40/droga-szamana-rpg)](https://replit.com/github/Piotrek40/droga-szamana-rpg)
+
+1. Kliknij przycisk powyżej
+2. Kliknij "Import from GitHub"
+3. Kliknij zielony przycisk "Run"
+
+### Testy:
+```bash
 # Uruchomienie testów
 python tests/test_all.py
 ```
