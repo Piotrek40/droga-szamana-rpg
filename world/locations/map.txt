@@ -1,0 +1,81 @@
+MAPA WIĘZIENIA POCZĄTKU
+=======================
+
+POZIOM 0 (PARTER):
+==================
+
+                        [BRAMA GŁÓWNA]
+                              |
+                        [DZIEDZINIEC]
+                         /    |    \
+                        /     |     \
+            [JADALNIA]--+     |      [BIURO NACZELNIKA]--[PRYWATNE KOMNATY]
+                 |            |                |
+                 |      [KORYTARZ WSCH.]       |
+                 |       /    |                |
+            [KUCHNIA]---+  [CELA 5]      [KOMNATA TORTUR]
+             /   |                             |
+    [SPIŻARNIA]  |                             |
+                 |                             |
+         [KORYTARZ PŁN.]---[KORYTARZ CENTRALNY]
+          /      |     \         |   |   |
+    [CELA 2]  [CELA 1]  +-------+   |   +-------+
+                                     |           |
+                              [KORYTARZ PŁD.]   [KORYTARZ ZACH.]
+                               /     |     \           |
+                        [CELA 4]  [CELA 3]  |    [WARTOWNIA]
+                                             |
+                                       [ZBROJOWNIA]
+
+POZIOM -1 (LOCHY):
+==================
+
+                        [LOCHY]
+                          |
+                    [KOMNATA TORTUR]
+                    
+                    
+TAJNE PRZEJŚCIA:
+================
+- Cela 3: Ukryty tunel (sekret)
+- Cela 5: Osłabiony mur (sekret) 
+- Lochy: Tajne przejście do kanałów (sekret)
+- Prywatne Komnaty: Przejście do komnaty rytualnej (sekret)
+- Biuro Naczelnika: Szafa z planem ucieczki (sekret)
+- Kuchnia: Klucz mistrza w piecu (sekret)
+- Spiżarnia: Tajna skrytka (sekret)
+- Lochy: Tajne przejście głębiej (sekret)
+
+LEGENDA:
+========
+[NAZWA] - Lokacja
+------- - Połączenie normalne
+======= - Połączenie tajne/ukryte
+
+UWAGI:
+======
+1. Zbrojownia jest zwykle zamknięta
+2. Spiżarnia jest zwykle zamknięta  
+3. Biuro Naczelnika jest zwykle zamknięte
+4. Prywatne Komnaty są zwykle zamknięte
+5. Komnata Tortur jest zwykle zamknięta
+6. Brama Główna jest zawsze zamknięta (cel ucieczki)
+
+KLUCZOWE NPCe:
+==============
+- Stary Grzegorz (Cela 1) - zna sekret klucza mistrza
+- Chudy Kazik (Cela 3) - ma tunel do ucieczki
+- Szlachetny Roland (Cela 5) - wie o słabym murze
+- Gruby Władek (Kuchnia) - kucharz
+- Jednooki Marek (Korytarze) - główny strażnik
+- Naczelnik Wilhelm (Biuro) - główny boss
+- Mistrz Tortur Heinrich (Komnata Tortur) - kat
+- Kapitan Straży Gunter (Wartownia) - dowódca straży
+- Dowódca Bramy Viktor (Brama) - nieugięty strażnik
+
+GŁÓWNE DROGI UCIECZKI:
+======================
+1. Przez Bramę Główną (najtrudniejsza - wymaga kluczy i pokonania straży)
+2. Przez tunel w Celi 3 (wymaga odkrycia sekretu)
+3. Przez słaby mur w Celi 5 (wymaga narzędzi i odkrycia)
+4. Przez kanały z Lochów (mroczna i niebezpieczna)

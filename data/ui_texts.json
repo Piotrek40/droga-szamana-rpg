@@ -1,0 +1,166 @@
+{
+  "welcome": {
+    "title": "DROGA SZAMANA - TEKSTOWA GRA RPG",
+    "subtitle": "Inspirowana serią książek Vasily'ego Mahanenko",
+    "prompt": "Witaj w świecie Barliony, Podróżniku.",
+    "difficulty_prompt": "Wybierz poziom trudności:",
+    "difficulties": {
+      "latwy": "Łatwy - Dla początkujących (więcej życia, mniej bólu)",
+      "normalny": "Normalny - Standardowe wyzwanie",
+      "trudny": "Trudny - Dla doświadczonych graczy",
+      "hardcore": "Hardcore - Permadeath, realistyczny ból"
+    },
+    "name_prompt": "Podaj imię swojej postaci: "
+  },
+  "interface": {
+    "headers": {
+      "status": "═══ STATUS ═══",
+      "location": "═══ LOKACJA ═══",
+      "content": "═══ OPIS ═══",
+      "actions": "═══ DOSTĘPNE AKCJE ═══",
+      "dialogue": "═══ DIALOG ═══",
+      "inventory": "═══ EKWIPUNEK ═══",
+      "skills": "═══ UMIEJĘTNOŚCI ═══",
+      "quests": "═══ ZADANIA ═══",
+      "map": "═══ MAPA ═══"
+    },
+    "shortcuts": {
+      "inventory": "[I]nwentarz",
+      "status": "[S]tatus",
+      "quests": "[Q]uesty",
+      "map": "[M]apa",
+      "help": "[H]elp"
+    },
+    "prompts": {
+      "action": "Wybierz akcję (numer lub komenda)",
+      "dialogue": "Wybierz opcję dialogową",
+      "continue": "Naciśnij Enter aby kontynuować...",
+      "save_slot": "Wybierz slot zapisu (1-5)",
+      "load_slot": "Wybierz slot do wczytania (1-5)"
+    }
+  },
+  "status": {
+    "health": "Zdrowie",
+    "pain": "Ból",
+    "hunger": "Głód",
+    "thirst": "Pragnienie",
+    "fatigue": "Zmęczenie",
+    "reputation": "Reputacja",
+    "gold": "Złoto",
+    "time": "Czas",
+    "weather": "Pogoda"
+  },
+  "messages": {
+    "errors": {
+      "invalid_command": "Nie rozumiem tego polecenia. Wpisz 'pomoc' aby zobaczyć dostępne komendy.",
+      "invalid_direction": "Nie możesz iść w tym kierunku.",
+      "invalid_target": "Nie ma tu takiego celu.",
+      "invalid_item": "Nie ma tu takiego przedmiotu.",
+      "invalid_npc": "Nie ma tu takiej osoby.",
+      "inventory_full": "Twój ekwipunek jest pełny.",
+      "cannot_take": "Nie możesz tego wziąć.",
+      "cannot_use": "Nie możesz tego użyć.",
+      "cannot_equip": "Nie możesz tego założyć.",
+      "locked": "To jest zamknięte.",
+      "no_key": "Nie masz odpowiedniego klucza.",
+      "combat_flee_failed": "Nie udało ci się uciec!",
+      "quest_requirements": "Nie spełniasz wymagań tego zadania.",
+      "skill_requirements": "Nie masz wystarczającej umiejętności.",
+      "save_failed": "Nie udało się zapisać gry.",
+      "load_failed": "Nie udało się wczytać gry."
+    },
+    "success": {
+      "item_taken": "Wziąłeś: {item}",
+      "item_dropped": "Upuściłeś: {item}",
+      "item_equipped": "Założyłeś: {item}",
+      "item_used": "Użyłeś: {item}",
+      "skill_improved": "Twoja umiejętność {skill} wzrosła!",
+      "quest_started": "Rozpoczęto zadanie: {quest}",
+      "quest_completed": "Ukończono zadanie: {quest}",
+      "secret_discovered": "Odkryłeś sekret!",
+      "reputation_gained": "Zyskałeś reputację u {faction}",
+      "reputation_lost": "Straciłeś reputację u {faction}",
+      "game_saved": "Gra zapisana w slocie {slot}",
+      "game_loaded": "Gra wczytana ze slotu {slot}"
+    },
+    "combat": {
+      "attack": "Atakujesz {target} zadając {damage} obrażeń!",
+      "defend": "Przyjmujesz postawę obronną.",
+      "hit": "{attacker} trafia cię zadając {damage} obrażeń!",
+      "miss": "{attacker} pudłuje!",
+      "critical": "Trafienie krytyczne!",
+      "dodge": "Unikasz ataku!",
+      "block": "Blokujesz atak!",
+      "pain_message": "Czujesz przeszywający ból w {body_part}!",
+      "injury": "Odniosłeś ranę: {injury}",
+      "unconscious": "Tracisz przytomność z bólu!",
+      "death": "Giniesz..."
+    },
+    "npc": {
+      "memory_positive": "{npc} pamięta twoją pomoc.",
+      "memory_negative": "{npc} pamięta twoją zdradę.",
+      "relationship_improved": "Twoje relacje z {npc} poprawiły się.",
+      "relationship_worsened": "Twoje relacje z {npc} pogorszyły się.",
+      "busy": "{npc} jest teraz zajęty.",
+      "sleeping": "{npc} śpi.",
+      "hostile": "{npc} jest wobec ciebie wrogi!"
+    },
+    "time": {
+      "dawn": "Świta.",
+      "morning": "Jest ranek.",
+      "noon": "Jest południe.",
+      "afternoon": "Jest popołudnie.",
+      "evening": "Jest wieczór.",
+      "night": "Zapada noc.",
+      "midnight": "Jest północ."
+    }
+  },
+  "help": {
+    "title": "═══ POMOC - DOSTĘPNE KOMENDY ═══",
+    "categories": {
+      "movement": "RUCH",
+      "interaction": "INTERAKCJA",
+      "inventory": "EKWIPUNEK",
+      "combat": "WALKA",
+      "system": "SYSTEM"
+    },
+    "commands": {
+      "movement": [
+        "idź [kierunek] - przemieść się w danym kierunku",
+        "północ/południe/wschód/zachód - skróty kierunków",
+        "rozejrzyj - opisz obecną lokację",
+        "zbadaj [obiekt] - zbadaj obiekt dokładnie",
+        "szukaj - przeszukaj lokację"
+      ],
+      "interaction": [
+        "rozmawiaj [osoba] - rozpocznij rozmowę",
+        "weź [przedmiot] - podnieś przedmiot",
+        "użyj [przedmiot] - użyj przedmiotu",
+        "daj [przedmiot] [osoba] - daj przedmiot osobie",
+        "kup [przedmiot] - kup od kupca",
+        "sprzedaj [przedmiot] - sprzedaj kupcowi"
+      ],
+      "inventory": [
+        "ekwipunek/i - pokaż ekwipunek",
+        "załóż [przedmiot] - załóż przedmiot",
+        "zdejmij [przedmiot] - zdejmij przedmiot",
+        "upuść [przedmiot] - upuść przedmiot"
+      ],
+      "combat": [
+        "atakuj [cel] - zaatakuj cel",
+        "broń - przyjmij postawę obronną",
+        "uciekaj - spróbuj uciec z walki"
+      ],
+      "system": [
+        "status/s - pokaż stan postaci",
+        "umiejętności - pokaż umiejętności",
+        "zadania/q - pokaż aktywne zadania",
+        "mapa/m - pokaż mapę okolicy",
+        "zapisz [1-5] - zapisz grę",
+        "wczytaj [1-5] - wczytaj grę",
+        "pomoc/h - pokaż tę pomoc",
+        "wyjdź - wyjdź z gry"
+      ]
+    }
+  }
+}
