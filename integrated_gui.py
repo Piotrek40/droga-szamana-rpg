@@ -22,7 +22,7 @@ from player.character import CharacterState
 from player.classes import ClassName
 from quests.emergent_quests import QuestIntegrationManager, create_quest_seed_library
 from quests.quest_engine import QuestEngine, QuestState
-from quests.quest_consequences import ConsequenceTracker
+from quests.consequences import ConsequenceTracker
 
 
 class IntegratedRPGInterface:

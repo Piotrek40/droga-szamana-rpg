@@ -722,8 +722,8 @@ class MegaTester:
         # Test systemu konsekwencji
         def test_consequences():
             try:
-                from quests.quest_consequences import ConsequenceSystem
-                consequence_sys = ConsequenceSystem()
+                from quests.consequences import ConsequenceTracker
+                consequence_sys = ConsequenceTracker()
                 
                 return consequence_sys is not None, "Consequence system exists", None
             except ImportError:

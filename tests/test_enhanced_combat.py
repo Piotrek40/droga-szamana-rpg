@@ -7,15 +7,14 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import random
-from mechanics.enhanced_combat import (
-    EnhancedCombatSystem, Combatant, Weapon, Armor, WeaponType, 
+from mechanics.combat import (
+    CombatSystem, Weapon, Armor, WeaponType, 
     CombatStance, DamageType, BodyPart, CombatAction, CombatStats,
     CombatTechnique, TechniqueType, EnvironmentalFactor, VoidWalkerAbility
 )
-from player.enhanced_skills import (
-    EnhancedSkillSystem, SkillName, SkillCategory, EnhancedSkill
+from player.skills import (
+    SkillSystem, SkillName, SkillCategory, Skill
 )
-from mechanics.combat_integration import CombatManager, CombatEncounter
 # from player.character import CharacterState  # This is an enum, not a class
 # from player.classes import ClassName  # Commented out to avoid enum issues
 

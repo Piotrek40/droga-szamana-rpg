@@ -16,8 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from core.game_state import game_state, GameMode
 from core.event_bus import event_bus
 from ui.commands import CommandParser
-from ui.advanced_interface import AdvancedInterface
-from ui.contextual_interface import ContextualInterface
+from ui.interface import GameInterface
 from ui.smart_interface import create_smart_interface
 from npcs.dialogue_system import DialogueSystem, DialogueResult
 from quests.quest_engine import QuestState
@@ -30,14 +29,12 @@ class DrogaSzamanaRPG:
         """Inicjalizacja gry."""
         self.running = False
         self.game_state = game_state
-        self.interface = AdvancedInterface()
+        self.interface = GameInterface()
         self.command_parser = CommandParser(self.game_state)
-        self.contextual_interface = ContextualInterface(self.game_state, self.command_parser)
         self.smart_interface = None  # Będzie utworzony po init_game
         self.dialogue_system = DialogueSystem()
         self.game_state.dialogue_system = self.dialogue_system  # Przypisz do game_state
-        self.use_smart = True  # Domyślnie używaj najnowszego smart interfejsu
-        self.use_contextual = False  # Stary interfejs jako backup
+        self.use_smart = True  # Domyślnie używaj smart interfejsu
         
         # Ustawienia
         self.auto_save_interval = 300  # 5 minut
@@ -228,21 +225,19 @@ Wstajesz powoli, czując jak każdy mięsień protestuje. Czas zacząć swoją d
         # Stara pętla jako fallback
         self.interface.print("=== GRA ROZPOCZĘTA ===\n")
         
-        if self.use_contextual:
-            self.interface.print("💡 Interfejs kontekstowy aktywny. Użyj numerów 1-9 dla szybkich akcji.\n")
-            self.interface.print("   Wpisz 'klasyczny' aby przełączyć na klasyczny interfejs.\n")
+        if self.smart_interface:
+            self.interface.print("💡 Smart interface aktywny. Spróbuj naturalnych komend.\n")
         else:
             self.interface.print("Wpisz 'pomoc' aby zobaczyć listę komend.\n")
-            self.interface.print("Wpisz 'kontekstowy' aby włączyć immersyjny interfejs.\n")
         
         # Pokaż początkową lokację
         success, message = self.command_parser.parse_and_execute("rozejrzyj")
         
         # Wyświetl odpowiedni interfejs
-        if self.use_contextual:
-            self.contextual_interface.display_location_with_context(message)
+        if self.smart_interface:
+            self.smart_interface.display_contextual_content(message)
         else:
-            self.update_interface_display(message)
+            self.interface.display_message(message)
         
         # Główna pętla
         last_update = time.time()
@@ -250,10 +245,7 @@ Wstajesz powoli, czując jak każdy mięsień protestuje. Czas zacząć swoją d
         while self.game_state.game_mode == GameMode.PLAYING:
             try:
                 # Pobierz komendę od gracza
-                if self.use_contextual:
-                    command = self.interface.get_input("\nWybierz akcję (1-9 lub komenda) > ")
-                else:
-                    command = self.interface.get_input("\n> ")
+                command = self.interface.get_input("\n> ")
                 
                 if not command:
                     continue
@@ -308,18 +300,11 @@ Wstajesz powoli, czując jak każdy mięsień protestuje. Czas zacząć swoją d
                         message = "W trakcie rozmowy możesz tylko wybrać numer opcji lub 'anuluj'."
                         success = False
                         
-                elif command.lower() == "kontekstowy":
-                    self.use_contextual = True
-                    message = "Przełączono na interfejs kontekstowy."
-                    success = True
-                elif command.lower() == "klasyczny":
-                    self.use_contextual = False
-                    message = "Przełączono na interfejs klasyczny."
-                    success = True
+                # Interface switching removed - using smart interface by default
                 else:
-                    # Wykonaj komendę przez odpowiedni interfejs
-                    if self.use_contextual:
-                        success, message = self.contextual_interface.process_contextual_input(command)
+                    # Wykonaj komendę
+                    if self.smart_interface:
+                        success, message = self.smart_interface.process_input(command)
                     else:
                         success, message = self.command_parser.parse_and_execute(command)
                 
@@ -330,14 +315,10 @@ Wstajesz powoli, czując jak każdy mięsień protestuje. Czas zacząć swoją d
                     else:
                         continue
                 
-                # Aktualizuj display odpowiednio do trybu
-                if self.use_contextual:
-                    # Pobierz pełny opis lokacji po akcji
-                    _, location_desc = self.command_parser.parse_and_execute("rozejrzyj")
-                    self.contextual_interface.display_location_with_context(location_desc)
-                    # Pokaż też rezultat akcji
-                    if message and message != location_desc:
-                        self.interface.print(f"\n>>> {message}\n")
+                # Aktualizuj display
+                if self.smart_interface:
+                    # Smart interface handles display automatically
+                    pass
                 else:
                     self.update_interface_display(message)
                 

@@ -14,7 +14,7 @@ from quests.emergent_quests import (
     CorruptionExposureQuest, PrisonDiseaseQuest, InformationGatheringQuest,
     RevengeQuest, create_quest_seed_library, QuestIntegrationManager
 )
-from quests.quest_consequences import ConsequenceTracker, ConsequenceType
+from quests.consequences import ConsequenceTracker, ConsequenceType
 from datetime import datetime, timedelta
 import json
 

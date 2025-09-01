@@ -5,35 +5,162 @@ Każda umiejętność rozwija się TYLKO przez praktykę, bez wydawania punktów
 
 import random
 import math
-from typing import Dict, Optional, Tuple, List
+import json
+from typing import Dict, Optional, Tuple, List, Any, Set
 from dataclasses import dataclass, field
 from enum import Enum
+from datetime import datetime, timedelta
+import copy
+
+
+class SkillCategory(Enum):
+    """Kategorie umiejętności."""
+    BOJOWE = "bojowe"
+    OBRONNE = "obronne"
+    DYSTANSOWE = "dystansowe"
+    MAGICZNE = "magiczne"
+    RZEMIESLNICZE = "rzemieślnicze"
+    SPOLECZNE = "społeczne"
+    ZLODZIEJSKIE = "złodziejskie"
+    PRZETRWANIE = "przetrwanie"
+    WIEDZA = "wiedza"
+    ATLETYCZNE = "atletyczne"
 
 
 class SkillName(Enum):
-    """Nazwy wszystkich umiejętności w grze."""
-    WALKA_WRECZ = "walka_wrecz"
+    """Rozszerzona lista umiejętności."""
+    # Bojowe
+    WALKA_WRECZ = "walka_wręcz"
+    SZTYLETY = "sztylety"
     MIECZE = "miecze"
-    LUCZNICTWO = "lucznictwo"
-    SKRADANIE = "skradanie"
-    PERSWAZJA = "perswazja"
-    HANDEL = "handel"
+    MIECZE_DWURECZNE = "miecze_dwuręczne"
+    TOPORY = "topory"
+    TOPORY_DWURECZNE = "topory_dwuręczne"
+    MLOTY = "młoty"
+    MLOTY_BOJOWE = "młoty_bojowe"
+    WLÓCZNIE = "włócznie"
+    MACZUGI = "maczugi"
+    KIJE_BOJOWE = "kije_bojowe"
+    
+    # Obronne
+    OBRONA = "obrona"
+    UNIKI = "uniki"
+    PAROWANIE = "parowanie"
+    TARCZE = "tarcze"
+    PANCERZ_LEKKI = "pancerz_lekki"
+    PANCERZ_CIEZKI = "pancerz_ciężki"
+    
+    # Dystansowe
+    LUCZNICTWO = "łucznictwo"
+    KUSZE = "kusze"
+    PROCE = "proce"
+    RZUCANIE = "rzucanie"
+    
+    # Magiczne (Void Walker)
+    MANIPULACJA_PUSTKI = "manipulacja_pustki"
+    ODPORNOSC_NA_BOL = "odporność_na_ból"
+    MEDYTACJA = "medytacja"
+    KONTROLA_ENERGII = "kontrola_energii"
+    
+    # Rzemieślnicze
     KOWALSTWO = "kowalstwo"
+    ZBROJMISTRZOSTWO = "zbrojmistrzostwo"
+    LUCZARSTWO = "łuczarstwo"
     ALCHEMIA = "alchemia"
-    MEDYCYNA = "medycyna"
+    JUBILERSTWO = "jubilerstwo"
+    KRAWIECTWO = "krawiectwo"
+    GARBARSTWO = "garbarstwo"
+    STOLARSTWO = "stolarstwo"
+    GOTOWANIE = "gotowanie"
+    
+    # Społeczne
+    PERSWAZJA = "perswazja"
+    OSZUSTWO = "oszustwo"
+    ZASTRASZANIE = "zastraszanie"
+    HANDEL = "handel"
+    PRZYWODZTWO = "przywództwo"
+    ETYKIETA = "etykieta"
+    WYSTEPY = "występy"
+    
+    # Złodziejskie
+    SKRADANIE = "skradanie"
+    KRADZIEŻ_KIESZONKOWA = "kradzież_kieszonkowa"
+    WLAMYWANIE = "włamywanie"
+    UKRYWANIE = "ukrywanie"
+    FALSYFIKATY = "fałszyfikaty"
+    PULAPKI = "pułapki"
+    
+    # Przetrwanie
+    TROPIENIE = "tropienie"
+    POLOWANIE = "polowanie"
+    LOWIENIE_RYB = "łowienie_ryb"
+    ZIELARSTWO = "zielarstwo"
+    PIERWSZA_POMOC = "pierwsza_pomoc"
+    OBOZOWANIE = "obozowanie"
+    ORIENTACJA = "orientacja"
+    
+    # Wiedza
+    HISTORIA = "historia"
+    GEOGRAFIA = "geografia"
+    RELIGIA = "religia"
+    ARCHITEKTURA = "architektura"
+    INŻYNIERIA = "inżynieria"
+    MATEMATYKA = "matematyka"
+    LITERATURA = "literatura"
+    
+    # Atletyczne
     WYTRZYMALOSC = "wytrzymalosc"
+    SILA = "siła"
+    ZWROTNOSC = "zwinność"
+    GIMNASTYKA = "gimnastyka"
+    PLYWANIE = "pływanie"
+    WDRAPYWANIE = "wdrapywanie"
+    AKROBACJA = "akrobacja"
+    
+    # Stare nazwy dla kompatybilności
+    MEDYCYNA = "pierwsza_pomoc"  # Alias
+
+
+@dataclass
+class SkillSynergy:
+    """Synergia między umiejętnościami."""
+    target_skill: SkillName
+    bonus_multiplier: float
+    max_level: int  # Maksymalny poziom synergii
+
+
+@dataclass  
+class MuscleMemoryEntry:
+    """Wpis pamięci mięśniowej dla konkretnej akcji."""
+    action_signature: str  # Hash akcji (typ + kontekst)
+    repetitions: int = 0
+    success_rate: float = 0.0
+    last_used: datetime = field(default_factory=datetime.now)
+    muscle_memory_bonus: float = 0.0
 
 
 @dataclass
 class Skill:
-    """Reprezentacja pojedynczej umiejętności."""
+    """Rozszerzona reprezentacja umiejętności z pamięcią mięśniową i synergiami."""
     name: str
     polish_name: str
+    category: SkillCategory
     level: int = 0
     progress: float = 0.0  # Postęp do następnego poziomu (0.0 - 100.0)
     uses_today: int = 0  # Liczba użyć dzisiaj (do limitowania nauki)
     total_uses: int = 0  # Całkowita liczba użyć
     last_difficulty_practiced: int = 0  # Ostatnia trudność ćwiczona
+    
+    # Enhanced features
+    muscle_memory: Dict[str, MuscleMemoryEntry] = field(default_factory=dict)
+    synergies: List[SkillSynergy] = field(default_factory=list)
+    degradation_rate: float = 0.001  # Jak szybko umiejętność się pogarsza bez użycia
+    last_used: datetime = field(default_factory=datetime.now)
+    natural_talent: float = 1.0  # Naturalny talent (0.5 - 2.0)
+    learning_fatigue: float = 0.0  # Zmęczenie uczeniem (0.0 - 1.0)
+    specializations: Set[str] = field(default_factory=set)  # Specjalizacje w umiejętności
+    teacher_bonus: float = 0.0  # Bonus od nauczyciela
+    practice_quality: float = 1.0  # Jakość ostatniej praktyki
     
     def get_effective_level(self, pain_penalty: float = 0.0, injury_penalty: float = 0.0) -> int:
         """
@@ -91,23 +218,169 @@ class Skill:
             return True  # Optymalna trudność
         else:
             return skill_diff <= 50  # Bardzo trudne - mała szansa
+    
+    def get_muscle_memory_bonus(self, action_signature: str) -> float:
+        """Pobiera bonus pamięci mięśniowej dla konkretnej akcji."""
+        if action_signature in self.muscle_memory:
+            entry = self.muscle_memory[action_signature]
+            # Bonus rośnie z powtórzeniami, ale z malejącymi przyrostami
+            bonus = min(0.3, entry.repetitions * 0.01)  # Max 30% bonusu
+            # Zmniejsza się z czasem nieużywania
+            days_unused = (datetime.now() - entry.last_used).days
+            decay = max(0.5, 1.0 - (days_unused * 0.02))
+            return bonus * decay
+        return 0.0
+    
+    def update_muscle_memory(self, action_signature: str, success: bool):
+        """Aktualizuje pamięć mięśniową po wykonaniu akcji."""
+        if action_signature not in self.muscle_memory:
+            self.muscle_memory[action_signature] = MuscleMemoryEntry(action_signature)
+        
+        entry = self.muscle_memory[action_signature]
+        entry.repetitions += 1
+        entry.last_used = datetime.now()
+        
+        # Aktualizuj współczynnik sukcesu (średnia ważona)
+        weight = min(0.1, 1.0 / entry.repetitions)
+        if success:
+            entry.success_rate = entry.success_rate * (1 - weight) + 1.0 * weight
+        else:
+            entry.success_rate = entry.success_rate * (1 - weight)
+            
+        entry.muscle_memory_bonus = min(0.3, entry.repetitions * 0.005)
+    
+    def get_synergy_bonus(self, skill_system: 'SkillSystem') -> float:
+        """Oblicza bonus z synergii między umiejętnościami."""
+        total_bonus = 0.0
+        
+        for synergy in self.synergies:
+            other_skill = skill_system.get_skill(synergy.target_skill)
+            if other_skill:
+                # Bonus to procent od poziomu synergetycznej umiejętności
+                bonus_level = min(synergy.max_level, other_skill.level)
+                bonus = bonus_level * synergy.bonus_multiplier * 0.01
+                total_bonus += bonus
+        
+        return min(0.5, total_bonus)  # Maksymalny bonus 50%
+    
+    def apply_degradation(self, days_passed: int):
+        """Stosuje degradację umiejętności przez nieużywanie."""
+        if days_passed == 0:
+            return
+            
+        days_unused = (datetime.now() - self.last_used).days
+        if days_unused > 7:  # Zaczyna się po tygodniu
+            degradation = self.degradation_rate * days_unused * days_passed
+            
+            # Wyższe umiejętności degradują wolniej
+            resistance = 1.0 - (self.level * 0.01)  # 1% redukcji na poziom
+            degradation *= resistance
+            
+            self.progress -= degradation * 100
+            if self.progress < 0 and self.level > 0:
+                self.level -= 1
+                self.progress = max(0, 100 + self.progress)
+    
+    def get_learning_efficiency(self) -> float:
+        """Oblicza efektywność uczenia się uwzględniającą zmęczenie i talent."""
+        base_efficiency = self.natural_talent
+        
+        # Zmęczenie uczeniem się
+        fatigue_penalty = self.learning_fatigue * 0.5
+        
+        # Bonus od nauczyciela
+        teacher_bonus = self.teacher_bonus
+        
+        # Jakość praktyki
+        practice_modifier = self.practice_quality
+        
+        total_efficiency = base_efficiency * (1 - fatigue_penalty + teacher_bonus) * practice_modifier
+        return max(0.1, min(3.0, total_efficiency))  # Zakres 10% - 300%
+    
+    def add_specialization(self, specialization: str):
+        """Dodaje specjalizację do umiejętności."""
+        self.specializations.add(specialization)
+    
+    def has_specialization(self, specialization: str) -> bool:
+        """Sprawdza czy posiada daną specjalizację."""
+        return specialization in self.specializations
+    
+    def get_specialization_bonus(self, context: str) -> float:
+        """Pobiera bonus specjalizacji dla danego kontekstu."""
+        for spec in self.specializations:
+            if spec.lower() in context.lower():
+                return 0.2  # 20% bonus dla specjalizacji
+        return 0.0
 
 
 class SkillSystem:
     """System zarządzania umiejętnościami gracza."""
     
-    # Definicje umiejętności
+    # Definicje umiejętności z kategoriami
     SKILL_DEFINITIONS = {
-        SkillName.WALKA_WRECZ: ("Walka wręcz", "Umiejętność walki bez broni"),
-        SkillName.MIECZE: ("Miecze", "Władanie mieczami jedno i dwuręcznymi"),
-        SkillName.LUCZNICTWO: ("Łucznictwo", "Strzelanie z łuku i kuszy"),
-        SkillName.SKRADANIE: ("Skradanie", "Cichy ruch i ukrywanie się"),
-        SkillName.PERSWAZJA: ("Perswazja", "Przekonywanie i manipulacja"),
-        SkillName.HANDEL: ("Handel", "Negocjacje cenowe i ocena wartości"),
-        SkillName.KOWALSTWO: ("Kowalstwo", "Tworzenie i naprawa metalowych przedmiotów"),
-        SkillName.ALCHEMIA: ("Alchemia", "Warzenie mikstur i eliksirów"),
-        SkillName.MEDYCYNA: ("Medycyna", "Leczenie ran i chorób"),
-        SkillName.WYTRZYMALOSC: ("Wytrzymałość", "Odporność na zmęczenie i ból")
+        # Bojowe
+        SkillName.WALKA_WRECZ: ("Walka wręcz", "Umiejętność walki bez broni", SkillCategory.BOJOWE),
+        SkillName.MIECZE: ("Miecze", "Władanie mieczami", SkillCategory.BOJOWE),
+        SkillName.SZTYLETY: ("Sztylety", "Walka sztyletami", SkillCategory.BOJOWE),
+        SkillName.TOPORY: ("Topory", "Władanie toporami", SkillCategory.BOJOWE),
+        SkillName.MLOTY: ("Młoty", "Władanie młotami", SkillCategory.BOJOWE),
+        SkillName.WLÓCZNIE: ("Włócznie", "Walka włóczniami", SkillCategory.BOJOWE),
+        SkillName.MACZUGI: ("Maczugi", "Walka maczugami", SkillCategory.BOJOWE),
+        
+        # Obronne
+        SkillName.OBRONA: ("Obrona", "Techniki obronne", SkillCategory.OBRONNE),
+        SkillName.UNIKI: ("Uniki", "Unikanie ataków", SkillCategory.OBRONNE),
+        SkillName.PAROWANIE: ("Parowanie", "Parowanie ciosów", SkillCategory.OBRONNE),
+        SkillName.TARCZE: ("Tarcze", "Walka z tarczą", SkillCategory.OBRONNE),
+        
+        # Dystansowe
+        SkillName.LUCZNICTWO: ("Łucznictwo", "Strzelanie z łuku", SkillCategory.DYSTANSOWE),
+        SkillName.KUSZE: ("Kusze", "Strzelanie z kuszy", SkillCategory.DYSTANSOWE),
+        SkillName.RZUCANIE: ("Rzucanie", "Rzucanie broni", SkillCategory.DYSTANSOWE),
+        
+        # Magiczne (Void Walker)
+        SkillName.MANIPULACJA_PUSTKI: ("Manipulacja Pustki", "Kontrola energii pustki", SkillCategory.MAGICZNE),
+        SkillName.ODPORNOSC_NA_BOL: ("Odporność na ból", "Tolerancja bólu", SkillCategory.MAGICZNE),
+        SkillName.MEDYTACJA: ("Medytacja", "Kontrola umysłu", SkillCategory.MAGICZNE),
+        
+        # Społeczne
+        SkillName.PERSWAZJA: ("Perswazja", "Przekonywanie", SkillCategory.SPOLECZNE),
+        SkillName.HANDEL: ("Handel", "Negocjacje handlowe", SkillCategory.SPOLECZNE),
+        SkillName.OSZUSTWO: ("Oszustwo", "Kłamstwo i blef", SkillCategory.SPOLECZNE),
+        SkillName.ZASTRASZANIE: ("Zastraszanie", "Wymuszanie strachu", SkillCategory.SPOLECZNE),
+        
+        # Złodziejskie
+        SkillName.SKRADANIE: ("Skradanie", "Cichy ruch", SkillCategory.ZLODZIEJSKIE),
+        SkillName.KRADZIEŻ_KIESZONKOWA: ("Kradzież kieszonkowa", "Kradzież z osób", SkillCategory.ZLODZIEJSKIE),
+        SkillName.WLAMYWANIE: ("Włamywanie", "Otwieranie zamków", SkillCategory.ZLODZIEJSKIE),
+        SkillName.UKRYWANIE: ("Ukrywanie", "Ukrywanie się", SkillCategory.ZLODZIEJSKIE),
+        
+        # Rzemieślnicze
+        SkillName.KOWALSTWO: ("Kowalstwo", "Tworzenie metalowych przedmiotów", SkillCategory.RZEMIESLNICZE),
+        SkillName.ALCHEMIA: ("Alchemia", "Warzenie mikstur", SkillCategory.RZEMIESLNICZE),
+        SkillName.ZBROJMISTRZOSTWO: ("Zbrojmistrzostwo", "Tworzenie zbroi", SkillCategory.RZEMIESLNICZE),
+        SkillName.LUCZARSTWO: ("Łuczarstwo", "Tworzenie łuków", SkillCategory.RZEMIESLNICZE),
+        
+        # Przetrwanie
+        SkillName.PIERWSZA_POMOC: ("Pierwsza pomoc", "Leczenie ran", SkillCategory.PRZETRWANIE),
+        SkillName.TROPIENIE: ("Tropienie", "Śledzenie śladów", SkillCategory.PRZETRWANIE),
+        SkillName.ZIELARSTWO: ("Zielarstwo", "Znajomość roślin", SkillCategory.PRZETRWANIE),
+        SkillName.OBOZOWANIE: ("Obozowanie", "Przetrwanie w terenie", SkillCategory.PRZETRWANIE),
+        
+        # Atletyczne
+        SkillName.WYTRZYMALOSC: ("Wytrzymałość", "Odporność na zmęczenie", SkillCategory.ATLETYCZNE),
+        SkillName.SILA: ("Siła", "Siła fizyczna", SkillCategory.ATLETYCZNE),
+        SkillName.ZWROTNOSC: ("Zwinność", "Zręczność i szybkość", SkillCategory.ATLETYCZNE),
+        SkillName.AKROBACJA: ("Akrobacja", "Kontrola ciała", SkillCategory.ATLETYCZNE),
+        SkillName.PLYWANIE: ("Pływanie", "Poruszanie się w wodzie", SkillCategory.ATLETYCZNE),
+        
+        # Wiedza
+        SkillName.HISTORIA: ("Historia", "Znajomość historii", SkillCategory.WIEDZA),
+        SkillName.GEOGRAFIA: ("Geografia", "Znajomość terenu", SkillCategory.WIEDZA),
+        SkillName.RELIGIA: ("Religia", "Znajomość wierzeń", SkillCategory.WIEDZA),
+        
+        # Backward compatibility
+        SkillName.MEDYCYNA: ("Medycyna", "Leczenie ran i chorób", SkillCategory.PRZETRWANIE)
     }
     
     def __init__(self):
@@ -121,12 +394,49 @@ class SkillSystem:
     
     def _initialize_skills(self):
         """Tworzy początkowe umiejętności gracza."""
-        for skill_enum, (polish_name, _) in self.SKILL_DEFINITIONS.items():
-            self.skills[skill_enum] = Skill(
+        for skill_enum, (polish_name, description, category) in self.SKILL_DEFINITIONS.items():
+            skill = Skill(
                 name=skill_enum.value,
                 polish_name=polish_name,
-                level=random.randint(0, 5)  # Losowy początkowy poziom 0-5
+                category=category,
+                level=random.randint(0, 5),  # Losowy początkowy poziom 0-5
+                natural_talent=random.uniform(0.8, 1.2)  # Losowy talent
             )
+            
+            # Dodaj podstawowe synergię dla podobnych umiejętności
+            self._initialize_skill_synergies(skill, skill_enum)
+            self.skills[skill_enum] = skill
+    
+    def _initialize_skill_synergies(self, skill: Skill, skill_enum: SkillName):
+        """Inicjalizuje synergię między umiejętnościami."""
+        synergies_map = {
+            # Bojowe umiejętności wzajemnie się wspierają
+            SkillName.WALKA_WRECZ: [(SkillName.SILA, 0.5, 20), (SkillName.ZWROTNOSC, 0.3, 20)],
+            SkillName.MIECZE: [(SkillName.WALKA_WRECZ, 0.3, 15), (SkillName.SILA, 0.4, 20)],
+            SkillName.SZTYLETY: [(SkillName.ZWROTNOSC, 0.5, 20), (SkillName.SKRADANIE, 0.3, 15)],
+            SkillName.LUCZNICTWO: [(SkillName.ZWROTNOSC, 0.4, 20), (SkillName.TROPIENIE, 0.2, 15)],
+            
+            # Społeczne
+            SkillName.PERSWAZJA: [(SkillName.OSZUSTWO, 0.3, 15), (SkillName.ETYKIETA, 0.2, 15)],
+            SkillName.HANDEL: [(SkillName.PERSWAZJA, 0.4, 20), (SkillName.MATEMATYKA, 0.3, 15)],
+            
+            # Rzemieślnicze
+            SkillName.KOWALSTWO: [(SkillName.SILA, 0.3, 20), (SkillName.INŻYNIERIA, 0.2, 15)],
+            SkillName.ALCHEMIA: [(SkillName.ZIELARSTWO, 0.4, 20), (SkillName.MATEMATYKA, 0.2, 15)],
+            
+            # Przetrwanie
+            SkillName.PIERWSZA_POMOC: [(SkillName.ZIELARSTWO, 0.3, 15), (SkillName.ALCHEMIA, 0.2, 10)],
+            SkillName.TROPIENIE: [(SkillName.LUCZNICTWO, 0.2, 15), (SkillName.GEOGRAFIA, 0.3, 15)],
+        }
+        
+        if skill_enum in synergies_map:
+            for target_skill, multiplier, max_level in synergies_map[skill_enum]:
+                synergy = SkillSynergy(
+                    target_skill=target_skill,
+                    bonus_multiplier=multiplier,
+                    max_level=max_level
+                )
+                skill.synergies.append(synergy)
     
     def get_skill(self, skill_name: SkillName) -> Optional[Skill]:
         """

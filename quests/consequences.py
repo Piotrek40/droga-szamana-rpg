@@ -18,7 +18,17 @@ class ConsequenceType(Enum):
     RECURRING = "recurring"          # Powtarzająca się
     CONDITIONAL = "conditional"      # Warunkowa
     CASCADING = "cascading"         # Kaskadowa (wywołuje inne)
+    CASCADE = "cascade"              # Alias dla kompatybilności
     PERMANENT = "permanent"          # Trwała zmiana świata
+
+
+class ConsequenceScope(Enum):
+    """Zakres wpływu konsekwencji"""
+    PERSONAL = "personal"            # Tylko gracz
+    LOCAL = "local"                  # Lokalna społeczność
+    FACTION = "faction"              # Cała frakcja
+    REGIONAL = "regional"            # Region
+    GLOBAL = "global"                # Cały świat gry
 
 
 class ConsequenceSeverity(Enum):
@@ -28,6 +38,96 @@ class ConsequenceSeverity(Enum):
     MODERATE = 3     # Umiarkowana
     MAJOR = 4        # Poważna
     CRITICAL = 5     # Krytyczna dla świata gry
+
+
+@dataclass
+class ConsequenceEffect:
+    """Pojedynczy efekt konsekwencji"""
+    target_type: str                # "npc", "location", "economy", "player"
+    target_id: str                   # ID celu
+    effect_type: str                 # Typ efektu
+    magnitude: float                 # Siła efektu
+    duration: Optional[int] = None   # Czas trwania w godzinach
+    scope: ConsequenceScope = ConsequenceScope.LOCAL
+    
+    def apply(self, world_state: Dict, target_object: Any) -> Dict[str, Any]:
+        """Aplikuje efekt do celu"""
+        result = {"success": False, "changes": {}}
+        
+        if self.target_type == "npc":
+            result = self._apply_to_npc(target_object)
+        elif self.target_type == "location":
+            result = self._apply_to_location(world_state, self.target_id)
+        elif self.target_type == "economy":
+            result = self._apply_to_economy(world_state, self.target_id)
+        elif self.target_type == "player":
+            result = self._apply_to_player(target_object)
+        
+        return result
+    
+    def _apply_to_npc(self, npc) -> Dict[str, Any]:
+        """Aplikuje efekt do NPCa"""
+        changes = {}
+        
+        if self.effect_type == "relationship":
+            npc.relationship_with_player += self.magnitude
+            changes["relationship"] = self.magnitude
+        elif self.effect_type == "reputation":
+            npc.reputation += self.magnitude
+            changes["reputation"] = self.magnitude
+        elif self.effect_type == "mood":
+            npc.current_mood = max(-100, min(100, npc.current_mood + self.magnitude))
+            changes["mood"] = self.magnitude
+        
+        return {"success": True, "changes": changes}
+    
+    def _apply_to_location(self, world_state: Dict, location_id: str) -> Dict[str, Any]:
+        """Aplikuje efekt do lokacji"""
+        changes = {}
+        
+        if location_id not in world_state.get("locations", {}):
+            return {"success": False, "error": f"Location {location_id} not found"}
+        
+        location = world_state["locations"][location_id]
+        
+        if self.effect_type == "security":
+            location["security_level"] = max(0, location.get("security_level", 50) + self.magnitude)
+            changes["security_level"] = self.magnitude
+        elif self.effect_type == "prosperity":
+            location["prosperity"] = max(0, location.get("prosperity", 50) + self.magnitude)
+            changes["prosperity"] = self.magnitude
+        
+        return {"success": True, "changes": changes}
+    
+    def _apply_to_economy(self, world_state: Dict, market_id: str) -> Dict[str, Any]:
+        """Aplikuje efekt do ekonomii"""
+        changes = {}
+        
+        economy = world_state.get("economy", {})
+        if market_id in economy:
+            market = economy[market_id]
+            
+            if self.effect_type == "price_change":
+                for item, price in market.get("prices", {}).items():
+                    market["prices"][item] = max(1, price * (1 + self.magnitude))
+                changes["price_multiplier"] = self.magnitude
+        
+        return {"success": True, "changes": changes}
+    
+    def _apply_to_player(self, player) -> Dict[str, Any]:
+        """Aplikuje efekt do gracza"""
+        changes = {}
+        
+        if self.effect_type == "reputation":
+            player.reputation += self.magnitude
+            changes["reputation"] = self.magnitude
+        elif self.effect_type == "skill":
+            # Wymaga dodatkowych parametrów w target_id (skill_name)
+            if hasattr(player, 'skills') and self.target_id in player.skills:
+                player.skills[self.target_id] += self.magnitude
+                changes[f"skill_{self.target_id}"] = self.magnitude
+        
+        return {"success": True, "changes": changes}
 
 
 @dataclass
@@ -799,3 +899,81 @@ class EconomicConsequence:
             self.trade_routes['status'] = 'blocked'
             
         return effects
+
+
+class ConsequenceTracker:
+    """System śledzący i zarządzający konsekwencjami"""
+    
+    def __init__(self):
+        self.active_consequences: Dict[str, Consequence] = {}
+        self.consequence_history: List[Consequence] = []
+        self.world_state_snapshot: Dict[str, Any] = {}
+        self.reputation_tracker = ReputationConsequence()
+        self.moral_tracker = MoralConsequence()
+        self.economic_tracker = EconomicConsequence()
+    
+    def add_consequence(self, consequence: Consequence):
+        """Dodaje konsekwencję do śledzenia."""
+        self.active_consequences[consequence.id] = consequence
+    
+    def process_consequences(self, world_state: Dict[str, Any], current_time: datetime) -> List[Dict]:
+        """Przetwarza aktywne konsekwencje."""
+        triggered_events = []
+        
+        for consequence_id, consequence in list(self.active_consequences.items()):
+            if consequence.can_trigger(world_state, current_time):
+                event = self.trigger_consequence(consequence, world_state, current_time)
+                triggered_events.append(event)
+                
+                # Przenieś do historii
+                self.consequence_history.append(consequence)
+                
+                # Usuń z aktywnych jeśli nie jest powtarzająca się
+                if consequence.consequence_type != ConsequenceType.RECURRING:
+                    del self.active_consequences[consequence_id]
+        
+        return triggered_events
+    
+    def trigger_consequence(self, consequence: Consequence, world_state: Dict[str, Any], 
+                           current_time: datetime) -> Dict:
+        """Uruchamia konsekwencję."""
+        consequence.triggered = True
+        consequence.trigger_time = current_time
+        
+        # Zastosuj efekty
+        event_data = {
+            'id': consequence.id,
+            'type': 'consequence',
+            'severity': consequence.severity.value,
+            'description': consequence.description,
+            'dialogue': consequence.dialogue,
+            'effects_applied': []
+        }
+        
+        # Zastosuj efekty z consequences
+        for effect_type, effect_data in consequence.effects.items():
+            if effect_type == 'world_state':
+                for key, value in effect_data.items():
+                    world_state[key] = value
+                    event_data['effects_applied'].append(f"world_state.{key} = {value}")
+            elif effect_type == 'relationships':
+                for faction, change in effect_data.items():
+                    event_data['effects_applied'].append(f"reputation.{faction} += {change}")
+        
+        return event_data
+    
+    def add_reputation_consequence(self, faction: str, change: int):
+        """Dodaje konsekwencję reputacji."""
+        effects = self.reputation_tracker.calculate_reputation_effects(
+            {faction: change}, 
+            {}  # Wymagałoby dostępu do aktualnej reputacji gracza
+        )
+        return effects
+    
+    def add_moral_consequence(self, choice_type: str, weight: int):
+        """Dodaje konsekwencję moralną."""
+        return self.moral_tracker.apply_moral_choice(choice_type, weight)
+    
+    def add_economic_consequence(self, change_type: str, magnitude: float):
+        """Dodaje konsekwencję ekonomiczną."""
+        return self.economic_tracker.apply_economic_change(change_type, magnitude)

@@ -6,9 +6,11 @@ Realistyczna walka z bólem, kontuzjami, zmęczeniem i taktyką.
 import random
 import math
 import json
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple, Any, Set, Callable
 from dataclasses import dataclass, field
 from enum import Enum
+from collections import deque
+import copy
 
 
 class DamageType(Enum):
@@ -32,6 +34,59 @@ class BodyPart(Enum):
     ARM = "ręka"  # Alias ogólny dla ręki
     LEWA_NOGA = "lewa_noga"
     PRAWA_NOGA = "prawa_noga"
+
+
+class WeaponType(Enum):
+    """Rozszerzone typy broni."""
+    PIESCI = "pięści"
+    SZTYLETY = "sztylety"
+    MIECZE_KROTKIE = "miecze_krótkie"
+    MIECZE_DLUGIE = "miecze_długie"
+    MIECZE_DWURECZNE = "miecze_dwuręczne"
+    TOPORY = "topory"
+    TOPORY_DWURECZNE = "topory_dwuręczne"
+    MLOTY = "młoty"
+    MLOTY_BOJOWE = "młoty_bojowe"
+    WLÓCZNIE = "włócznie"
+    HALABARD = "halabardy"
+    MACZUGI = "maczugi"
+    KIJE = "kije"
+    LUKI = "łuki"
+    KUSZE = "kusze"
+    TARCZE = "tarcze"
+
+
+class CombatStance(Enum):
+    """Postawy bojowe."""
+    NEUTRALNA = "neutralna"
+    DEFENSYWNA = "defensywna"
+    AGRESYWNA = "agresywna"
+    WYWAŻONA = "wyważona"
+    BERSERKER = "berserker"
+    UNIKOWA = "unikowa"
+    KONTRATAK = "kontratak"
+
+
+class TechniqueType(Enum):
+    """Typy technik bojowych."""
+    PODSTAWOWA = "podstawowa"
+    KOMBINACJA = "kombinacja"
+    SPECJALNA = "specjalna"
+    MISTRZOWSKA = "mistrzowska"
+    LEGENDARNA = "legendarna"
+
+
+class EnvironmentalFactor(Enum):
+    """Czynniki środowiskowe wpływające na walkę."""
+    WASKA_PRZESTRZEN = "wąska_przestrzeń"
+    CIEMNOSC = "ciemność"
+    SLISKA_POWIERZCHNIA = "śliska_powierzchnia"
+    NIEROWNNY_TEREN = "nierówny_teren"
+    MGLA = "mgła"
+    DESZCZ = "deszcz"
+    WIATR = "wiatr"
+    WYSOKOSC = "wysokość"
+    WODA = "woda"
 
 
 class CombatAction(Enum):
@@ -109,6 +164,183 @@ class Injury:
 
 
 @dataclass
+class CombatTechnique:
+    """Technika bojowa."""
+    name: str
+    polish_name: str
+    type: TechniqueType
+    weapon_types: List[WeaponType]
+    skill_requirement: int
+    stamina_cost: float
+    combo_chain: List[str] = field(default_factory=list)
+    damage_multiplier: float = 1.0
+    accuracy_modifier: float = 0.0
+    critical_chance_bonus: float = 0.0
+    special_effects: Dict[str, Any] = field(default_factory=dict)
+    description: str = ""
+    
+    def can_execute(self, skill_level: int, current_stamina: float, weapon: Optional['Weapon']) -> bool:
+        """Sprawdza czy technika może być wykonana."""
+        if skill_level < self.skill_requirement:
+            return False
+        if current_stamina < self.stamina_cost:
+            return False
+        if weapon and weapon.weapon_type not in self.weapon_types:
+            return False
+        return True
+
+
+@dataclass
+class Weapon:
+    """Rozszerzona reprezentacja broni."""
+    name: str
+    polish_name: str
+    weapon_type: WeaponType
+    damage_type: DamageType
+    base_damage: float
+    speed: int  # Szybkość ataku (-3 do +3)
+    reach: int  # Zasięg w jednostkach
+    weight: float
+    condition: float = 100.0  # Stan broni (0-100)
+    quality: str = "zwykła"  # zwykła, dobra, mistrzowska, legendarna
+    techniques: List[str] = field(default_factory=list)
+    special_properties: Dict[str, Any] = field(default_factory=dict)
+    
+    def get_effective_damage(self) -> float:
+        """Oblicza efektywne obrażenia uwzględniając stan broni."""
+        quality_multipliers = {
+            "zepsuta": 0.5,
+            "słaba": 0.7,
+            "zwykła": 1.0,
+            "dobra": 1.2,
+            "mistrzowska": 1.5,
+            "legendarna": 2.0
+        }
+        condition_multiplier = self.condition / 100.0
+        return self.base_damage * quality_multipliers.get(self.quality, 1.0) * condition_multiplier
+    
+    def degrade(self, amount: float = 1.0):
+        """Degraduje stan broni."""
+        self.condition = max(0, self.condition - amount)
+        if self.condition < 20:
+            self.quality = "zepsuta"
+
+
+@dataclass
+class Armor:
+    """Rozszerzona reprezentacja zbroi."""
+    name: str
+    polish_name: str
+    protection: Dict[BodyPart, float]  # Ochrona dla każdej części ciała
+    weight: float
+    movement_penalty: float
+    condition: float = 100.0
+    quality: str = "zwykła"
+    special_resistances: Dict[DamageType, float] = field(default_factory=dict)
+    
+    def get_protection(self, body_part: BodyPart, damage_type: DamageType) -> float:
+        """Oblicza ochronę dla danej części ciała i typu obrażeń."""
+        base_protection = self.protection.get(body_part, 0)
+        condition_modifier = self.condition / 100.0
+        type_resistance = self.special_resistances.get(damage_type, 1.0)
+        return base_protection * condition_modifier * type_resistance
+    
+    def degrade(self, amount: float = 1.0):
+        """Degraduje stan zbroi."""
+        self.condition = max(0, self.condition - amount)
+
+
+@dataclass
+class CombatantMemory:
+    """Pamięć kombatanta o przeciwnikach."""
+    observed_actions: deque = field(default_factory=lambda: deque(maxlen=20))
+    preferred_attacks: Dict[str, int] = field(default_factory=dict)
+    defensive_patterns: List[str] = field(default_factory=list)
+    weaknesses_discovered: Set[str] = field(default_factory=set)
+    last_damage_taken: float = 0.0
+    last_damage_dealt: float = 0.0
+    
+    def analyze_patterns(self) -> Dict[str, Any]:
+        """Analizuje wzorce przeciwnika na podstawie obserwacji."""
+        if not self.observed_actions:
+            return {}
+        
+        patterns = {}
+        actions = list(self.observed_actions)
+        
+        # Analiza częstotliwości akcji
+        action_counts = {}
+        for action in actions:
+            action_counts[action] = action_counts.get(action, 0) + 1
+        
+        total_actions = len(actions)
+        patterns['action_probabilities'] = {
+            action: count / total_actions 
+            for action, count in action_counts.items()
+        }
+        
+        # Szukanie sekwencji
+        if len(actions) >= 3:
+            sequences = []
+            for i in range(len(actions) - 2):
+                seq = (actions[i], actions[i+1], actions[i+2])
+                sequences.append(seq)
+            
+            patterns['common_sequences'] = self._find_common_sequences(sequences)
+        
+        return patterns
+    
+    def _find_common_sequences(self, sequences: List[Tuple]) -> List[Tuple]:
+        """Znajduje najczęstsze sekwencje akcji."""
+        seq_counts = {}
+        for seq in sequences:
+            seq_counts[seq] = seq_counts.get(seq, 0) + 1
+        
+        return sorted(seq_counts.keys(), key=lambda x: seq_counts[x], reverse=True)[:3]
+
+
+@dataclass
+class VoidWalkerAbility:
+    """Zdolność Wędrowca Pustki."""
+    name: str
+    polish_name: str
+    void_energy_cost: int
+    pain_increase: int  # Ile bólu zwiększa użycie
+    cooldown: int  # Tury
+    level_requirement: int
+    description: str
+    effects: Dict[str, Any] = field(default_factory=dict)
+    
+    def execute(self, caster_stats: 'CombatStats', target_stats: Optional['CombatStats'] = None) -> Tuple[bool, str]:
+        """Wykonuje zdolność Pustki."""
+        # Sprawdź poziom bólu - przy wysokim bólu zdolności są mniej skuteczne
+        pain_modifier = 1.0 - (caster_stats.pain / 200.0)  # Max 50% redukcji
+        
+        # Zwiększ ból kastera
+        caster_stats.pain = min(100, caster_stats.pain + self.pain_increase)
+        
+        result_message = f"Używasz zdolności: {self.polish_name}"
+        
+        # Zastosuj efekty
+        if 'damage' in self.effects:
+            base_damage = self.effects['damage'] * pain_modifier
+            if target_stats:
+                target_stats.health -= base_damage
+                result_message += f" - zadajesz {base_damage:.1f} obrażeń"
+        
+        if 'heal' in self.effects:
+            heal_amount = self.effects['heal'] * pain_modifier
+            caster_stats.health = min(caster_stats.max_health, caster_stats.health + heal_amount)
+            result_message += f" - odzyskujesz {heal_amount:.1f} zdrowia"
+        
+        if 'slow' in self.effects and target_stats:
+            # Efekt spowolnienia - implementacja zależna od systemu
+            result_message += " - cel jest spowolniony"
+        
+        return True, result_message
+
+
+@dataclass
 class CombatStats:
     """Statystyki bojowe postaci."""
     health: float = 100.0
@@ -131,6 +363,15 @@ class CombatStats:
     stun_duration: int = 0
     is_bleeding: bool = False
     total_bleeding_rate: float = 0.0
+    
+    # Nowe pola z enhanced combat
+    void_energy: float = 0.0  # Energia pustki dla Void Walker
+    max_void_energy: float = 100.0
+    fatigue: float = 0.0  # Zmęczenie wpływające na regenerację
+    combat_stance: CombatStance = CombatStance.NEUTRALNA
+    current_weapon: Optional[Weapon] = None
+    current_armor: Optional[Armor] = None
+    memory: CombatantMemory = field(default_factory=CombatantMemory)
 
 
 class CombatSystem:
@@ -149,6 +390,12 @@ class CombatSystem:
         self.body_parts_data = self.combat_data.get('injury_system', {}).get('body_parts', {})
         self.weapon_types = self.combat_data.get('weapon_types', {})
         self.combat_formulas = self.combat_data.get('combat_formulas', {})
+        
+        # Enhanced combat features
+        self.combat_techniques: Dict[str, CombatTechnique] = self._initialize_techniques()
+        self.void_abilities: Dict[str, VoidWalkerAbility] = self._initialize_void_abilities()
+        self.ai_patterns: Dict[str, Dict[str, Any]] = self._initialize_ai_patterns()
+        self.combat_environment: List[EnvironmentalFactor] = []
         
         # Ensure pain_thresholds is available as class attribute for compatibility
         if hasattr(self, 'pain_thresholds'):
@@ -748,3 +995,216 @@ class CombatSystem:
                 elif debuff_name == 'DISPERSED_SENSES':
                     stats.accuracy_multiplier *= debuff_data.get('accuracy_penalty', 1.0)
                     stats.defense_multiplier *= debuff_data.get('defense_penalty', 1.0)
+    
+    def _initialize_techniques(self) -> Dict[str, CombatTechnique]:
+        """Inicjalizuje techniki bojowe."""
+        techniques = {}
+        
+        # Techniki dla mieczy
+        techniques['ripost'] = CombatTechnique(
+            name='riposte',
+            polish_name='Riposta',
+            type=TechniqueType.PODSTAWOWA,
+            weapon_types=[WeaponType.MIECZE_KROTKIE, WeaponType.MIECZE_DLUGIE],
+            skill_requirement=5,
+            stamina_cost=10,
+            damage_multiplier=1.3,
+            critical_chance_bonus=0.2,
+            special_effects={'counter_attack': True},
+            description="Szybki kontratak po udanym parowaniu"
+        )
+        
+        techniques['feint_strike'] = CombatTechnique(
+            name='feint_strike',
+            polish_name='Finta i Cios',
+            type=TechniqueType.KOMBINACJA,
+            weapon_types=[WeaponType.MIECZE_KROTKIE, WeaponType.SZTYLETY],
+            skill_requirement=12,
+            stamina_cost=15,
+            combo_chain=['finta', 'atak_podstawowy'],
+            damage_multiplier=1.6,
+            accuracy_modifier=0.3,
+            description="Finta wprowadzając w błąd, po której następuje precyzyjny cios"
+        )
+        
+        techniques['whirlwind'] = CombatTechnique(
+            name='whirlwind',
+            polish_name='Wirujące Ostrza',
+            type=TechniqueType.SPECJALNA,
+            weapon_types=[WeaponType.MIECZE_DLUGIE, WeaponType.MIECZE_DWURECZNE],
+            skill_requirement=20,
+            stamina_cost=25,
+            combo_chain=['ciecie_poziome', 'ciecie_poziome'],
+            damage_multiplier=2.0,
+            special_effects={'area_damage': True, 'dizzy_chance': 0.3},
+            description="Seria wirujących cięć"
+        )
+        
+        # Techniki dla toporów
+        techniques['rozpłatanie'] = CombatTechnique(
+            name='cleave',
+            polish_name='Rozpłatanie',
+            type=TechniqueType.PODSTAWOWA,
+            weapon_types=[WeaponType.TOPORY, WeaponType.TOPORY_DWURECZNE],
+            skill_requirement=8,
+            stamina_cost=15,
+            damage_multiplier=1.8,
+            special_effects={'bleeding_chance': 0.7},
+            description="Potężne cięcie powodujące krwawienie"
+        )
+        
+        # Techniki walki wręcz
+        techniques['nokaut'] = CombatTechnique(
+            name='knockout',
+            polish_name='Nokaut',
+            type=TechniqueType.SPECJALNA,
+            weapon_types=[WeaponType.PIESCI, WeaponType.MACZUGI],
+            skill_requirement=20,
+            stamina_cost=25,
+            damage_multiplier=2.0,
+            special_effects={'stun_duration': 2, 'target_head': True},
+            description="Potężny cios w głowę"
+        )
+        
+        return techniques
+    
+    def _initialize_void_abilities(self) -> Dict[str, VoidWalkerAbility]:
+        """Inicjalizuje zdolności Wędrowca Pustki."""
+        abilities = {}
+        
+        abilities['dotyk_pustki'] = VoidWalkerAbility(
+            name='void_touch',
+            polish_name='Dotyk Pustki',
+            void_energy_cost=10,
+            pain_increase=15,
+            cooldown=2,
+            level_requirement=10,
+            description="Dotyk nasyca cel energią Pustki",
+            effects={'damage': 25, 'slow': 2}
+        )
+        
+        abilities['krok_cienia'] = VoidWalkerAbility(
+            name='shadow_step',
+            polish_name='Krok Cienia',
+            void_energy_cost=15,
+            pain_increase=10,
+            cooldown=3,
+            level_requirement=15,
+            description="Teleportacja przez cienie",
+            effects={'teleport': True, 'dodge_bonus': 0.5}
+        )
+        
+        abilities['rozerwanie_rzeczywistości'] = VoidWalkerAbility(
+            name='reality_tear',
+            polish_name='Rozerwanie Rzeczywistości',
+            void_energy_cost=30,
+            pain_increase=25,
+            cooldown=5,
+            level_requirement=30,
+            description="Tworzy rozerwanie w tkance rzeczywistości",
+            effects={'reality_tear': True, 'area_damage': 40, 'confusion': 3}
+        )
+        
+        return abilities
+    
+    def _initialize_ai_patterns(self) -> Dict[str, Dict[str, Any]]:
+        """Inicjalizuje wzorce AI dla różnych typów przeciwników."""
+        patterns = {
+            'agresywny': {
+                'stance_preference': CombatStance.AGRESYWNA,
+                'attack_probability': 0.7,
+                'defense_probability': 0.2,
+                'retreat_threshold': 20,
+                'technique_usage': 0.3,
+                'target_priority': 'weakest'
+            },
+            'defensywny': {
+                'stance_preference': CombatStance.DEFENSYWNA,
+                'attack_probability': 0.3,
+                'defense_probability': 0.6,
+                'retreat_threshold': 40,
+                'technique_usage': 0.1,
+                'target_priority': 'closest'
+            },
+            'taktyczny': {
+                'stance_preference': CombatStance.WYWAŻONA,
+                'attack_probability': 0.5,
+                'defense_probability': 0.4,
+                'retreat_threshold': 30,
+                'technique_usage': 0.4,
+                'target_priority': 'most_dangerous',
+                'adapts_to_player': True
+            }
+        }
+        return patterns
+    
+    def calculate_weapon_reach_advantage(self, attacker_weapon: Optional[Weapon], 
+                                        defender_weapon: Optional[Weapon]) -> float:
+        """Oblicza przewagę zasięgu broni."""
+        attacker_reach = attacker_weapon.reach if attacker_weapon else 1
+        defender_reach = defender_weapon.reach if defender_weapon else 1
+        
+        reach_diff = attacker_reach - defender_reach
+        if reach_diff > 0:
+            return 0.1 * reach_diff  # Bonus do trafienia
+        elif reach_diff < 0:
+            return 0.05 * reach_diff  # Kara do trafienia
+        return 0.0
+    
+    def calculate_environmental_modifiers(self) -> Dict[str, float]:
+        """Oblicza modyfikatory środowiskowe."""
+        modifiers = {
+            'accuracy': 0.0,
+            'damage': 0.0,
+            'defense': 0.0,
+            'movement': 0.0
+        }
+        
+        for factor in self.combat_environment:
+            if factor == EnvironmentalFactor.CIEMNOSC:
+                modifiers['accuracy'] -= 0.3
+                modifiers['defense'] -= 0.2
+            elif factor == EnvironmentalFactor.SLISKA_POWIERZCHNIA:
+                modifiers['movement'] -= 0.3
+                modifiers['defense'] -= 0.15
+            elif factor == EnvironmentalFactor.WASKA_PRZESTRZEN:
+                modifiers['movement'] -= 0.2
+                modifiers['accuracy'] -= 0.1
+        
+        return modifiers
+    
+    def execute_technique(self, attacker_stats: 'CombatStats', defender_stats: 'CombatStats',
+                         technique_name: str, attacker_skill: int) -> Tuple[bool, str, float]:
+        """Wykonuje technikę bojową."""
+        if technique_name not in self.combat_techniques:
+            return False, "Nieznana technika", 0.0
+        
+        technique = self.combat_techniques[technique_name]
+        
+        # Sprawdź czy technika może być wykonana
+        if not technique.can_execute(attacker_skill, attacker_stats.stamina, attacker_stats.current_weapon):
+            return False, f"Nie można wykonać techniki: {technique.polish_name}", 0.0
+        
+        # Zużyj stamina
+        attacker_stats.stamina -= technique.stamina_cost
+        
+        # Oblicz obrażenia
+        base_damage = attacker_stats.strength * technique.damage_multiplier
+        
+        # Zastosuj efekty specjalne
+        special_message = ""
+        for effect, value in technique.special_effects.items():
+            if effect == 'bleeding_chance' and random.random() < value:
+                special_message += " - cel krwawi"
+            elif effect == 'stun_duration' and value > 0:
+                defender_stats.is_stunned = True
+                defender_stats.stun_duration = value
+                special_message += f" - cel ogłuszony na {value} tur"
+        
+        # Zastosuj obrażenia
+        final_damage = base_damage
+        defender_stats.health -= final_damage
+        
+        message = f"Wykonujesz {technique.polish_name} zadając {final_damage:.1f} obrażeń{special_message}"
+        
+        return True, message, final_damage
