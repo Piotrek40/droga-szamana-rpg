@@ -410,39 +410,58 @@ def pursue_urgent_goal(npc: Any, context: Dict) -> NodeStatus:
 
 def work_on_goal(npc: Any, context: Dict) -> NodeStatus:
     """Pracuje nad długoterminowym celem"""
-    if not hasattr(npc, 'goals'):
+    try:
+        if not hasattr(npc, 'goals'):
+            return NodeStatus.FAILURE
+        
+        active_goals = [g for g in npc.goals if g.active and g.completion < 1.0]
+        
+        if not active_goals:
+            return NodeStatus.FAILURE
+        
+        goal = active_goals[0]  # Pracuj nad pierwszym aktywnym celem
+        progress_rate = 0.02
+        
+        # Check if goal has type attribute, otherwise determine from name
+        goal_type = getattr(goal, 'type', None)
+        if not goal_type and hasattr(goal, 'name'):
+            goal_name = goal.name.lower()
+            if 'wealth' in goal_name or 'money' in goal_name or 'gold' in goal_name:
+                goal_type = 'wealth'
+            elif 'friend' in goal_name or 'relationship' in goal_name or 'trust' in goal_name:
+                goal_type = 'relationship'
+            elif 'learn' in goal_name or 'knowledge' in goal_name or 'study' in goal_name:
+                goal_type = 'knowledge'
+            else:
+                goal_type = 'general'
+        
+        if goal_type == "wealth":
+            if hasattr(npc, 'wealth'):
+                npc.wealth += 1
+                goal.completion = min(1.0, npc.wealth / getattr(goal, 'target_value', 100))
+            return NodeStatus.SUCCESS
+        
+        elif goal_type == "relationship":
+            if hasattr(npc, 'relationships'):
+                target = getattr(goal, 'target', 'player')
+                if target in npc.relationships:
+                    npc.relationships[target]["trust"] += 0.5
+                    goal.completion = min(1.0, npc.relationships[target]["trust"] / 100)
+            return NodeStatus.SUCCESS
+        
+        elif goal_type == "knowledge":
+            if hasattr(npc, 'knowledge'):
+                npc.knowledge.append(f"fact_{context.get('current_time', 0)}")
+                goal.completion = min(1.0, len(npc.knowledge) / getattr(goal, 'target_value', 10))
+            return NodeStatus.SUCCESS
+        
+        # Default progress for any goal type
+        goal.completion = min(1.0, goal.completion + progress_rate)
+        return NodeStatus.SUCCESS
+        
+    except (AttributeError, TypeError) as e:
+        logger.error(f"Błąd w akcji work_on_goal: {e}")
         return NodeStatus.FAILURE
-    
-    active_goals = [g for g in npc.goals if g.active and g.completion < 1.0]
-    
-    if not active_goals:
-        return NodeStatus.FAILURE
-    
-    goal = active_goals[0]  # Pracuj nad pierwszym aktywnym celem
-    progress_rate = 0.02
-    
-    if goal.type == "wealth":
-        if hasattr(npc, 'wealth'):
-            npc.wealth += 1
-            goal.completion = min(1.0, npc.wealth / goal.target_value)
-        return NodeStatus.SUCCESS
-    
-    elif goal.type == "relationship":
-        if hasattr(npc, 'relationships'):
-            target = goal.target
-            if target in npc.relationships:
-                npc.relationships[target]["trust"] += 0.5
-                goal.completion = min(1.0, npc.relationships[target]["trust"] / 100)
-        return NodeStatus.SUCCESS
-    
-    elif goal.type == "knowledge":
-        if hasattr(npc, 'knowledge'):
-            npc.knowledge.append(f"fact_{context.get('current_time', 0)}")
-            goal.completion = min(1.0, len(npc.knowledge) / goal.target_value)
-        return NodeStatus.SUCCESS
-    
-    goal.completion = min(1.0, goal.completion + progress_rate)
-    return NodeStatus.SUCCESS
 
 
 def is_being_watched(npc: Any, context: Dict) -> bool:
@@ -1036,10 +1055,16 @@ def rest(npc: Any, context: Dict) -> NodeStatus:
         npc.modify_emotion(EmotionalState.ANGRY, -0.1)
     
     # Refleksja - przetwarzanie ważnych wspomnień
-    important_memories = npc.recall_memories(limit=3)
-    for memory in important_memories:
-        # Konsolidacja pamięci podczas odpoczynku
-        memory["strength"] = min(1.0, memory.get("strength", 0.5) + 0.05)
+    try:
+        if hasattr(npc, 'memory_system') and hasattr(npc.memory_system, 'episodic'):
+            # Get recent important memories
+            important_memories = npc.memory_system.episodic.get_important_memories(limit=3)
+            for memory in important_memories:
+                # Konsolidacja pamięci podczas odpoczynku
+                if isinstance(memory, dict):
+                    memory["strength"] = min(1.0, memory.get("strength", 0.5) + 0.05)
+    except (AttributeError, TypeError) as e:
+        logger.debug(f"Memory reflection failed for {npc.id}: {e}")
     
     return NodeStatus.SUCCESS
 
@@ -1140,19 +1165,32 @@ def explore_area(npc: Any, context: Dict) -> NodeStatus:
 
 def observe_environment(npc: Any, context: Dict) -> NodeStatus:
     """Obserwuje otoczenie"""
-    from .npc_manager import NPCState
-    
-    # Zapamiętaj co widzi
-    if hasattr(npc, 'memory'):
-        observation = {
-            "time": context.get("current_time", 0),
-            "location": npc.current_location,
-            "npcs_present": [n.id for n in context.get("npcs", {}).values() if n.id != npc.id],
-            "items": context.get("items", [])
-        }
-        npc.memory.store_episodic_memory("observation", observation)
-    
-    return NodeStatus.SUCCESS
+    try:
+        from .npc_manager import NPCState
+        
+        # Zapamiętaj co widzi
+        if hasattr(npc, 'memory_system') and hasattr(npc.memory_system, 'store_episodic_memory'):
+            observation = {
+                "time": context.get("current_time", 0),
+                "location": getattr(npc, 'current_location', getattr(npc, 'location', 'unknown')),
+                "npcs_present": [n.id for n in context.get("npcs", {}).values() if hasattr(n, 'id') and n.id != npc.id],
+                "items": context.get("items", [])
+            }
+            npc.memory_system.store_episodic_memory("observation", observation)
+        elif hasattr(npc, 'memory_system') and hasattr(npc.memory_system, 'episodic'):
+            observation = {
+                "time": context.get("current_time", 0),
+                "location": getattr(npc, 'current_location', getattr(npc, 'location', 'unknown')),
+                "npcs_present": [n.id for n in context.get("npcs", {}).values() if hasattr(n, 'id') and n.id != npc.id],
+                "items": context.get("items", [])
+            }
+            npc.memory_system.episodic.add_memory("observation", observation)
+        
+        return NodeStatus.SUCCESS
+        
+    except (AttributeError, TypeError) as e:
+        logger.error(f"Błąd w akcji observe_surroundings: {e}")
+        return NodeStatus.FAILURE
 
 
 def plan_action(npc: Any, context: Dict) -> NodeStatus:

@@ -321,51 +321,72 @@ class SkillSystem:
         # Bojowe
         SkillName.WALKA_WRECZ: ("Walka wręcz", "Umiejętność walki bez broni", SkillCategory.BOJOWE),
         SkillName.MIECZE: ("Miecze", "Władanie mieczami", SkillCategory.BOJOWE),
+        SkillName.MIECZE_DWURECZNE: ("Miecze dwuręczne", "Władanie mieczami dwuręcznymi", SkillCategory.BOJOWE),
         SkillName.SZTYLETY: ("Sztylety", "Walka sztyletami", SkillCategory.BOJOWE),
         SkillName.TOPORY: ("Topory", "Władanie toporami", SkillCategory.BOJOWE),
+        SkillName.TOPORY_DWURECZNE: ("Topory dwuręczne", "Władanie toporami dwuręcznymi", SkillCategory.BOJOWE),
         SkillName.MLOTY: ("Młoty", "Władanie młotami", SkillCategory.BOJOWE),
+        SkillName.MLOTY_BOJOWE: ("Młoty bojowe", "Władanie młotami bojowymi", SkillCategory.BOJOWE),
         SkillName.WLÓCZNIE: ("Włócznie", "Walka włóczniami", SkillCategory.BOJOWE),
         SkillName.MACZUGI: ("Maczugi", "Walka maczugami", SkillCategory.BOJOWE),
+        SkillName.KIJE_BOJOWE: ("Kije bojowe", "Walka kijami bojowymi", SkillCategory.BOJOWE),
         
         # Obronne
         SkillName.OBRONA: ("Obrona", "Techniki obronne", SkillCategory.OBRONNE),
         SkillName.UNIKI: ("Uniki", "Unikanie ataków", SkillCategory.OBRONNE),
         SkillName.PAROWANIE: ("Parowanie", "Parowanie ciosów", SkillCategory.OBRONNE),
         SkillName.TARCZE: ("Tarcze", "Walka z tarczą", SkillCategory.OBRONNE),
+        SkillName.PANCERZ_LEKKI: ("Pancerz lekki", "Noszenie lekkiego pancerza", SkillCategory.OBRONNE),
+        SkillName.PANCERZ_CIEZKI: ("Pancerz ciężki", "Noszenie ciężkiego pancerza", SkillCategory.OBRONNE),
         
         # Dystansowe
         SkillName.LUCZNICTWO: ("Łucznictwo", "Strzelanie z łuku", SkillCategory.DYSTANSOWE),
         SkillName.KUSZE: ("Kusze", "Strzelanie z kuszy", SkillCategory.DYSTANSOWE),
+        SkillName.PROCE: ("Proce", "Strzelanie z procy", SkillCategory.DYSTANSOWE),
         SkillName.RZUCANIE: ("Rzucanie", "Rzucanie broni", SkillCategory.DYSTANSOWE),
         
         # Magiczne (Void Walker)
         SkillName.MANIPULACJA_PUSTKI: ("Manipulacja Pustki", "Kontrola energii pustki", SkillCategory.MAGICZNE),
         SkillName.ODPORNOSC_NA_BOL: ("Odporność na ból", "Tolerancja bólu", SkillCategory.MAGICZNE),
         SkillName.MEDYTACJA: ("Medytacja", "Kontrola umysłu", SkillCategory.MAGICZNE),
+        SkillName.KONTROLA_ENERGII: ("Kontrola energii", "Zarządzanie energią magiczną", SkillCategory.MAGICZNE),
         
         # Społeczne
         SkillName.PERSWAZJA: ("Perswazja", "Przekonywanie", SkillCategory.SPOLECZNE),
         SkillName.HANDEL: ("Handel", "Negocjacje handlowe", SkillCategory.SPOLECZNE),
         SkillName.OSZUSTWO: ("Oszustwo", "Kłamstwo i blef", SkillCategory.SPOLECZNE),
         SkillName.ZASTRASZANIE: ("Zastraszanie", "Wymuszanie strachu", SkillCategory.SPOLECZNE),
+        SkillName.PRZYWODZTWO: ("Przywództwo", "Kierowanie ludźmi", SkillCategory.SPOLECZNE),
+        SkillName.ETYKIETA: ("Etykieta", "Znajomość protokołu", SkillCategory.SPOLECZNE),
+        SkillName.WYSTEPY: ("Występy", "Publiczne wystąpienia", SkillCategory.SPOLECZNE),
         
         # Złodziejskie
         SkillName.SKRADANIE: ("Skradanie", "Cichy ruch", SkillCategory.ZLODZIEJSKIE),
         SkillName.KRADZIEŻ_KIESZONKOWA: ("Kradzież kieszonkowa", "Kradzież z osób", SkillCategory.ZLODZIEJSKIE),
         SkillName.WLAMYWANIE: ("Włamywanie", "Otwieranie zamków", SkillCategory.ZLODZIEJSKIE),
         SkillName.UKRYWANIE: ("Ukrywanie", "Ukrywanie się", SkillCategory.ZLODZIEJSKIE),
+        SkillName.FALSYFIKATY: ("Fałszyfikaty", "Podrabianie dokumentów", SkillCategory.ZLODZIEJSKIE),
+        SkillName.PULAPKI: ("Pułapki", "Budowanie i rozbrajanie pułapek", SkillCategory.ZLODZIEJSKIE),
         
         # Rzemieślnicze
         SkillName.KOWALSTWO: ("Kowalstwo", "Tworzenie metalowych przedmiotów", SkillCategory.RZEMIESLNICZE),
         SkillName.ALCHEMIA: ("Alchemia", "Warzenie mikstur", SkillCategory.RZEMIESLNICZE),
         SkillName.ZBROJMISTRZOSTWO: ("Zbrojmistrzostwo", "Tworzenie zbroi", SkillCategory.RZEMIESLNICZE),
         SkillName.LUCZARSTWO: ("Łuczarstwo", "Tworzenie łuków", SkillCategory.RZEMIESLNICZE),
+        SkillName.JUBILERSTWO: ("Jubilerstwo", "Tworzenie biżuterii", SkillCategory.RZEMIESLNICZE),
+        SkillName.KRAWIECTWO: ("Krawiectwo", "Szycie ubrań", SkillCategory.RZEMIESLNICZE),
+        SkillName.GARBARSTWO: ("Garbarstwo", "Obróbka skór", SkillCategory.RZEMIESLNICZE),
+        SkillName.STOLARSTWO: ("Stolarstwo", "Obróbka drewna", SkillCategory.RZEMIESLNICZE),
+        SkillName.GOTOWANIE: ("Gotowanie", "Przygotowywanie posiłków", SkillCategory.RZEMIESLNICZE),
         
         # Przetrwanie
         SkillName.PIERWSZA_POMOC: ("Pierwsza pomoc", "Leczenie ran", SkillCategory.PRZETRWANIE),
         SkillName.TROPIENIE: ("Tropienie", "Śledzenie śladów", SkillCategory.PRZETRWANIE),
         SkillName.ZIELARSTWO: ("Zielarstwo", "Znajomość roślin", SkillCategory.PRZETRWANIE),
         SkillName.OBOZOWANIE: ("Obozowanie", "Przetrwanie w terenie", SkillCategory.PRZETRWANIE),
+        SkillName.POLOWANIE: ("Polowanie", "Łowienie zwierząt", SkillCategory.PRZETRWANIE),
+        SkillName.LOWIENIE_RYB: ("Łowienie ryb", "Łowienie ryb", SkillCategory.PRZETRWANIE),
+        SkillName.ORIENTACJA: ("Orientacja", "Znajdowanie drogi", SkillCategory.PRZETRWANIE),
         
         # Atletyczne
         SkillName.WYTRZYMALOSC: ("Wytrzymałość", "Odporność na zmęczenie", SkillCategory.ATLETYCZNE),
@@ -373,11 +394,17 @@ class SkillSystem:
         SkillName.ZWROTNOSC: ("Zwinność", "Zręczność i szybkość", SkillCategory.ATLETYCZNE),
         SkillName.AKROBACJA: ("Akrobacja", "Kontrola ciała", SkillCategory.ATLETYCZNE),
         SkillName.PLYWANIE: ("Pływanie", "Poruszanie się w wodzie", SkillCategory.ATLETYCZNE),
+        SkillName.GIMNASTYKA: ("Gimnastyka", "Sprawność fizyczna", SkillCategory.ATLETYCZNE),
+        SkillName.WDRAPYWANIE: ("Wdrapywanie", "Wspinaczka", SkillCategory.ATLETYCZNE),
         
         # Wiedza
         SkillName.HISTORIA: ("Historia", "Znajomość historii", SkillCategory.WIEDZA),
         SkillName.GEOGRAFIA: ("Geografia", "Znajomość terenu", SkillCategory.WIEDZA),
         SkillName.RELIGIA: ("Religia", "Znajomość wierzeń", SkillCategory.WIEDZA),
+        SkillName.ARCHITEKTURA: ("Architektura", "Znajomość budownictwa", SkillCategory.WIEDZA),
+        SkillName.INŻYNIERIA: ("Inżynieria", "Wiedza techniczna", SkillCategory.WIEDZA),
+        SkillName.MATEMATYKA: ("Matematyka", "Znajomość liczb", SkillCategory.WIEDZA),
+        SkillName.LITERATURA: ("Literatura", "Znajomość pisma", SkillCategory.WIEDZA),
         
         # Backward compatibility
         SkillName.MEDYCYNA: ("Medycyna", "Leczenie ran i chorób", SkillCategory.PRZETRWANIE)
