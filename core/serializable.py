@@ -3,7 +3,7 @@ Base classes for serialization - unifies save/load patterns across the project.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, Type, Union
+from typing import Any, Dict, Optional, Type, Union, List
 import logging
 import json
 import os
