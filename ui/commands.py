@@ -269,7 +269,7 @@ class CommandParser:
         ))
         
         self.register(Command(
-            "receptury", ["przepisy"],
+            "receptury", ["przepisy", "recepty"],
             CommandCategory.CRAFT,
             self._cmd_recipes,
             "Pokaż znane receptury"

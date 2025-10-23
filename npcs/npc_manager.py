@@ -226,9 +226,19 @@ class NPC:
         
         # Ostatnia aktualizacja
         self.last_update = time.time()
-        
+
         logger.info(f"NPC {self.name} zainicjalizowany")
-    
+
+    @property
+    def current_location(self) -> str:
+        """Alias dla self.location dla kompatybilności wstecznej."""
+        return self.location
+
+    @current_location.setter
+    def current_location(self, value: str):
+        """Setter dla current_location."""
+        self.location = value
+
     def _initialize_combat_stats(self, npc_data: Dict) -> CombatStats:
         """Inicjalizuje statystyki bojowe NPCa."""
         # Bazowe atrybuty NPCa

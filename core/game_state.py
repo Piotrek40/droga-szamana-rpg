@@ -174,20 +174,8 @@ class GameState:
         print("Ożywianie NPCów...")
         self.npc_manager = NPCManager("data/npc_complete.json")
         
-        # Umieść NPCów w lokacjach - bezpiecznie
-        npc_locations = {
-            "brutus": "biuro_naczelnika",
-            "marek": "korytarz_centralny",  # poprawiona nazwa
-            "jozek": "cela_2",
-            "anna": "cela_4",
-            "piotr": "cela_1"
-        }
-        
-        for npc_id, location in npc_locations.items():
-            if npc_id in self.npc_manager.npcs:
-                self.npc_manager.npcs[npc_id].current_location = location
-            else:
-                print(f"Ostrzeżenie: NPC {npc_id} nie istnieje")
+        # NPCe są już umieszczone w lokacjach przez npc_complete.json
+        # Ten kod był duplikacją - usunięto aby uniknąć podwójnych NPCów
         
         # Inicjalizacja ekonomii
         print("Uruchamianie ekonomii...")

@@ -875,6 +875,7 @@ class Character:
                     'total_uses': self.skills.skills[skill].total_uses
                 }
                 for skill in SkillName
+                if skill in self.skills.skills  # Tylko zapisuj istniejące skille
             },
             'injuries': {
                 part.value: [
