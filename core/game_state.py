@@ -716,8 +716,8 @@ class GameState:
             activation_conditions={},  # Zawsze aktywny
             discovery_methods=[DiscoveryMethod.OVERHEARD, DiscoveryMethod.FOUND],
             initial_clues={
-                "glowny_korytarz": "Słyszysz rozmowę strażników o zgubionych kluczach",
-                "cela_2": "Pod łóżkiem błyszczy metalowy przedmiot", 
+                "korytarz_centralny": "Słyszysz rozmowę strażników o zgubionych kluczach",
+                "cela_2": "Pod łóżkiem błyszczy metalowy przedmiot",
                 "biuro_naczelnika": "Naczelnik wygląda na zdenerwowanego"
             },
             time_sensitive=False,

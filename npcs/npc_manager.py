@@ -138,7 +138,8 @@ class NPC:
         self.id = npc_data["id"]
         self.name = npc_data["name"]
         self.role = npc_data["role"]
-        self.location = npc_data["location"]
+        # Użyj spawn_location (polskie nazwy) jeśli istnieje, fallback na location
+        self.location = npc_data.get("spawn_location", npc_data.get("location", "cela_1"))
         self.personality = npc_data["personality"]
         self.quirks = npc_data.get("quirks", [])
         self.inventory = npc_data.get("inventory", {})
