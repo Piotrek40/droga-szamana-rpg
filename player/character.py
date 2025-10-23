@@ -754,7 +754,33 @@ class Character:
             Suma severity
         """
         return sum(inj.severity for inj in self.get_all_injuries())
-    
+
+    def get_pain_penalty(self) -> float:
+        """
+        Zwraca karę od bólu zgodnie z systemem z README.
+
+        Returns:
+            Kara jako wartość 0.0-1.0 (np. 0.15 = -15%)
+
+        Pain thresholds:
+            30-50: -15% do testów
+            50-70: -30% do testów
+            70-80: -45% do testów
+            80+: utrata przytomności
+        """
+        pain = self.pain
+
+        if pain >= 80:
+            return 1.0  # Utrata przytomności = 100% kara
+        elif pain >= 70:
+            return 0.45  # -45%
+        elif pain >= 50:
+            return 0.30  # -30%
+        elif pain >= 30:
+            return 0.15  # -15%
+        else:
+            return 0.0  # Brak kary
+
     def get_status(self) -> str:
         """
         Zwraca pełny status postaci.
@@ -875,6 +901,7 @@ class Character:
                     'total_uses': self.skills.skills[skill].total_uses
                 }
                 for skill in SkillName
+                if skill in self.skills.skills  # Tylko zapisuj istniejące skille
             },
             'injuries': {
                 part.value: [

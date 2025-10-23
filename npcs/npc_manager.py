@@ -138,7 +138,8 @@ class NPC:
         self.id = npc_data["id"]
         self.name = npc_data["name"]
         self.role = npc_data["role"]
-        self.location = npc_data["location"]
+        # Użyj spawn_location (polskie nazwy) jeśli istnieje, fallback na location
+        self.location = npc_data.get("spawn_location", npc_data.get("location", "cela_1"))
         self.personality = npc_data["personality"]
         self.quirks = npc_data.get("quirks", [])
         self.inventory = npc_data.get("inventory", {})
@@ -226,9 +227,19 @@ class NPC:
         
         # Ostatnia aktualizacja
         self.last_update = time.time()
-        
+
         logger.info(f"NPC {self.name} zainicjalizowany")
-    
+
+    @property
+    def current_location(self) -> str:
+        """Alias dla self.location dla kompatybilności wstecznej."""
+        return self.location
+
+    @current_location.setter
+    def current_location(self, value: str):
+        """Setter dla current_location."""
+        self.location = value
+
     def _initialize_combat_stats(self, npc_data: Dict) -> CombatStats:
         """Inicjalizuje statystyki bojowe NPCa."""
         # Bazowe atrybuty NPCa

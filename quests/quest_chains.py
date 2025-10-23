@@ -367,9 +367,9 @@ class GuardKeysLostQuest(EmergentQuest):
                 DiscoveryMethod.FOUND
             ],
             initial_clues={
-                'guard_post': 'Strażnik nerwowo przeszukuje kieszenie i rozgląda się.',
-                'prison_yard': 'Coś metalowego błyszczy w kącie dziedzińca.',
-                'laundry': 'Słychać brzęk metalu w koszu z brudnym praniem.'
+                'wartownia': 'Strażnik nerwowo przeszukuje kieszenie i rozgląda się.',
+                'dziedziniec': 'Coś metalowego błyszczy w kącie dziedzińca.',
+                'jadalnia': 'Słychać brzęk metalu w koszu z brudnym praniem.'
             },
             time_sensitive=True,
             expiry_hours=24,
