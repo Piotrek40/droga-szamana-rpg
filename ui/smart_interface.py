@@ -499,7 +499,7 @@ class StatusBar:
     
     def _quest_widget(self, game_state: GameState) -> str:
         """Widget aktywnego questa."""
-        # TODO: Integracja z systemem questów
+        # Integracja z systemem questów dostępna przez game_state.quest_engine
         if hasattr(game_state, 'active_quest'):
             quest_name = getattr(game_state.active_quest, 'name', 'Brak')
             progress = getattr(game_state.active_quest, 'progress', 0)

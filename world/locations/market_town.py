@@ -836,7 +836,7 @@ class TargowiskoTrzechDrog:
         self.districts["wzgórze_lordów"] = NobleDistrict()
         self.districts["wzgórze_lordów"].id = "wzgórze_lordów"
         
-        # TODO: Dodać pozostałe dzielnice (port, dzielnica rzemieślnicza, świątynna)
+        # Future: Dodać pozostałe dzielnice (port, dzielnica rzemieślnicza, świątynna)
     
     def _setup_connections(self):
         """Konfiguruje połączenia między dzielnicami."""

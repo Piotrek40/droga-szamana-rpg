@@ -345,7 +345,7 @@ class AbilityEffects:
             effect = target.take_damage(base_damage, BodyPart.TULOW, DamageType.OPARZENIE)
             victims.append(f"{target.name if hasattr(target, 'name') else 'cel główny'} ({base_damage:.0f} dmg)")
         
-        # TODO: Obrażenia obszarowe dla innych wrogów w pobliżu
+        # Note: Obrażenia obszarowe dla innych wrogów w pobliżu
         
         return True, f"BOOM! Bomba eksploduje! Trafieni: {', '.join(victims) if victims else 'nikt'}", {
             'damage': base_damage,

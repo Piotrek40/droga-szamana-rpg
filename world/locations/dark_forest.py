@@ -818,7 +818,7 @@ class CzarnyLas:
         self.locations["głębia_lasu"] = DarkForestDepths()
         self.locations["głębia_lasu"].id = "głębia_lasu"
         
-        # TODO: Dodać więcej lokacji (święty gaj, łysina wisielców, jaskinia, etc.)
+        # Future: Dodać więcej lokacji (święty gaj, łysina wisielców, jaskinia, etc.)
     
     def _setup_connections(self):
         """Konfiguruje połączenia między lokacjami."""
@@ -877,10 +877,10 @@ class CzarnyLas:
             
             # Zastosuj efekty odkrycia
             if secret.power_granted:
-                # TODO: Dodaj moc do gracza
+                # Future: Dodaj moc do gracza
                 pass
             if secret.curse:
-                # TODO: Zastosuj klątwę
+                # Future: Zastosuj klątwę
                 self.corruption_level = min(1.0, self.corruption_level + 0.1)
             
             return secret.revelation

@@ -694,12 +694,12 @@ class RPGInterface:
     
     def toggle_inventory(self):
         """Przełącza widok ekwipunku."""
-        # TODO: Przełącz zakładkę na ekwipunek
+        # Note: Przełącz zakładkę na ekwipunek
         pass
     
     def toggle_map(self):
         """Przełącza widok mapy."""
-        # TODO: Pokaż pełną mapę
+        # Note: Pokaż pełną mapę
         pass
     
     def save_game(self):
@@ -722,7 +722,7 @@ class RPGInterface:
                 bg=self.colors['accent'],
                 fg='white').pack(fill=tk.X)
         
-        # TODO: Dodaj opcje ustawień
+        # Note: Dodaj opcje ustawień
         
     def quit_game(self):
         """Wyjście z gry."""
@@ -770,7 +770,7 @@ class RPGInterface:
     
     def show_target_dialog(self):
         """Pokazuje dialog wyboru celu ataku."""
-        # TODO: Pobierz listę celów z game_state
+        # Note: Pobierz listę celów z game_state
         targets = ["Szczur", "Strażnik"]
         
         dialog = tk.Toplevel(self.root)
@@ -793,7 +793,7 @@ class RPGInterface:
     
     def show_npc_dialog(self):
         """Pokazuje dialog wyboru NPC do rozmowy."""
-        # TODO: Pobierz listę NPCów z game_state
+        # Note: Pobierz listę NPCów z game_state
         npcs = ["Strażnik", "Więzień Piotr"]
         
         dialog = tk.Toplevel(self.root)

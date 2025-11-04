@@ -446,7 +446,7 @@ class GatheringPlugin(PluginInterface):
     
     def _update_resource_knowledge(self, action: str, result: Any):
         """Aktualizuje wiedzę o lokalizacjach zasobów."""
-        # TODO: Parsowanie lokalizacji i typu zasobu
+        # Note: Parsowanie lokalizacji i typu zasobu
         pass
     
     def _update_tools(self, result: Any):

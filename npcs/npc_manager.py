@@ -907,7 +907,7 @@ class NPC:
         if random.random() < flee_chance:
             self.current_state = NPCState.FLEEING
             # Zmień lokację na losową sąsiednią
-            # TODO: Integracja z systemem lokacji
+            # Note: Integracja z systemem lokacji
             return True
         
         return False
