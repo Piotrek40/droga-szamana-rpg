@@ -18,6 +18,7 @@ from core.event_bus import event_bus
 from ui.commands import CommandParser
 from ui.interface import GameInterface
 from ui.smart_interface import create_smart_interface
+from ui.prologue_interface import create_prologue_interface
 from ui.cutscene_manager import CutsceneManager, TutorialManager, create_prison_intro_cutscene
 from npcs.dialogue_system import DialogueSystem, DialogueResult
 from quests.quest_engine import QuestState
@@ -41,6 +42,10 @@ class DrogaSzamanaRPG:
         self.cutscene_manager = CutsceneManager(self.interface)
         self.tutorial_manager = TutorialManager(self.interface)
         self.game_state.tutorial_manager = self.tutorial_manager  # Przypisz do game_state
+
+        # Prologue Interface - przyjazny interfejs dla nowych graczy
+        self.prologue_interface = None  # Będzie utworzony po init_game
+        self.use_prologue_interface = True  # Domyślnie włączony dla nowych graczy
 
         # Ustawienia
         self.auto_save_interval = 300  # 5 minut
@@ -212,16 +217,25 @@ class DrogaSzamanaRPG:
     
     def game_loop(self):
         """Główna pętla gry."""
-        # Użyj smart interface jeśli włączony
+        # OPCJA 1: Użyj Prologue Interface (przyjazny dla nowych graczy)
+        if self.use_prologue_interface:
+            if not self.prologue_interface:
+                self.prologue_interface = create_prologue_interface(self.game_state)
+
+            # Uruchom pętlę z prologue interface
+            self._run_prologue_game_loop()
+            return
+
+        # OPCJA 2: Użyj Smart Interface (zaawansowany)
         if self.use_smart and not self.smart_interface:
             self.smart_interface = create_smart_interface(self.game_state, self.available_plugins)
-        
+
         if self.use_smart:
             # Uruchom smart interface
             self.smart_interface.run_game_loop()
             return
-        
-        # Stara pętla jako fallback
+
+        # OPCJA 3: Stara pętla jako fallback
         self.interface.print("=== GRA ROZPOCZĘTA ===\n")
         
         if self.smart_interface:
@@ -357,7 +371,139 @@ class DrogaSzamanaRPG:
                         break
                 else:
                     self._consecutive_errors = 1
-    
+
+    def _run_prologue_game_loop(self):
+        """Pętla gry z Prologue Interface - przyjazny interfejs dla nowych graczy."""
+        # Powitanie
+        self.prologue_interface.show_welcome_message()
+
+        # Pierwsza akcja - rozejrzyj się
+        success, message = self.command_parser.parse_and_execute("rozejrzyj")
+        print(f"\n{message}\n")
+
+        # Główna pętla
+        last_update = time.time()
+
+        while self.game_state.game_mode == GameMode.PLAYING:
+            try:
+                # Wyświetl główny ekran
+                self.prologue_interface.display_game_screen()
+
+                # Pokaż postęp tutoriali (opcjonalnie)
+                self.prologue_interface.display_tutorial_progress()
+
+                # Pobierz komendę z obsługą quick keys
+                command = self.prologue_interface.get_input_with_quickkeys()
+
+                if not command:
+                    continue
+
+                # Specjalne komendy prologue interface
+                if command.lower() in ['hints', 'podpowiedzi']:
+                    self.prologue_interface.toggle_hints()
+                    continue
+                elif command.lower() in ['compact', 'kompakt']:
+                    self.prologue_interface.toggle_compact_mode()
+                    continue
+
+                # Obsługa dialogów
+                if hasattr(self.game_state, 'current_dialogue') and self.game_state.current_dialogue:
+                    # W dialogu
+                    if command.lower() in ['anuluj', 'wyjdź', 'exit']:
+                        self.game_state.current_dialogue = None
+                        self.prologue_interface.display_command_result(True, "Zakończyłeś rozmowę.")
+                    elif command.isdigit():
+                        choice = int(command) - 1
+                        dialogue = self.game_state.current_dialogue
+
+                        if 0 <= choice < len(dialogue['options']):
+                            # Przetwórz wybór dialogowy
+                            response, next_text, result, next_options, next_node_id = self.dialogue_system.process_choice(
+                                dialogue['npc_id'],
+                                dialogue['node_id'],
+                                choice,
+                                self.game_state.player
+                            )
+
+                            # Wyświetl odpowiedź
+                            message = f"\nTy: {dialogue['options'][choice].text}\n"
+                            message += f"\n{response}\n"
+
+                            if next_text:
+                                message += f"\n{next_text}\n"
+
+                            from npcs.dialogue_system import DialogueResult
+                            if result == DialogueResult.END or not next_options:
+                                self.game_state.current_dialogue = None
+                                message += "\n[Koniec rozmowy]"
+                            else:
+                                dialogue['options'] = next_options
+                                dialogue['node_id'] = next_node_id if next_node_id else 'greeting'
+
+                                message += "\n═══ OPCJE DIALOGOWE ═══\n"
+                                for i, opt in enumerate(next_options, 1):
+                                    message += f"{i}. {opt.text}\n"
+                                message += f"\nWybierz opcję (1-{len(next_options)}) lub 'anuluj'."
+
+                            print(message)
+                        else:
+                            self.prologue_interface.display_command_result(False, "Nieprawidłowy numer opcji.")
+                    else:
+                        self.prologue_interface.display_command_result(
+                            False,
+                            "W trakcie rozmowy możesz tylko wybrać numer opcji lub 'anuluj'."
+                        )
+                else:
+                    # Normalna komenda
+                    success, message = self.command_parser.parse_and_execute(command)
+
+                    # Sprawdź czy to QUIT
+                    if message == "QUIT":
+                        if self.confirm_quit():
+                            break
+                        else:
+                            continue
+
+                    # Wyświetl rezultat
+                    self.prologue_interface.display_command_result(success, message)
+
+                    # Aktualizuj stan gry
+                    if success:
+                        self.game_state.update(1)  # Minuta czasu gry
+
+                # Auto-save
+                current_time = time.time()
+                if current_time - self.last_save_time > self.auto_save_interval:
+                    self.auto_save()
+                    self.last_save_time = current_time
+
+                # Sprawdź śmierć gracza
+                if self.game_state.game_mode == GameMode.DEAD:
+                    self.handle_death()
+                    break
+
+                # Sprawdź emergentne wydarzenia
+                self.check_emergent_events()
+
+            except KeyboardInterrupt:
+                if self.confirm_quit():
+                    break
+            except EOFError:
+                self.interface.print("\n[Koniec danych wejściowych - wychodzę z gry]")
+                break
+            except Exception as e:
+                self.interface.print(f"\n❌ Błąd: {e}")
+                traceback.print_exc()
+                if hasattr(self, '_consecutive_errors'):
+                    self._consecutive_errors += 1
+                    if self._consecutive_errors > 3:
+                        self.interface.print("\nZbyt wiele błędów. Wychodzę z gry.")
+                        break
+                else:
+                    self._consecutive_errors = 1
+
+        print("\n👋 Dziękujemy za grę!")
+
     def confirm_quit(self) -> bool:
         """Potwierdź wyjście z gry.
         
