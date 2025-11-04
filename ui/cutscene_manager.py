@@ -76,16 +76,12 @@ class CutsceneManager:
 
     def _typewriter_effect(self, text: str, speed: float = 0.03):
         """Efekt maszynowy - litera po literze"""
+        # Używamy wbudowanego print() dla efektu typewriter
+        # ponieważ potrzebujemy flush=True dla animacji
         for char in text:
-            if self.interface:
-                self.interface.print(char, end='', flush=True)
-            else:
-                print(char, end='', flush=True)
+            print(char, end='', flush=True)
             time.sleep(speed)
-        if self.interface:
-            self.interface.print()  # Nowa linia na końcu
-        else:
-            print()
+        print()  # Nowa linia na końcu
 
     def _fade_effect(self, text: str):
         """Efekt zanikania - stopniowe pojawianie się"""
