@@ -393,7 +393,13 @@ class DrogaSzamanaRPG:
                 self.prologue_interface.display_tutorial_progress()
 
                 # Pobierz komendę z obsługą quick keys
-                command = self.prologue_interface.get_input_with_quickkeys()
+                command, show_menu = self.prologue_interface.get_input_with_quickkeys()
+
+                # Jeśli gracz chce zobaczyć menu akcji
+                if show_menu:
+                    print()  # Odstęp
+                    self.prologue_interface.show_contextual_menu()
+                    continue
 
                 if not command:
                     continue

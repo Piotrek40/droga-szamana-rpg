@@ -406,10 +406,10 @@ class CommandParser:
     
     def parse_and_execute(self, input_text: str) -> Tuple[bool, str]:
         """Parsuj i wykonaj komendę.
-        
+
         Args:
             input_text: Tekst wprowadzony przez gracza
-            
+
         Returns:
             (sukces, wiadomość)
         """
@@ -417,35 +417,236 @@ class CommandParser:
         self.command_history.append(input_text)
         if len(self.command_history) > self.history_limit:
             self.command_history.pop(0)
-        
+
         # Parsuj input
         parts = input_text.strip().lower().split()
-        
+
         if not parts:
-            return False, "Wpisz komendę. Użyj 'pomoc' aby zobaczyć listę komend."
-        
+            return False, "Wpisz komendę. Użyj 'pomoc' lub '?' aby zobaczyć co możesz zrobić."
+
         command_name = parts[0]
         args = parts[1:]
-        
+
         # Znajdź komendę
         if command_name not in self.commands:
-            return False, f"Nieznana komenda: '{command_name}'. Użyj 'pomoc' dla listy komend."
-        
+            # NOWE: Inteligentne sugestie zamiast prostego błędu
+            return False, self._suggest_commands(command_name, args)
+
         command = self.commands[command_name]
-        
+
         # Sprawdź liczbę argumentów
         if len(args) < command.min_args:
-            return False, f"Za mało argumentów. Użycie: {command.usage}"
-        
+            # NOWE: Lepszy komunikat z przykładem
+            error_msg = f"❌ Za mało argumentów dla '{command.name}'"
+            if command.usage:
+                error_msg += f"\n💡 Użycie: {command.usage}"
+            # Dodaj kontekstową pomoc
+            error_msg += self._add_contextual_help(command.name)
+            return False, error_msg
+
         if len(args) > command.max_args:
-            return False, f"Za dużo argumentów. Użycie: {command.usage}"
-        
+            error_msg = f"❌ Za dużo argumentów dla '{command.name}'"
+            if command.usage:
+                error_msg += f"\n💡 Użycie: {command.usage}"
+            return False, error_msg
+
         # Wykonaj komendę
         try:
             return command.handler(args)
         except Exception as e:
-            return False, f"Błąd wykonywania komendy: {str(e)}"
-    
+            return False, f"❌ Błąd wykonywania komendy: {str(e)}\n💡 Spróbuj 'pomoc {command.name}' aby zobaczyć jak używać tej komendy."
+
+    def _suggest_commands(self, unknown_command: str, args: List[str]) -> str:
+        """
+        Generuj inteligentne sugestie dla nieznanej komendy.
+
+        Args:
+            unknown_command: Nieznana komenda
+            args: Argumenty komendy
+
+        Returns:
+            Komunikat z sugestiami
+        """
+        error_msg = f"❌ Nie rozumiem: '{unknown_command}'"
+
+        # 1. Znajdź podobne komendy (Levenshtein distance)
+        similar_commands = self._find_similar_commands(unknown_command)
+
+        if similar_commands:
+            error_msg += "\n\n💡 Czy chodziło Ci o:"
+            for i, cmd_name in enumerate(similar_commands[:3], 1):
+                cmd = self.commands[cmd_name]
+                error_msg += f"\n   {i}. {cmd.name} - {cmd.description}"
+
+        # 2. Kontekstowe sugestie na podstawie argumentów
+        contextual = self._get_contextual_suggestions(unknown_command, args)
+        if contextual:
+            error_msg += f"\n\n{contextual}"
+
+        # 3. Hint o menu akcji
+        error_msg += "\n\n💡 Wpisz '?' aby zobaczyć dostępne akcje lub 'pomoc' dla listy wszystkich komend"
+
+        return error_msg
+
+    def _find_similar_commands(self, command: str, max_distance: int = 3) -> List[str]:
+        """
+        Znajdź podobne komendy używając prostej odległości edycyjnej.
+
+        Args:
+            command: Komenda do porównania
+            max_distance: Maksymalna odległość edycyjna
+
+        Returns:
+            Lista podobnych komend
+        """
+        def levenshtein_distance(s1: str, s2: str) -> int:
+            """Oblicz odległość Levenshteina."""
+            if len(s1) < len(s2):
+                return levenshtein_distance(s2, s1)
+            if len(s2) == 0:
+                return len(s1)
+
+            previous_row = range(len(s2) + 1)
+            for i, c1 in enumerate(s1):
+                current_row = [i + 1]
+                for j, c2 in enumerate(s2):
+                    insertions = previous_row[j + 1] + 1
+                    deletions = current_row[j] + 1
+                    substitutions = previous_row[j] + (c1 != c2)
+                    current_row.append(min(insertions, deletions, substitutions))
+                previous_row = current_row
+
+            return previous_row[-1]
+
+        similar = []
+        # Sprawdź główne nazwy komend (bez duplikatów)
+        seen_commands = set()
+
+        for cmd_name, cmd in self.commands.items():
+            if cmd.name in seen_commands:
+                continue
+            seen_commands.add(cmd.name)
+
+            distance = levenshtein_distance(command, cmd_name)
+            if distance <= max_distance:
+                similar.append((distance, cmd.name))
+
+        # Sortuj po odległości
+        similar.sort()
+        return [cmd_name for _, cmd_name in similar]
+
+    def _get_contextual_suggestions(self, command: str, args: List[str]) -> str:
+        """
+        Generuj kontekstowe sugestie na podstawie lokacji i dostępnych obiektów.
+
+        Args:
+            command: Nieznana komenda
+            args: Argumenty
+
+        Returns:
+            Sugestie kontekstowe
+        """
+        suggestions = []
+
+        # Sprawdź co jest dostępne w lokacji
+        if self.game_state.npc_manager:
+            current_loc = self.game_state.current_location
+
+            # NPCe w lokacji
+            npcs_here = []
+            for npc_id, npc in self.game_state.npc_manager.npcs.items():
+                if hasattr(npc, 'current_location') and npc.current_location == current_loc:
+                    if hasattr(npc, 'combat_stats') and npc.combat_stats.health > 0:
+                        if npc.role != "creature":
+                            npcs_here.append(npc.name)
+
+            if npcs_here:
+                suggestions.append(f"👥 Ludzie w pobliżu: {', '.join(npcs_here)}")
+                suggestions.append(f"   Spróbuj: 'rozmawiaj {npcs_here[0].lower()}'")
+
+        # Sprawdź przedmioty w lokacji
+        if self.game_state.prison:
+            location = self.game_state.prison.get_current_location()
+            if location and hasattr(location, 'items') and location.items:
+                items_here = []
+                for item in location.items[:3]:  # Max 3
+                    if hasattr(item, 'name'):
+                        items_here.append(item.name)
+                    elif isinstance(item, dict):
+                        items_here.append(item.get('name', ''))
+                    elif isinstance(item, str):
+                        items_here.append(item)
+
+                if items_here:
+                    suggestions.append(f"📦 Przedmioty: {', '.join(items_here)}")
+                    suggestions.append(f"   Spróbuj: 'weź {items_here[0].lower()}'")
+
+        if suggestions:
+            return "\n".join(suggestions)
+        return ""
+
+    def _add_contextual_help(self, command_name: str) -> str:
+        """
+        Dodaj kontekstową pomoc dla komendy.
+
+        Args:
+            command_name: Nazwa komendy
+
+        Returns:
+            Dodatkowa pomoc kontekstowa
+        """
+        help_text = ""
+
+        # Pomoc dla konkretnych komend
+        if command_name in ['rozmawiaj', 'mów', 'mow', 'gadaj']:
+            # Pokaż dostępnych NPCów
+            if self.game_state.npc_manager:
+                current_loc = self.game_state.current_location
+                npcs_here = []
+                for npc_id, npc in self.game_state.npc_manager.npcs.items():
+                    if hasattr(npc, 'current_location') and npc.current_location == current_loc:
+                        if hasattr(npc, 'combat_stats') and npc.combat_stats.health > 0:
+                            if npc.role != "creature":
+                                npcs_here.append(npc.name)
+
+                if npcs_here:
+                    help_text += f"\n\n👥 Dostępni do rozmowy: {', '.join(npcs_here)}"
+                    help_text += f"\n   Przykład: 'rozmawiaj {npcs_here[0].lower()}'"
+                else:
+                    help_text += "\n\n💬 Nie ma tu nikogo do rozmowy."
+
+        elif command_name in ['weź', 'wez', 'podnieś', 'podnies']:
+            # Pokaż dostępne przedmioty
+            if self.game_state.prison:
+                location = self.game_state.prison.get_current_location()
+                if location and hasattr(location, 'items') and location.items:
+                    items_here = []
+                    for item in location.items[:3]:
+                        if hasattr(item, 'name'):
+                            items_here.append(item.name)
+                        elif isinstance(item, dict):
+                            items_here.append(item.get('name', ''))
+                        elif isinstance(item, str):
+                            items_here.append(item)
+
+                    if items_here:
+                        help_text += f"\n\n📦 Dostępne przedmioty: {', '.join(items_here)}"
+                        help_text += f"\n   Przykład: 'weź {items_here[0].lower()}'"
+                    else:
+                        help_text += "\n\n📦 Nie ma tu nic do wzięcia."
+
+        elif command_name in ['idź', 'idz', 'pójdź', 'pojdz']:
+            # Pokaż dostępne kierunki
+            if self.game_state.prison:
+                location = self.game_state.prison.get_current_location()
+                if location and hasattr(location, 'connections'):
+                    directions = list(location.connections.keys())
+                    if directions:
+                        help_text += f"\n\n🚪 Dostępne kierunki: {', '.join(directions)}"
+                        help_text += f"\n   Przykład: 'idź {directions[0]}'"
+
+        return help_text
+
     # === HANDLERY KOMEND ===
     
     def _cmd_move(self, args: List[str]) -> Tuple[bool, str]:
