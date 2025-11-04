@@ -1,0 +1,180 @@
+{
+  "stations": {
+    "kowadlo": {
+      "name": "Kowadło",
+      "type": "smithing",
+      "description": "Solidne kowadło do pracy kowalskiej",
+      "required_skill": "kowalstwo",
+      "skill_bonus": 10,
+      "quality_bonus": 5,
+      "locations": ["zbrojownia", "kuźnia"],
+      "tools_required": ["młotek"],
+      "available_recipes": [
+        "kilof", "nóż", "miecz", "topór", "kolczuga", "hełm", "tarcza"
+      ]
+    },
+    "stol_stolarski": {
+      "name": "Stół stolarski",
+      "type": "woodworking",
+      "description": "Warsztat do obróbki drewna",
+      "required_skill": "stolarstwo",
+      "skill_bonus": 8,
+      "quality_bonus": 3,
+      "locations": ["warsztat", "cela_2"],
+      "tools_required": ["dłuto", "piła"],
+      "available_recipes": [
+        "łuk", "strzały", "maczuga", "tarcza_drewniana", "skrzynia"
+      ]
+    },
+    "kuchnia_piec": {
+      "name": "Piec kuchenny",
+      "type": "cooking",
+      "description": "Piec do gotowania i pieczenia",
+      "required_skill": "gotowanie",
+      "skill_bonus": 5,
+      "quality_bonus": 2,
+      "locations": ["kuchnia"],
+      "tools_required": [],
+      "available_recipes": [
+        "chleb", "zupa", "pieczone_mięso", "gulasz"
+      ]
+    },
+    "stol_alchemiczny": {
+      "name": "Stół alchemiczny",
+      "type": "alchemy",
+      "description": "Miejsce do warzenia mikstur",
+      "required_skill": "alchemia",
+      "skill_bonus": 12,
+      "quality_bonus": 8,
+      "locations": ["laboratorium", "cela_4"],
+      "tools_required": ["moździerz", "retorta"],
+      "available_recipes": [
+        "mikstura_lecznicza", "trucizna", "eliksir_siły"
+      ]
+    },
+    "warsztat_krawiecki": {
+      "name": "Warsztat krawiecki",
+      "type": "tailoring",
+      "description": "Miejsce do szycia i naprawy ubrań",
+      "required_skill": "krawiectwo",
+      "skill_bonus": 6,
+      "quality_bonus": 4,
+      "locations": ["warsztat", "cela_5"],
+      "tools_required": ["igła", "nożyczki"],
+      "available_recipes": [
+        "płaszcz", "kaptur", "rękawice", "torba"
+      ]
+    }
+  },
+  "portable_stations": {
+    "ognisko": {
+      "name": "Ognisko",
+      "type": "cooking",
+      "description": "Prowizoryczne ognisko do gotowania",
+      "required_skill": "gotowanie",
+      "skill_bonus": 0,
+      "quality_bonus": -5,
+      "materials_needed": ["drewno", "krzesiwo"],
+      "available_recipes": [
+        "pieczone_mięso", "gotowana_woda"
+      ]
+    },
+    "przenośne_kowadełko": {
+      "name": "Przenośne kowadełko",
+      "type": "smithing",
+      "description": "Małe kowadełko do drobnych napraw",
+      "required_skill": "kowalstwo",
+      "skill_bonus": -5,
+      "quality_bonus": -10,
+      "weight": 5.0,
+      "available_recipes": [
+        "naprawa_broni", "naprawa_zbroi"
+      ]
+    }
+  },
+  "station_upgrades": {
+    "kowadlo_mistrzowskie": {
+      "base_station": "kowadlo",
+      "name": "Mistrzowskie kowadło",
+      "requirements": {
+        "skill_level": 50,
+        "materials": ["stal_wysokiej_jakości", "młot_mistrzowski"],
+        "gold": 500
+      },
+      "bonuses": {
+        "skill_bonus": 20,
+        "quality_bonus": 15,
+        "speed_bonus": 25
+      }
+    },
+    "piec_magiczny": {
+      "base_station": "kuchnia_piec",
+      "name": "Magiczny piec",
+      "requirements": {
+        "skill_level": 30,
+        "materials": ["kamień_ognisty", "runy_ciepła"],
+        "gold": 300
+      },
+      "bonuses": {
+        "skill_bonus": 15,
+        "quality_bonus": 10,
+        "no_fuel_needed": true
+      }
+    }
+  },
+  "crafting_bonuses": {
+    "time_of_day": {
+      "morning": {
+        "hours": [6, 10],
+        "bonus": 5,
+        "description": "Poranna świeżość umysłu"
+      },
+      "evening": {
+        "hours": [18, 20],
+        "bonus": -5,
+        "description": "Zmęczenie po dniu pracy"
+      },
+      "night": {
+        "hours": [22, 4],
+        "bonus": -15,
+        "description": "Trudności w ciemności"
+      }
+    },
+    "weather": {
+      "sunny": {
+        "bonus": 5,
+        "affects": ["smithing", "woodworking"]
+      },
+      "rainy": {
+        "bonus": -10,
+        "affects": ["smithing", "cooking"]
+      },
+      "storm": {
+        "bonus": -20,
+        "affects": ["all"]
+      }
+    },
+    "station_quality": {
+      "pristine": {
+        "condition": [90, 100],
+        "bonus": 10
+      },
+      "good": {
+        "condition": [70, 89],
+        "bonus": 5
+      },
+      "worn": {
+        "condition": [40, 69],
+        "bonus": 0
+      },
+      "damaged": {
+        "condition": [20, 39],
+        "bonus": -10
+      },
+      "broken": {
+        "condition": [0, 19],
+        "bonus": -50
+      }
+    }
+  }
+}
