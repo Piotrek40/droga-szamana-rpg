@@ -471,6 +471,12 @@ class DrogaSzamanaRPG:
                         )
                 else:
                     # Normalna komenda
+
+                    # Zapisz stan PRZED akcją (dla sprawdzenia zmian)
+                    old_hp = self.game_state.player.health if self.game_state.player else 0
+                    old_stamina = self.game_state.player.stamina if self.game_state.player else 0
+                    old_pain = self.game_state.player.pain if (self.game_state.player and hasattr(self.game_state.player, 'pain')) else 0
+
                     success, message = self.command_parser.parse_and_execute(command)
 
                     # Sprawdź czy to QUIT
@@ -484,12 +490,21 @@ class DrogaSzamanaRPG:
                     if command.lower() in ['rozejrzyj', 'rozejrzyj się', 'look', 'l']:
                         self.prologue_interface.request_full_refresh()
 
-                    # Wyświetl rezultat
-                    self.prologue_interface.display_command_result(success, message)
-
                     # Aktualizuj stan gry
                     if success:
                         self.game_state.update(1)  # Minuta czasu gry
+
+                    # Sprawdź czy stan gracza się zmienił (HP, stamina, pain)
+                    status_changed = False
+                    if self.game_state.player:
+                        new_hp = self.game_state.player.health
+                        new_stamina = self.game_state.player.stamina
+                        new_pain = self.game_state.player.pain if hasattr(self.game_state.player, 'pain') else 0
+
+                        status_changed = (new_hp != old_hp) or (new_stamina != old_stamina) or (new_pain != old_pain)
+
+                    # Wyświetl rezultat (z zaktualizowanym statusem jeśli się zmienił)
+                    self.prologue_interface.display_command_result(success, message, show_status_change=status_changed)
 
                 # Auto-save
                 current_time = time.time()
