@@ -4,9 +4,10 @@ Wrapper wokół istniejących systemów UI dodający beginner-friendly features
 """
 
 import time
-from typing import Optional, Dict, List, Any
+from typing import Optional, Dict, List, Any, Tuple
 from ui.interface import GameInterface
 from core.game_state import GameState
+from ui.contextual_menu import ContextualActionMenu
 
 
 class PrologueInterface:
@@ -30,6 +31,9 @@ class PrologueInterface:
         self.game_state = game_state
         self.show_hints = True  # Pokazuj hinty dla nowych graczy
         self.compact_mode = False  # Tryb kompaktowy (mniej ozdobników)
+
+        # Contextual Action Menu - inteligentne menu akcji
+        self.contextual_menu = ContextualActionMenu(game_state)
 
     def display_game_screen(self):
         """Wyświetl główny ekran gry z wszystkimi panelami."""
@@ -152,62 +156,132 @@ class PrologueInterface:
 
     def _display_quick_actions(self):
         """Wyświetl panel szybkich akcji dla nowych graczy."""
-        self.interface.print("╔═══════════════ SZYBKIE AKCJE ════════════════╗", 'yellow')
+        self.interface.print("╔══════════════ SZYBKIE KLAWISZE ══════════════╗", 'yellow')
         self.interface.print("║                                               ║", 'yellow')
 
-        # Podstawowe akcje
-        actions = [
-            ("L", "Rozejrzyj", "Przyjrzyj się dokładnie gdzie jesteś"),
-            ("I", "Ekwipunek", "Zobacz co masz przy sobie"),
-            ("Q", "Questy", "Sprawdź aktywne zadania"),
-            ("H", "Pomoc", "Lista wszystkich komend"),
+        # Podstawowe akcje (2 kolumny dla kompaktu)
+        actions_row1 = [
+            ("[?]", "Menu Akcji"),
+            ("[L]", "Rozejrzyj"),
+            ("[I]", "Ekwipunek"),
         ]
 
-        for key, name, desc in actions:
-            self.interface.print(
-                f"║ [{key}] {name:<12} - {desc:<28} ║",
-                'white'
-            )
+        actions_row2 = [
+            ("[Q]", "Questy"),
+            ("[X]", "Status"),
+            ("[H]", "Pomoc"),
+        ]
+
+        actions_row3 = [
+            ("[N]", "Północ"),
+            ("[S]", "Południe"),
+            ("[E]", "Wschód"),
+            ("[W]", "Zachód"),
+        ]
+
+        # Wyświetl pierwszy rząd
+        row1_text = "║  " + "  ".join([f"{k} {n:<10}" for k, n in actions_row1])
+        row1_text += " " * (49 - len(row1_text)) + "║"
+        self.interface.print(row1_text, 'white')
+
+        # Wyświetl drugi rząd
+        row2_text = "║  " + "  ".join([f"{k} {n:<10}" for k, n in actions_row2])
+        row2_text += " " * (49 - len(row2_text)) + "║"
+        self.interface.print(row2_text, 'white')
+
+        self.interface.print("║                                               ║", 'yellow')
+
+        # Wyświetl nawigację
+        row3_text = "║  " + "  ".join([f"{k} {n:<7}" for k, n in actions_row3])
+        row3_text += " " * (49 - len(row3_text)) + "║"
+        self.interface.print(row3_text, 'cyan')
 
         self.interface.print("║                                               ║", 'yellow')
         self.interface.print("╚═══════════════════════════════════════════════╝", 'yellow')
 
-        # Hint o pisaniu komend
+        # Hint o pisaniu komend i numerach
         if self.show_hints:
             self.interface.print(
-                "\n💡 Wskazówka: Wpisz komendę lub naciśnij klawisz szybkiej akcji",
+                "\n💡 Wpisz [?] aby zobaczyć numbered menu akcji lub komendę tekstową",
                 'bright_yellow'
             )
 
-    def get_input_with_quickkeys(self, prompt: str = "\n> ") -> str:
+    def get_input_with_quickkeys(self, prompt: str = "\n> ") -> Tuple[str, bool]:
         """
-        Pobierz input od gracza z obsługą quick keys.
+        Pobierz input od gracza z obsługą quick keys i numbered actions.
 
         Args:
             prompt: Tekst zachęty
 
         Returns:
-            Wprowadzona komenda (lub przetłumaczona z quick key)
+            Tuple (komenda, czy_pokazac_menu) - komenda do wykonania i flaga czy pokazać menu
         """
-        user_input = self.interface.get_input(prompt).strip().lower()
+        user_input = self.interface.get_input(prompt).strip()
 
-        # Quick keys mapping
+        # Sprawdź czy to numer (numbered action)
+        if user_input.isdigit():
+            number = int(user_input)
+            command = self.contextual_menu.get_command_by_number(number)
+            if command:
+                self.interface.print(f"→ {command}", 'dim')
+                return command, False
+            else:
+                self.interface.print(f"❌ Nieprawidłowy numer: {number}", 'red')
+                return "", False
+
+        user_input_lower = user_input.lower()
+
+        # Extended Quick keys mapping
         quick_keys = {
+            # Podstawowe (już były)
             'l': 'rozejrzyj',
             'i': 'ekwipunek',
             'q': 'questy',
             'h': 'pomoc',
-            's': 'status',
+
+            # NOWE - Nawigacja
+            'n': 'idź północ',
+            'e': 'idź wschód',
+            'w': 'idź zachód',
+
+            # NOWE - Akcje
+            't': None,  # Talk - pokaż menu z NPCami
+            'g': None,  # Get/Grab - pokaż menu z przedmiotami
+            'x': 'status',  # eXamine self
+
+            # NOWE - Systemy
             'm': 'mapa',
+            '?': None,  # Pokaż contextual menu
+
+            # Dodatkowe aliasy
+            's': 'idź południe',  # South (konflikt ze status, ale południe ważniejsze)
         }
 
-        # Jeśli to single-letter quick key, przetłumacz
-        if len(user_input) == 1 and user_input in quick_keys:
-            translated = quick_keys[user_input]
-            self.interface.print(f"→ {translated}", 'dim')
-            return translated
+        # Jeśli to single-letter quick key
+        if len(user_input_lower) == 1 and user_input_lower in quick_keys:
+            translated = quick_keys[user_input_lower]
 
-        return user_input
+            # Specjalne case: '?' pokazuje contextual menu
+            if user_input_lower == '?':
+                return "", True  # Sygnał aby pokazać menu
+
+            # Specjalne case: 't' i 'g' wymagają kontekstu
+            if user_input_lower == 't':
+                # TODO: Pokaż tylko NPCów do wyboru
+                self.interface.print("💬 Z kim chcesz rozmawiać? (wpisz imię lub numer z menu)", 'cyan')
+                return "", True
+
+            if user_input_lower == 'g':
+                # TODO: Pokaż tylko przedmioty do wyboru
+                self.interface.print("📦 Co chcesz wziąć? (wpisz nazwę lub numer z menu)", 'cyan')
+                return "", True
+
+            if translated:
+                self.interface.print(f"→ {translated}", 'dim')
+                return translated, False
+
+        # Jeśli to normalna komenda, zwróć jak jest
+        return user_input, False
 
     def show_welcome_message(self):
         """Pokaż wiadomość powitalną dla nowych graczy."""
@@ -286,6 +360,10 @@ Powodzenia, Szamanie! 🔥
             self.interface.print("✅ Tryb kompaktowy włączony", 'green')
         else:
             self.interface.print("✅ Tryb normalny włączony", 'green')
+
+    def show_contextual_menu(self):
+        """Wyświetl menu kontekstowe z dostępnymi akcjami."""
+        self.contextual_menu.display_menu(self.interface)
 
     # === Helper Methods ===
 
