@@ -1,0 +1,221 @@
+{
+  "locations": {
+    "cela_1": {
+      "name": "Cela 1",
+      "full_name": "Cela numer 1 - Cela Szeptów",
+      "type": "cell",
+      "descriptions": {
+        "day": "Cela numer 1 - Cela Szeptów\nCiasna, wilgotna cela o ścianach pokrytych zielonkawym mchem. Słabe światło sączy się przez wąskie okienko pod sufitem, ledwie rozpraszając gęstą ciemność. W rogu stoi przegniłe posłanie z przykrytą pleśnią słomą. Na ścianie naprzeciwko drzwi widać dziesiątki wydrapanych kresek - ktoś liczył tutaj dni swojej niewoli. Pomiędzy kreskami dostrzegasz ledwo widoczne słowa wydrapane desperacko paznokciami.",
+        "night": "Cela numer 1 - Cela Szeptów\nCałkowita ciemność wypełnia celę, tylko blade światło księżyca wślizguje się przez okienko, tworząc na podłodze bladą plamę. Wilgoć ścieka po ścianach, a w ciszy słychać odległe krople wody. Wydrapane na ścianie znaki są teraz niewidoczne, ukryte w cieniu. Z korytarza dochodzi echo kroków strażnika i brzęk kluczy."
+      },
+      "interactive_objects": ["ściana", "kreski", "posłanie", "okienko", "drzwi"],
+      "connections": {
+        "wschód": "korytarz_północny"
+      },
+      "secrets": [
+        {
+          "id": "cell1_message",
+          "trigger": "zbadaj ściana",
+          "discovery_hint": "'Przyjrzyj się uważnie kreseczkom na ścianie...'",
+          "description": "Wśród chaotycznych kresek dostrzegasz wiadomość: 'TUNEL W ZBROJOWNI - KRATA W PODŁODZE'",
+          "rewards": []
+        }
+      ],
+      "starting_items": ["kawałek metalu", "strzęp materiału", "miska"],
+      "spawn_npcs": ["gadatliwy_piotr"]
+    },
+    "cela_2": {
+      "name": "Cela 2",
+      "full_name": "Cela numer 2 - Cela Milczenia",
+      "type": "cell",
+      "descriptions": {
+        "day": "Cela numer 2 - Cela Milczenia\nMniejsza cela, ale w lepszym stanie niż inne. Ściany są stosunkowo suche, a w kącie stoi prosta drewniana prycza. Na podłodze leżą rozrzucone kawałki metalu i drutu - ślady majsterkowania. Pod oknem znajduje się mały stolik zrobiony z desek.",
+        "night": "Cela numer 2 - Cela Milczenia\nW ciemności słychać ciche dźwięki - jakby ktoś coś piłował lub szlifował. Blade światło księżyca pada na improwizowany warsztat w rogu celi. Metalowe odłamki błyszczą w półmroku jak małe gwiazdy."
+      },
+      "interactive_objects": ["warsztat", "metalowe odłamki", "prycza"],
+      "connections": {
+        "zachód": "korytarz_północny"
+      },
+      "starting_items": ["drut", "kawałek metalu"],
+      "spawn_npcs": ["cichy_tomek"]
+    },
+    "cela_3": {
+      "name": "Cela 3",
+      "full_name": "Cela numer 3 - Cela Bólu",
+      "type": "cell",
+      "descriptions": {
+        "day": "Cela numer 3 - Cela Bólu\nNajwiększa z cel, ale też najbardziej zniszczona. Ściany noszą ślady walk - dziury po pięściach, zarysowania, plamy krwi. W rogu leży sterta brudnej słomy. Pomieszczenie śmierdzi potem, strachem i przemocą.",
+        "night": "Cela numer 3 - Cela Bólu\nZ celi dochodzi głośne chrapanie przerywane czasem pomrukami. Nawet w ciemności czuć atmosferę zagrożenia. Lepiej nie wchodzić tu bez dobrego powodu."
+      },
+      "interactive_objects": ["ślady walk", "dziury w ścianie"],
+      "connections": {
+        "północ": "korytarz_centralny"
+      },
+      "spawn_npcs": ["gruby_waldek"]
+    },
+    "cela_4": {
+      "name": "Cela 4",
+      "full_name": "Cela numer 4 - Cela Mądrości",
+      "type": "cell",
+      "descriptions": {
+        "day": "Cela numer 4 - Cela Mądrości\nNajbardziej uporządkowana cela. Na ścianie wiszą kawałki węgla służące do pisania. Podłoga jest względnie czysta, a w rogu stoi schludna prycza przykryta płaszczem. Na ścianie widać różne obliczenia, mapy i diagramy.",
+        "night": "Cela numer 4 - Cela Mądrości\nW słabym świetle księżyca rysunki na ścianach wyglądają jak tajemnicze zaklęcia. Słychać ciche mruczenie - ktoś czyta pod nosem lub modli się."
+      },
+      "interactive_objects": ["rysunki na ścianie", "obliczenia", "mapy"],
+      "connections": {
+        "północ": "korytarz_centralny"
+      },
+      "secrets": [
+        {
+          "id": "cell4_map",
+          "trigger": "zbadaj mapy",
+          "discovery_hint": "'Te mapy... to nie tylko więzienie...'",
+          "description": "Wśród map odkrywasz plan kanałów pod więzieniem. Jedna droga prowadzi ze zbrojowni na zewnątrz!",
+          "rewards": []
+        }
+      ],
+      "spawn_npcs": ["stary_jozef"]
+    },
+    "cela_5": {
+      "name": "Cela 5",
+      "full_name": "Cela numer 5 - Cela Zapomnienia",
+      "type": "cell",
+      "descriptions": {
+        "day": "Cela numer 5 - Cela Zapomnienia\nOpuszczona cela, która najwyraźniej nie była używana od lat. Gruba warstwa kurzu pokrywa wszystko. W rogu leży zniszczona prycza, a na ścianie widać wyblakłe napisy w nieznanym języku.",
+        "night": "Cela numer 5 - Cela Zapomnienia\nCałkowita ciemność i cisza. Miejsce wydaje się odcięte od reszty świata. Czasem słychać dziwne szmery, jakby ktoś szeptał w obcym języku."
+      },
+      "interactive_objects": ["wyblakłe napisy", "zniszczona prycza", "kurz"],
+      "connections": {
+        "wschód": "korytarz_centralny"
+      },
+      "secrets": [
+        {
+          "id": "cell5_ritual",
+          "trigger": "zbadaj napisy",
+          "discovery_hint": "'Te znaki... to nie jest zwykłe pismo...'",
+          "description": "Rozpoznajesz starożytne runy. Opisują rytuał przyzwania... czegoś. Lepiej o tym nie myśleć.",
+          "rewards": []
+        }
+      ]
+    },
+    "korytarz_północny": {
+      "name": "Północny Korytarz",
+      "full_name": "Północny Korytarz",
+      "type": "corridor",
+      "descriptions": {
+        "day": "Północny Korytarz\nWąski korytarz prowadzący do cel 1 i 2. Ściany są pokryte mchem, a sufit jest niski, trzeba się schylać. Z cel dochodzą stłumione głosy i kaszel. Na końcu korytarza widać ciężkie dębowe drzwi prowadzące do kuchni.",
+        "night": "Północny Korytarz\nKorytarz pogrążony w ciemności. Tylko słabe światło sączy się spod drzwi cel. Echo kroków niesie się niepokojąco daleko. Czasem słychać szczury przemykające w cieniach."
+      },
+      "connections": {
+        "zachód": "cela_1",
+        "wschód": "cela_2",
+        "północ": "kuchnia",
+        "południe": "korytarz_centralny"
+      }
+    },
+    "korytarz_centralny": {
+      "name": "Centralny Korytarz",
+      "full_name": "Centralny Korytarz - Skrzyżowanie",
+      "type": "corridor",
+      "descriptions": {
+        "day": "Centralny Korytarz - Skrzyżowanie\nGłówny korytarz więzienia, gdzie krzyżują się wszystkie drogi. Wyższy i szerszy niż pozostałe, z kamienną posadzką. Na ścianach wiszą pochodnie, a w rogu stoi stołek dla strażnika. Stąd można dostać się do wszystkich części więzienia.",
+        "night": "Centralny Korytarz - Skrzyżowanie\nPochodnie gasną jedna po drugiej, pozostawiając długie cienie. Miejsce wydaje się większe w ciemności. Słychać odgłosy z różnych części więzienia - kroki, kaszel, czasem krzyk."
+      },
+      "connections": {
+        "północ": "korytarz_północny",
+        "południe": "cela_3",
+        "wschód": "dziedziniec",
+        "zachód": "cela_5",
+        "północny_zachód": "cela_4"
+      }
+    },
+    "kuchnia": {
+      "name": "Kuchnia",
+      "full_name": "Więzienna Kuchnia",
+      "type": "room",
+      "descriptions": {
+        "day": "Więzienna Kuchnia\nDuże pomieszczenie z piecem, stołami i półkami. Pachnie zepsutym jedzeniem i dymem. Na stołach leżą resztki warzyw i czerstwy chleb. W kącie stoi beczka z wodą, a obok niej worek ziemniaków.",
+        "night": "Więzienna Kuchnia\nKuchnia jest pusta i cicha. Żar w piecu dogasa, rzucając czerwoną poświatę. Na stołach zostały resztki po kolacji. Idealne miejsce na nocną 'wizytę'."
+      },
+      "interactive_objects": ["piec", "półki", "beczka z wodą", "worek ziemniaków"],
+      "connections": {
+        "południe": "korytarz_północny"
+      },
+      "items": ["chleb", "ser", "nóż kuchenny"],
+      "secrets": [
+        {
+          "id": "kitchen_supplies",
+          "trigger": "szukaj",
+          "discovery_hint": "'W kuchni zawsze można coś znaleźć...'",
+          "description": "Pod workiem ziemniaków znajdujesz małą butelkę z gorzałką. Ktoś ją tu schował.",
+          "rewards": ["gorzałka"]
+        }
+      ]
+    },
+    "dziedziniec": {
+      "name": "Dziedziniec",
+      "full_name": "Więzienny Dziedziniec",
+      "type": "courtyard",
+      "descriptions": {
+        "day": "Więzienny Dziedziniec\nOtwarta przestrzeń otoczona wysokimi murami. W centrum stoi stara studnia, a w rogu szubienica. Kilku więźniów spaceruje pod czujnym okiem strażników. Świeże powietrze jest luksusem po zatęchłych celach.",
+        "night": "Więzienny Dziedziniec\nPusty dziedziniec skąpany w świetle księżyca. Szubienica rzuca długi cień. Tylko strażnicy na murach czuwają. Czasem słychać wycie wilków zza murów."
+      },
+      "interactive_objects": ["studnia", "szubienica", "mury"],
+      "connections": {
+        "zachód": "korytarz_centralny",
+        "północ": "zbrojownia",
+        "wschód": "biuro_naczelnika"
+      },
+      "special_features": ["szubienica", "studnia", "posterunek_straży"]
+    },
+    "zbrojownia": {
+      "name": "Zbrojownia",
+      "full_name": "Więzienna Zbrojownia",
+      "type": "room",
+      "descriptions": {
+        "day": "Więzienna Zbrojownia\nPomieszczenie pełne broni i narzędzi. Na ścianach wiszą miecze, topory i kusze. W rogu stoi warsztat kowalski z kowadłem. Strażnicy regularnie tu zaglądają.",
+        "night": "Więzienna Zbrojownia\nZbrojownia jest zamknięta na noc, ale przez szpary w drzwiach widać błysk metalu. Idealne miejsce na zdobycie broni... gdyby tylko dało się tu wejść."
+      },
+      "interactive_objects": ["warsztat", "regały z bronią", "kowadło"],
+      "connections": {
+        "południe": "dziedziniec"
+      },
+      "items": ["miecz", "tarcza", "kolczuga"],
+      "secrets": [
+        {
+          "id": "armory_tunnel",
+          "trigger": "zbadaj podłoga",
+          "discovery_hint": "'Ta krata w podłodze wygląda na luźną...'",
+          "description": "Pod kratą odkrywasz tunel prowadzący do kanałów. Śmierdzi strasznie, ale to droga na wolność!",
+          "rewards": []
+        }
+      ],
+      "locked": true,
+      "lock_level": 3
+    },
+    "biuro_naczelnika": {
+      "name": "Biuro Naczelnika",
+      "full_name": "Biuro Naczelnika Więzienia",
+      "type": "room",
+      "descriptions": {
+        "day": "Biuro Naczelnika Więzienia\nLuksusowe jak na więzienne standardy pomieszczenie. Duże biurko, wygodny fotel, półki z księgami. Na ścianie wisi mapa regionu. Przez okno widać całe więzienie.",
+        "night": "Biuro Naczelnika Więzienia\nBiuro pogrążone w ciemności. Tylko blask księżyca oświetla biurko. Papiery leżą porozrzucane, jakby ktoś szukał czegoś w pośpiechu."
+      },
+      "interactive_objects": ["biurko", "księgi", "mapa", "sejf"],
+      "connections": {
+        "zachód": "dziedziniec"
+      },
+      "secrets": [
+        {
+          "id": "warden_safe",
+          "trigger": "zbadaj sejf",
+          "discovery_hint": "'Sejf jest zamknięty, ale może kod jest gdzieś zapisany...'",
+          "description": "W sejfie znajdujesz klucze do wszystkich cel i 500 sztuk złota!",
+          "rewards": ["uniwersalny klucz", "500 złota"]
+        }
+      ],
+      "locked": true,
+      "lock_level": 5
+    }
+  }
+}

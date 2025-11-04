@@ -1,0 +1,321 @@
+{
+  "kilof": {
+    "nazwa": "Kilof",
+    "opis": "Solidny kilof do wydobywania",
+    "wymagana_umiejetnosc": "kowalstwo",
+    "poziom_trudnosci": 3,
+    "czas_tworzenia": 120,
+    "skladniki": [
+      {
+        "przedmiot": "metal",
+        "ilosc": 2,
+        "minimalna_jakosc": 20
+      },
+      {
+        "przedmiot": "drewno",
+        "ilosc": 1,
+        "minimalna_jakosc": 15
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "mlotek",
+        "minimalna_jakosc": 10
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "kilof",
+      "ilosc": 1,
+      "bonus_jakosci": 10
+    },
+    "exp_za_stworzenie": 15,
+    "szansa_powodzenia": 0.75
+  },
+  "noz": {
+    "nazwa": "Nóż",
+    "opis": "Ostry nóż bojowy",
+    "wymagana_umiejetnosc": "kowalstwo",
+    "poziom_trudnosci": 2,
+    "czas_tworzenia": 80,
+    "skladniki": [
+      {
+        "przedmiot": "metal",
+        "ilosc": 1,
+        "minimalna_jakosc": 25
+      },
+      {
+        "przedmiot": "skora",
+        "ilosc": 1,
+        "minimalna_jakosc": 10
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "mlotek",
+        "minimalna_jakosc": 15
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "noz",
+      "ilosc": 1,
+      "bonus_jakosci": 5
+    },
+    "exp_za_stworzenie": 12,
+    "szansa_powodzenia": 0.8
+  },
+  "strzaly": {
+    "nazwa": "Strzały",
+    "opis": "Komplet ostrych strzał",
+    "wymagana_umiejetnosc": "stolarstwo",
+    "poziom_trudnosci": 2,
+    "czas_tworzenia": 60,
+    "skladniki": [
+      {
+        "przedmiot": "drewno",
+        "ilosc": 2,
+        "minimalna_jakosc": 20
+      },
+      {
+        "przedmiot": "metal",
+        "ilosc": 1,
+        "minimalna_jakosc": 15
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "dluto",
+        "minimalna_jakosc": 10
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "strzaly",
+      "ilosc": 1,
+      "bonus_jakosci": 8
+    },
+    "exp_za_stworzenie": 10,
+    "szansa_powodzenia": 0.85
+  },
+  "miecz": {
+    "nazwa": "Miecz",
+    "opis": "Dwusieczny miecz wojownika",
+    "wymagana_umiejetnosc": "kowalstwo",
+    "poziom_trudnosci": 5,
+    "czas_tworzenia": 200,
+    "skladniki": [
+      {
+        "przedmiot": "metal",
+        "ilosc": 3,
+        "minimalna_jakosc": 35
+      },
+      {
+        "przedmiot": "skora",
+        "ilosc": 1,
+        "minimalna_jakosc": 20
+      },
+      {
+        "przedmiot": "drewno",
+        "ilosc": 1,
+        "minimalna_jakosc": 25
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "mlotek",
+        "minimalna_jakosc": 25
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "miecz",
+      "ilosc": 1,
+      "bonus_jakosci": 15
+    },
+    "exp_za_stworzenie": 25,
+    "szansa_powodzenia": 0.65
+  },
+  "luk": {
+    "nazwa": "Łuk",
+    "opis": "Giętki łuk myśliwski",
+    "wymagana_umiejetnosc": "stolarstwo",
+    "poziom_trudnosci": 4,
+    "czas_tworzenia": 150,
+    "skladniki": [
+      {
+        "przedmiot": "drewno",
+        "ilosc": 2,
+        "minimalna_jakosc": 30
+      },
+      {
+        "przedmiot": "tkanina",
+        "ilosc": 1,
+        "minimalna_jakosc": 15
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "dluto",
+        "minimalna_jakosc": 20
+      },
+      {
+        "przedmiot": "noz",
+        "minimalna_jakosc": 15
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "luk",
+      "ilosc": 1,
+      "bonus_jakosci": 12
+    },
+    "exp_za_stworzenie": 20,
+    "szansa_powodzenia": 0.7
+  },
+  "maczuga": {
+    "nazwa": "Maczuga",
+    "opis": "Ciężka drewniana maczuga",
+    "wymagana_umiejetnosc": "stolarstwo",
+    "poziom_trudnosci": 2,
+    "czas_tworzenia": 90,
+    "skladniki": [
+      {
+        "przedmiot": "drewno",
+        "ilosc": 3,
+        "minimalna_jakosc": 20
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "dluto",
+        "minimalna_jakosc": 10
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "maczuga",
+      "ilosc": 1,
+      "bonus_jakosci": 5
+    },
+    "exp_za_stworzenie": 8,
+    "szansa_powodzenia": 0.9
+  },
+  "lopata": {
+    "nazwa": "Łopata",
+    "opis": "Wytrzymała łopata do kopania",
+    "wymagana_umiejetnosc": "kowalstwo",
+    "poziom_trudnosci": 3,
+    "czas_tworzenia": 100,
+    "skladniki": [
+      {
+        "przedmiot": "metal",
+        "ilosc": 2,
+        "minimalna_jakosc": 15
+      },
+      {
+        "przedmiot": "drewno",
+        "ilosc": 1,
+        "minimalna_jakosc": 20
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "mlotek",
+        "minimalna_jakosc": 12
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "lopata",
+      "ilosc": 1,
+      "bonus_jakosci": 8
+    },
+    "exp_za_stworzenie": 12,
+    "szansa_powodzenia": 0.8
+  },
+  "mlotek": {
+    "nazwa": "Młotek",
+    "opis": "Precyzyjny młotek kowalski",
+    "wymagana_umiejetnosc": "kowalstwo",
+    "poziom_trudnosci": 4,
+    "czas_tworzenia": 140,
+    "skladniki": [
+      {
+        "przedmiot": "metal",
+        "ilosc": 2,
+        "minimalna_jakosc": 30
+      },
+      {
+        "przedmiot": "drewno",
+        "ilosc": 1,
+        "minimalna_jakosc": 25
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "kamien",
+        "minimalna_jakosc": 10
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "mlotek",
+      "ilosc": 1,
+      "bonus_jakosci": 12
+    },
+    "exp_za_stworzenie": 18,
+    "szansa_powodzenia": 0.7
+  },
+  "dluto": {
+    "nazwa": "Dłuto",
+    "opis": "Ostre dłuto do obróbki drewna",
+    "wymagana_umiejetnosc": "stolarstwo",
+    "poziom_trudnosci": 3,
+    "czas_tworzenia": 80,
+    "skladniki": [
+      {
+        "przedmiot": "metal",
+        "ilosc": 1,
+        "minimalna_jakosc": 20
+      },
+      {
+        "przedmiot": "drewno",
+        "ilosc": 1,
+        "minimalna_jakosc": 15
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "mlotek",
+        "minimalna_jakosc": 10
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "dluto",
+      "ilosc": 1,
+      "bonus_jakosci": 8
+    },
+    "exp_za_stworzenie": 10,
+    "szansa_powodzenia": 0.85
+  },
+  "igla": {
+    "nazwa": "Igła",
+    "opis": "Cienka igła do szycia",
+    "wymagana_umiejetnosc": "kowalstwo",
+    "poziom_trudnosci": 2,
+    "czas_tworzenia": 40,
+    "skladniki": [
+      {
+        "przedmiot": "metal",
+        "ilosc": 1,
+        "minimalna_jakosc": 25
+      }
+    ],
+    "wymagane_narzedzia": [
+      {
+        "przedmiot": "mlotek",
+        "minimalna_jakosc": 15
+      }
+    ],
+    "rezultat": {
+      "przedmiot": "igla",
+      "ilosc": 1,
+      "bonus_jakosci": 5
+    },
+    "exp_za_stworzenie": 8,
+    "szansa_powodzenia": 0.9
+  }
+}

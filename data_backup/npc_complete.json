@@ -1,0 +1,796 @@
+{
+  "version": "1.0",
+  "comment": "Kompletne dane NPCów - skonsolidowane z 4 plików",
+  "npcs": {
+    "anna": {
+      "id": "anna",
+      "name": "Cicha Anna",
+      "display_name": "Cichy Tomek",
+      "role": "prisoner",
+      "location": "cell_4",
+      "spawn_location": "cela_2",
+      "personality": [
+        "quiet",
+        "planner",
+        "determined",
+        "observant"
+      ],
+      "quirks": [
+        "rarely_speaks",
+        "always_watching",
+        "escape_artist"
+      ],
+      "stats": {
+        "health": 70,
+        "max_health": 70,
+        "energy": 80,
+        "max_energy": 80,
+        "strength": 50,
+        "agility": 50,
+        "intelligence": 50
+      },
+      "inventory": {
+        "lockpick": 2,
+        "rope": 1,
+        "knife": 1
+      },
+      "gold": 15,
+      "schedule": {
+        "6": "waking_routine",
+        "7": "eating",
+        "8": "planning",
+        "9": "exercise_yard",
+        "10": "observation",
+        "11": "cell_time",
+        "12": "eating",
+        "13": "work",
+        "14": "work",
+        "15": "work",
+        "16": "planning",
+        "17": "observation",
+        "18": "eating",
+        "19": "planning",
+        "20": "preparation",
+        "21": "cell_time",
+        "22": "sleeping",
+        "23": "sleeping",
+        "0": "sleeping",
+        "1": "sleeping",
+        "2": "escape_attempt",
+        "3": "escape_attempt",
+        "4": "sleeping",
+        "5": "sleeping"
+      },
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {},
+      "dialogue_tree": "anna",
+      "dialogue_id": "cichy_tomek",
+      "memories": [],
+      "relationships": {},
+      "goals": [
+        {
+          "name": "escape_prison",
+          "priority": 0.95,
+          "prerequisites": [
+            "gather_tools",
+            "study_patterns",
+            "find_opportunity"
+          ]
+        },
+        {
+          "name": "gather_tools",
+          "priority": 0.8,
+          "prerequisites": []
+        },
+        {
+          "name": "study_patterns",
+          "priority": 0.7,
+          "prerequisites": []
+        }
+      ],
+      "description": "Majsterkowicz, tworzy przedmioty"
+    },
+    "brutus": {
+      "id": "brutus",
+      "name": "Brutus",
+      "display_name": "Brutus",
+      "role": "warden",
+      "location": "warden_office",
+      "spawn_location": "biuro_naczelnika",
+      "personality": [
+        "sadistic",
+        "authoritarian",
+        "cruel",
+        "intimidating"
+      ],
+      "quirks": [
+        "fears_darkness",
+        "obsessed_with_order",
+        "enjoys_suffering"
+      ],
+      "stats": {
+        "health": 120,
+        "max_health": 120,
+        "energy": 100,
+        "max_energy": 100,
+        "strength": 50,
+        "agility": 50,
+        "intelligence": 50
+      },
+      "inventory": {
+        "keys": 5,
+        "whip": 1,
+        "torch": 1
+      },
+      "gold": 200,
+      "schedule": {
+        "6": "waking_routine",
+        "7": "eating",
+        "8": "office_work",
+        "9": "patrol",
+        "10": "intimidation_rounds",
+        "11": "office_work",
+        "12": "eating",
+        "13": "interrogations",
+        "14": "patrol",
+        "15": "office_work",
+        "16": "patrol",
+        "17": "intimidation_rounds",
+        "18": "eating",
+        "19": "office_work",
+        "20": "final_patrol",
+        "21": "personal_time",
+        "22": "sleeping",
+        "23": "sleeping",
+        "0": "sleeping",
+        "1": "sleeping",
+        "2": "sleeping",
+        "3": "sleeping",
+        "4": "sleeping",
+        "5": "sleeping"
+      },
+      "schedule_template": "guard_day_shift",
+      "schedule_overrides": {},
+      "dialogue_tree": "brutus",
+      "dialogue_id": "brutus",
+      "memories": [],
+      "relationships": {},
+      "goals": [
+        {
+          "name": "maintain_order",
+          "priority": 0.9,
+          "prerequisites": []
+        },
+        {
+          "name": "break_prisoner_spirits",
+          "priority": 0.7,
+          "prerequisites": []
+        },
+        {
+          "name": "avoid_darkness",
+          "priority": 0.8,
+          "prerequisites": []
+        }
+      ],
+      "description": "Brutalny strażnik więzienny"
+    },
+    "cichy_tomek": {
+      "id": "cichy_tomek",
+      "name": "Cichy Tomek",
+      "display_name": "Tomek 'Cichy'",
+      "role": "prisoner",
+      "location": "cela_2",
+      "spawn_location": "cela_2",
+      "personality": [
+        "quiet",
+        "inventive",
+        "paranoid",
+        "skilled"
+      ],
+      "quirks": [],
+      "stats": {
+        "health": 60,
+        "max_health": 60,
+        "strength": 25,
+        "agility": 50,
+        "intelligence": 75
+      },
+      "inventory": {
+        "drut": 2,
+        "kawałek_metalu": 3,
+        "pilnik": 1
+      },
+      "gold": 2,
+      "schedule": {},
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {
+        "10:00-12:00": {
+          "activity": "crafting",
+          "location": "cela_2",
+          "description": "Majsterkuje przy swoich wynalazkach"
+        },
+        "15:00-17:00": {
+          "activity": "hiding",
+          "location": "cela_2",
+          "description": "Unika innych więźniów"
+        }
+      },
+      "dialogue_tree": "cichy_tomek",
+      "dialogue_id": "cichy_tomek",
+      "memories": [],
+      "relationships": {},
+      "goals": [],
+      "description": ""
+    },
+    "gadatliwy_piotr": {
+      "id": "gadatliwy_piotr",
+      "name": "Gadatliwy Piotr",
+      "display_name": "Piotr 'Gadatliwy'",
+      "role": "prisoner",
+      "location": "cela_1",
+      "spawn_location": "cela_1",
+      "personality": [
+        "talkative",
+        "friendly",
+        "gossiper",
+        "opportunistic"
+      ],
+      "quirks": [],
+      "stats": {
+        "health": 80,
+        "max_health": 80,
+        "strength": 30,
+        "agility": 40,
+        "intelligence": 60
+      },
+      "inventory": {
+        "kawałek_metalu": 1,
+        "strzęp_materiału": 1,
+        "miska": 1
+      },
+      "gold": 5,
+      "schedule": {},
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {
+        "08:00-10:00": {
+          "activity": "gossip",
+          "location": "dziedziniec",
+          "description": "Plotkuje z innymi więźniami"
+        },
+        "15:00-17:00": {
+          "activity": "information_trading",
+          "location": "korytarz_centralny",
+          "description": "Wymienia informacje"
+        }
+      },
+      "dialogue_tree": "gadatliwy_piotr",
+      "dialogue_id": "gadatliwy_piotr",
+      "memories": [],
+      "relationships": {},
+      "goals": [],
+      "description": ""
+    },
+    "gruby_waldek": {
+      "id": "gruby_waldek",
+      "name": "Gruby Waldek",
+      "display_name": "Waldek 'Gruby'",
+      "role": "prisoner",
+      "location": "cela_3",
+      "spawn_location": "cela_3",
+      "personality": [
+        "aggressive",
+        "brutal",
+        "strong",
+        "unpredictable"
+      ],
+      "quirks": [],
+      "stats": {
+        "health": 120,
+        "max_health": 120,
+        "strength": 80,
+        "agility": 20,
+        "intelligence": 30
+      },
+      "inventory": {
+        "kawałek_metalu": 1
+      },
+      "gold": 0,
+      "schedule": {},
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {
+        "08:00-10:00": {
+          "activity": "intimidation",
+          "location": "dziedziniec",
+          "description": "Straszy słabszych więźniów"
+        },
+        "10:00-12:00": {
+          "activity": "training",
+          "location": "cela_3",
+          "description": "Ćwiczy siłę"
+        }
+      },
+      "dialogue_tree": "gruby_waldek",
+      "dialogue_id": "gruby_waldek",
+      "memories": [],
+      "relationships": {},
+      "goals": [],
+      "description": ""
+    },
+    "jozek": {
+      "id": "jozek",
+      "name": "Stary Józek",
+      "display_name": "Stary Józef",
+      "role": "prisoner",
+      "location": "cell_2",
+      "spawn_location": "cela_4",
+      "personality": [
+        "wise",
+        "cautious",
+        "knowledgeable",
+        "helpful"
+      ],
+      "quirks": [
+        "speaks_in_riddles",
+        "knows_secrets",
+        "old_timer"
+      ],
+      "stats": {
+        "health": 60,
+        "max_health": 70,
+        "energy": 50,
+        "max_energy": 60,
+        "strength": 50,
+        "agility": 50,
+        "intelligence": 50
+      },
+      "inventory": {
+        "bread": 2,
+        "candle": 1,
+        "old_map": 1
+      },
+      "gold": 5,
+      "schedule": {
+        "6": "waking_routine",
+        "7": "eating",
+        "8": "cell_time",
+        "9": "exercise_yard",
+        "10": "cell_time",
+        "11": "cell_time",
+        "12": "eating",
+        "13": "work",
+        "14": "work",
+        "15": "work",
+        "16": "cell_time",
+        "17": "exercise_yard",
+        "18": "eating",
+        "19": "socializing",
+        "20": "cell_time",
+        "21": "cell_time",
+        "22": "sleeping",
+        "23": "sleeping",
+        "0": "sleeping",
+        "1": "sleeping",
+        "2": "sleeping",
+        "3": "sleeping",
+        "4": "sleeping",
+        "5": "sleeping"
+      },
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {},
+      "dialogue_tree": "jozek",
+      "dialogue_id": "stary_jozef",
+      "memories": [],
+      "relationships": {},
+      "goals": [
+        {
+          "name": "survive",
+          "priority": 0.9,
+          "prerequisites": []
+        },
+        {
+          "name": "help_worthy_prisoners",
+          "priority": 0.6,
+          "prerequisites": []
+        },
+        {
+          "name": "preserve_knowledge",
+          "priority": 0.7,
+          "prerequisites": []
+        }
+      ],
+      "description": "Mądry uczony, dawny bibliotekarz"
+    },
+    "marek": {
+      "id": "marek",
+      "name": "Marek",
+      "display_name": "Gruby Waldek",
+      "role": "guard",
+      "location": "guard_room",
+      "spawn_location": "cela_3",
+      "personality": [
+        "corruptible",
+        "greedy",
+        "lazy",
+        "opportunistic"
+      ],
+      "quirks": [
+        "loves_gold",
+        "avoids_work",
+        "gossips"
+      ],
+      "stats": {
+        "health": 80,
+        "max_health": 80,
+        "energy": 70,
+        "max_energy": 80,
+        "strength": 50,
+        "agility": 50,
+        "intelligence": 50
+      },
+      "inventory": {
+        "keys": 2,
+        "baton": 1,
+        "flask": 1
+      },
+      "gold": 30,
+      "schedule": {
+        "6": "waking_routine",
+        "7": "eating",
+        "8": "patrol",
+        "9": "guard_room",
+        "10": "patrol",
+        "11": "guard_room",
+        "12": "eating",
+        "13": "patrol",
+        "14": "guard_room",
+        "15": "patrol",
+        "16": "guard_room",
+        "17": "patrol",
+        "18": "eating",
+        "19": "socializing",
+        "20": "guard_room",
+        "21": "personal_time",
+        "22": "sleeping",
+        "23": "sleeping",
+        "0": "sleeping",
+        "1": "sleeping",
+        "2": "sleeping",
+        "3": "sleeping",
+        "4": "sleeping",
+        "5": "sleeping"
+      },
+      "schedule_template": "guard_standard",
+      "schedule_overrides": {},
+      "dialogue_tree": "marek",
+      "dialogue_id": "gruby_waldek",
+      "memories": [],
+      "relationships": {},
+      "goals": [
+        {
+          "name": "gather_gold",
+          "priority": 0.8,
+          "prerequisites": []
+        },
+        {
+          "name": "avoid_work",
+          "priority": 0.6,
+          "prerequisites": []
+        },
+        {
+          "name": "stay_safe",
+          "priority": 0.7,
+          "prerequisites": []
+        }
+      ],
+      "description": "Niebezpieczny więzień, siłacz"
+    },
+    "piotr": {
+      "id": "piotr",
+      "name": "Gadatliwy Piotr",
+      "display_name": "Gadatliwy Piotr",
+      "role": "prisoner",
+      "location": "cell_1",
+      "spawn_location": "cela_1",
+      "personality": [
+        "talkative",
+        "informant",
+        "manipulative",
+        "cunning"
+      ],
+      "quirks": [
+        "never_stops_talking",
+        "trades_information",
+        "knows_everyone"
+      ],
+      "stats": {
+        "health": 75,
+        "max_health": 75,
+        "energy": 90,
+        "max_energy": 90,
+        "strength": 50,
+        "agility": 50,
+        "intelligence": 50
+      },
+      "inventory": {
+        "notes": 5,
+        "pen": 1,
+        "tobacco": 3
+      },
+      "gold": 25,
+      "schedule": {
+        "6": "waking_routine",
+        "7": "eating",
+        "8": "information_gathering",
+        "9": "socializing",
+        "10": "information_gathering",
+        "11": "trading",
+        "12": "eating",
+        "13": "work",
+        "14": "work",
+        "15": "work",
+        "16": "information_gathering",
+        "17": "socializing",
+        "18": "eating",
+        "19": "trading",
+        "20": "socializing",
+        "21": "information_gathering",
+        "22": "sleeping",
+        "23": "sleeping",
+        "0": "sleeping",
+        "1": "sleeping",
+        "2": "sleeping",
+        "3": "sleeping",
+        "4": "sleeping",
+        "5": "sleeping"
+      },
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {},
+      "dialogue_tree": "piotr",
+      "dialogue_id": "gadatliwy_piotr",
+      "memories": [],
+      "relationships": {},
+      "goals": [
+        {
+          "name": "gather_information",
+          "priority": 0.9,
+          "prerequisites": []
+        },
+        {
+          "name": "profit_from_info",
+          "priority": 0.85,
+          "prerequisites": [
+            "gather_information"
+          ]
+        },
+        {
+          "name": "stay_safe",
+          "priority": 0.7,
+          "prerequisites": []
+        }
+      ],
+      "description": "Gadatliwy złodziej z informacjami"
+    },
+    "stary_jozef": {
+      "id": "stary_jozef",
+      "name": "Stary Józef",
+      "display_name": "Józef 'Uczony'",
+      "role": "prisoner",
+      "location": "cela_4",
+      "spawn_location": "cela_4",
+      "personality": [
+        "wise",
+        "educated",
+        "mysterious",
+        "helpful"
+      ],
+      "quirks": [],
+      "stats": {
+        "health": 50,
+        "max_health": 50,
+        "strength": 20,
+        "agility": 30,
+        "intelligence": 90
+      },
+      "inventory": {
+        "węgiel": 3,
+        "papier": 5,
+        "księga": 1
+      },
+      "gold": 10,
+      "schedule": {},
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {
+        "10:00-12:00": {
+          "activity": "studying",
+          "location": "cela_4",
+          "description": "Studiuje swoje notatki"
+        },
+        "15:00-17:00": {
+          "activity": "teaching",
+          "location": "korytarz_centralny",
+          "description": "Uczy chętnych podstaw pisania"
+        },
+        "18:00-20:00": {
+          "activity": "meditation",
+          "location": "cela_4",
+          "description": "Medytuje w ciszy"
+        }
+      },
+      "dialogue_tree": "stary_jozef",
+      "dialogue_id": "stary_jozef",
+      "memories": [],
+      "relationships": {},
+      "goals": [],
+      "description": ""
+    },
+    "szczuply": {
+      "id": "szczuply",
+      "name": "Szczupły",
+      "display_name": "Szczupły",
+      "role": "guard",
+      "location": "korytarz_centralny",
+      "spawn_location": "dziedziniec",
+      "personality": [
+        "corrupt",
+        "intelligent",
+        "greedy",
+        "cautious"
+      ],
+      "quirks": [],
+      "stats": {
+        "health": 100,
+        "max_health": 100,
+        "strength": 50,
+        "agility": 70,
+        "intelligence": 70
+      },
+      "inventory": {
+        "nóż": 1,
+        "klucze": 5,
+        "sakiewka": 1,
+        "księga": 1
+      },
+      "gold": 200,
+      "schedule": {},
+      "schedule_template": "guard_night_shift",
+      "schedule_overrides": {},
+      "dialogue_tree": "szczuply",
+      "dialogue_id": "szczuply",
+      "memories": [],
+      "relationships": {},
+      "goals": [],
+      "description": "Przekupny strażnik"
+    }
+  },
+  "schedule_templates": {
+    "prisoner_standard": {
+      "00:00-06:00": {
+        "activity": "sleep",
+        "location": "own_cell",
+        "interruptible": false
+      },
+      "06:00-07:00": {
+        "activity": "wake_routine",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "07:00-08:00": {
+        "activity": "breakfast",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "08:00-10:00": {
+        "activity": "courtyard_time",
+        "location": "dziedziniec",
+        "interruptible": true,
+        "weather_dependent": true
+      },
+      "10:00-12:00": {
+        "activity": "work_or_craft",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "12:00-13:00": {
+        "activity": "lunch",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "13:00-15:00": {
+        "activity": "rest",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "15:00-17:00": {
+        "activity": "social_time",
+        "location": "korytarz_centralny",
+        "interruptible": true
+      },
+      "17:00-18:00": {
+        "activity": "dinner",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "18:00-20:00": {
+        "activity": "evening_activity",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "20:00-22:00": {
+        "activity": "prepare_sleep",
+        "location": "own_cell",
+        "interruptible": true
+      },
+      "22:00-24:00": {
+        "activity": "sleep",
+        "location": "own_cell",
+        "interruptible": false
+      }
+    },
+    "guard_day_shift": {
+      "06:00-14:00": {
+        "activity": "patrol",
+        "location": "various",
+        "interruptible": true
+      },
+      "14:00-22:00": {
+        "activity": "off_duty",
+        "location": "guard_quarters",
+        "interruptible": false
+      },
+      "22:00-06:00": {
+        "activity": "sleep",
+        "location": "guard_quarters",
+        "interruptible": false
+      }
+    },
+    "guard_night_shift": {
+      "14:00-22:00": {
+        "activity": "patrol",
+        "location": "various",
+        "interruptible": true
+      },
+      "22:00-06:00": {
+        "activity": "night_watch",
+        "location": "various",
+        "interruptible": true
+      },
+      "06:00-14:00": {
+        "activity": "sleep",
+        "location": "guard_quarters",
+        "interruptible": false
+      }
+    }
+  },
+  "dialogue_mappings": {
+    "gadatliwy_piotr": {
+      "npc_id": "piotr",
+      "display_name": "Gadatliwy Piotr",
+      "description": "Gadatliwy złodziej z informacjami"
+    },
+    "stary_jozef": {
+      "npc_id": "jozek",
+      "display_name": "Stary Józef",
+      "description": "Mądry uczony, dawny bibliotekarz"
+    },
+    "brutus": {
+      "npc_id": "brutus",
+      "display_name": "Brutus",
+      "description": "Brutalny strażnik więzienny"
+    },
+    "gruby_waldek": {
+      "npc_id": "marek",
+      "display_name": "Gruby Waldek",
+      "description": "Niebezpieczny więzień, siłacz"
+    },
+    "cichy_tomek": {
+      "npc_id": "anna",
+      "display_name": "Cichy Tomek",
+      "description": "Majsterkowicz, tworzy przedmioty"
+    },
+    "szczuply": {
+      "npc_id": "szczuply",
+      "display_name": "Szczupły",
+      "description": "Przekupny strażnik"
+    }
+  }
+}

@@ -1,0 +1,639 @@
+{
+  "dialogue_trees": {
+    "gadatliwy_piotr": {
+      "greeting": {
+        "id": "greeting",
+        "npc_text": "*Piotr podnosi głowę i uśmiecha się szeroko*\n'Ej, nowy! Nie widziałem cię wcześniej. Jestem Piotr, ale wszyscy mówią na mnie Gadatliwy. Zgadnij dlaczego, hehe!'",
+        "options": [
+          {
+            "text": "Miło cię poznać. Jestem nowy tutaj.",
+            "response": "'Nowy, co? Każdy kiedyś był nowy. Dam ci radę za darmo - trzymaj się z daleka od Grubego Waldka z celi 3. Ten typ jest nieprzewidywalny.'",
+            "next_node": "advice",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Jak długo tu siedzisz?",
+            "response": "'Ojej, daj pomyśleć... Już trzeci rok poszedł. Za kradzież, wiesz. Ale to była WIELKA kradzież, nie byle co! Okradłem samego kupca Bohdana!'",
+            "next_node": "story",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Czy znasz jakąś drogę ucieczki?",
+            "response": "*Piotr rozgląda się nerwowo*\n'Ciii! Nie tak głośno! Strażnicy mają długie uszy. Ale... może coś wiem. Tylko musisz mi najpierw zaufać.'",
+            "next_node": "escape_hint",
+            "requirements": {
+              "skill": [
+                "perswazja",
+                3
+              ]
+            },
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Nie mam czasu na gadanie.",
+            "response": "'Och, jasne, jasne. Każdy jest zajęty w więzieniu, haha! Jak będziesz chciał pogadać, to wiesz gdzie mnie znaleźć.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "advice": {
+        "id": "advice",
+        "npc_text": "'Więzienie ma swoje zasady, wiesz? Pierwsza - nie wchodź w drogę strażnikom. Druga - jedzenie to waluta. Trzecia - każdy ma swoją cenę.'",
+        "options": [
+          {
+            "text": "Opowiedz mi więcej o więźniach.",
+            "response": "'Jest nas tutaj garstka. Waldek w trójce - unikaj go. Cichy Tomek w dwójce - dziwny typ, ale nieszkodliwy. W czwórce siedzi Stary Józef - mądry facet, był kiedyś uczonym.'",
+            "next_node": "prisoners",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "A co ze strażnikami?",
+            "response": "'Brutus to bestia, lepiej mu nie wchodzić w drogę. Szczupły jest bardziej... elastyczny, jeśli wiesz co mam na myśli. Czasem można się z nim dogadać.'",
+            "next_node": "guards",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Dzięki za rady.",
+            "response": "'Nie ma sprawy! Pamiętaj - w więzieniu przyjaciół się nie ma, ale wrogów lepiej też nie mieć za dużo.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "story": {
+        "id": "story",
+        "npc_text": "'Ach, to była akcja! Przekradłem się do jego magazynu nocą. Miałem już pół worka złota, gdy nagle... BUM! Straż! Okazało się, że Bohdan śpi w swoim magazynie, paranoja!'",
+        "options": [
+          {
+            "text": "Naprawdę spał w magazynie?",
+            "response": "'Przysięgam! Ten skąpiec bardziej kocha swoje złoto niż żonę. Ale wiesz co? Słyszałem, że teraz jego syn prowadzi interes i jest jeszcze gorszy!'",
+            "next_node": "merchant_info",
+            "requirements": null,
+            "effects": {
+              "knowledge": "merchant_wealth"
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Ile ukradłeś?",
+            "response": "'Prawie 200 sztuk złota! Wystarczyłoby mi na całe życie... Gdyby nie ta przeklęta straż. Teraz gniję tutaj, a Bohdan pewnie liczy swoje pieniądze.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "theft_amount"
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Ciekawa historia.",
+            "response": "'Prawda? Mam ich więcej! Kiedyś opowiem ci o tym, jak prawie ukradłem konia samego burmistrza!'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "escape_hint": {
+        "id": "escape_hint",
+        "npc_text": "*Piotr szepcze*\n'Słuchaj... Są trzy sposoby. Tunel w piwnicy - ale musisz się dostać do zbrojowni. Przekupienie Szczupłego - kosztowne. Albo... podczas zmiany warty, jest moment gdy dziedziniec jest bez nadzoru.'",
+        "options": [
+          {
+            "text": "Opowiedz o tunelu.",
+            "response": "'W zbrojowni jest stara krata. Prowadzi do kanałów. Śmierdzi jak diabli, ale da się przejść. Problem w tym, że zbrojownia jest zawsze zamknięta.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "tunnel_escape"
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Ile chce Szczupły?",
+            "response": "'Minimum 500 sztuk złota. Albo coś równie wartościowego. Słyszałem, że lubi też rzadkie księgi... dziwny gust jak na strażnika.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "guard_bribe"
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Kiedy jest zmiana warty?",
+            "response": "'Codziennie o świcie i zmierzchu. Przez około 10 minut dziedziniec jest pusty. Ale musisz być szybki i mieć sposób na otworzenie bramy.'",
+            "next_node": "shift_details",
+            "requirements": null,
+            "effects": {
+              "knowledge": "guard_shift"
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Dzięki za informacje.",
+            "response": "'Tylko uważaj! Jeśli cię złapią przy próbie ucieczki... Lepiej nie myśleć co się stanie. Powodzenia, przyjacielu.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "prisoners": {
+        "id": "prisoners",
+        "npc_text": "'Każdy ma tu swoją historię. Niektórzy są niewinni... albo tak twierdzą. Inni... cóż, lepiej trzymać się od nich z daleka.'",
+        "options": [
+          {
+            "text": "Co z Józefem?",
+            "response": "'Stary Józef to zagadka. Był uczonym na dworze, potem coś się stało. Nie mówi o tym. Ale wie DUŻO. Jeśli potrzebujesz wiedzy, on jest najlepszy.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "josef_scholar"
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Dlaczego powinienem unikać Waldka?",
+            "response": "'Waldek... zabił człowieka gołymi rękami podczas bójki w tawernie. Jest silny jak wół i ma kiepski temperament. Lepiej go nie prowokować.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "waldek_dangerous"
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Rozumiem.",
+            "response": "'Dobrze. Pamiętaj - tu każdy dba tylko o siebie. Ale czasem warto mieć kogoś, kto patrzy ci na plecy.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "guards": {
+        "id": "guards",
+        "npc_text": "'Strażnicy... Każdy ma swoje słabości, wiesz?'",
+        "options": [
+          {
+            "text": "Opowiedz mi o nich.",
+            "response": "'Brutus to prosty człowiek - lubi siłę i szanuje siłę. Szczupły to inna historia - inteligentny, czytuje księgi. Można z nim pogadać o filozofii, wyobrażasz sobie?'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "guard_personalities"
+            },
+            "result": "end"
+          }
+        ]
+      },
+      "merchant_info": {
+        "id": "merchant_info",
+        "npc_text": "'Kupiec Bohdan... bogaty jak diabli, ale paranoja na punkcie pieniędzy.'",
+        "options": [
+          {
+            "text": "Interesujące.",
+            "response": "'Mówią, że ma piwnice pełne złota. Ale kto wie, może to tylko plotki. Chociaż... widziałem kiedyś jego straże. Nie zatrudniasz tylu ludzi dla ochrony pustych piwnic.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "merchant_vaults"
+            },
+            "result": "end"
+          }
+        ]
+      },
+      "shift_details": {
+        "id": "shift_details",
+        "npc_text": "'Zmiana warty to najlepszy moment, ale musisz być przygotowany.'",
+        "options": [
+          {
+            "text": "Co powinienem wiedzieć?",
+            "response": "'Strażnicy zawsze robią obchód przed zmianą. Potem idą do koszar. Jest okno około 10 minut. Ale brama... to problem. Potrzebujesz klucza albo sposobu żeby ją otworzyć.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "escape_timing"
+            },
+            "result": "end"
+          }
+        ]
+      }
+    },
+    "cichy_tomek": {
+      "greeting": {
+        "id": "greeting",
+        "npc_text": "*Tomek patrzy na ciebie nieufnie, prawie się nie odzywając*\n'...Czego?'",
+        "options": [
+          {
+            "text": "Chciałem tylko porozmawiać.",
+            "response": "*Tomek wzrusza ramionami*\n'Mhm. Nie lubię gadać. Ale... może coś ci pokażę, jeśli mi pomożesz.'",
+            "next_node": "help",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Szukam informacji o więzieniu.",
+            "response": "*Tomek kręci głową*\n'Nie ode mnie. Idź do Piotra, on lubi gadać.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          },
+          {
+            "text": "Nieważne.",
+            "response": "*Tomek kiwa głową i wraca do swoich zajęć*",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "help": {
+        "id": "help",
+        "npc_text": "*Tomek wyciąga kawałek metalu*\n'Robię... klucze. Ale potrzebuję narzędzi. Przynieś mi pilnik z warsztatu w zbrojowni.'",
+        "options": [
+          {
+            "text": "Po co ci klucze?",
+            "response": "*Tomek uśmiecha się tajemniczo*\n'Klucze otwierają drzwi. Drzwi prowadzą... miejsca. Dobre miejsca.'",
+            "next_node": "keys",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Postaram się znaleźć pilnik.",
+            "response": "*Tomek kiwa głową*\n'Dobrze. Wrócisz z pilnikiem, dam ci... coś użytecznego.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "quest": "tomek_tools"
+            },
+            "result": "quest"
+          },
+          {
+            "text": "Nie mogę ci pomóc.",
+            "response": "*Tomek wzrusza ramionami i odwraca się*",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "keys": {
+        "id": "keys",
+        "npc_text": "'Niektóre drzwi... nie powinny być zamknięte. Rozumiesz?'",
+        "options": [
+          {
+            "text": "Rozumiem.",
+            "response": "*Tomek kiwa głową z aprobatą*\n'Może... może będziesz dobrym przyjacielem.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "reputation": [
+                "tomek",
+                10
+              ]
+            },
+            "result": "end"
+          }
+        ]
+      }
+    },
+    "gruby_waldek": {
+      "greeting": {
+        "id": "greeting",
+        "npc_text": "*Waldek podnosi głowę i patrzy na ciebie z pogardą*\n'Co chcesz, ślaku? Lepiej się nie odzywaj, jeśli nie chcesz kłopotów.'",
+        "options": [
+          {
+            "text": "Nie szukam kłopotów.",
+            "response": "'Mądry z ciebie chłopak. Większość tu się tego uczy na twardych warunkach. Trzymaj się ode mnie z daleka, a będziemy w porządku.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          },
+          {
+            "text": "A co jak szukam?",
+            "response": "*Waldek wstaje powoli, jego masa rzuca długi cień*\n'To znajdziesz ich więcej niż ci się marzy, ślaku. Ale nie dzisiaj. Dzisiaj mam dobry humor.'",
+            "next_node": "warning",
+            "requirements": null,
+            "effects": {
+              "reputation": [
+                "waldek",
+                -10
+              ]
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Może mogłbyś mi czegoś nauczyć?",
+            "response": "*Waldek śmieje się szorstko*\n'Haha! Nauczyć? Jedyne czego mogę ci nauczyć to jak szybko tracić zęby. Ale... jeśli przyniesiesz mi cokolwiek do jedzenia, może porozmawiam.'",
+            "next_node": "teaching",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          }
+        ]
+      },
+      "warning": {
+        "id": "warning",
+        "npc_text": "'Pamiętaj - każdy ma tutaj swoje miejsce. Twój czas przyjdzie, ale nie spój się. A ja... ja jestem na szczycie łańcucha pokarmowego.'",
+        "options": [
+          {
+            "text": "Zrozumiałem.",
+            "response": "'Dobrze. Teraz się wynos. I pamiętaj - mam długą pamięć.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "teaching": {
+        "id": "teaching",
+        "npc_text": "'Jeśli chcesz przeżyć w tym piekle, musisz się nauczyć kilku rzeczy. Po pierwsze - nigdy nie pokazuj słabości.'",
+        "options": [
+          {
+            "text": "Jak miałbym to robić?",
+            "response": "'Patrz ludziom prosto w oczy. Nie schylaj głowy. I nigdy, przenigdy nie płacz. Tutaj łzy to zaproszenie dla drapieżników.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "survival_tips"
+            },
+            "result": "end"
+          }
+        ]
+      }
+    },
+    "stary_jozef": {
+      "greeting": {
+        "id": "greeting",
+        "npc_text": "*Stary Józef podnosi wzrok znad swoich notatek*\n'Witaj, młody człowieku. Rzadko kto zapuszcza się do mojej skromnej siedziby. Jestem Józef, chociaż wszyscy mówią na mnie Stary.'",
+        "options": [
+          {
+            "text": "Co to za notatki?",
+            "response": "'Stare zapiski, mapy, wspomnienia z lepszych czasów. Kiedyś byłem uczonym na dworze królewskim. Teraz... cóż, los był dla mnie mniej łaskawy.'",
+            "next_node": "scholar_past",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Czy mógłbyś mnie czegoś nauczyć?",
+            "response": "'Wiedza to jedyne bogactwo, którego nikt nie może ci ukraść. Tak, chętnie podzielę się tym co wiem. Ale wiedza ma swoją cenę...'",
+            "next_node": "teaching_offer",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Słyszałem, że znasz mapy tego miejsca.",
+            "response": "*Józef patrzy na ciebie uważnie*\n'Mapy? Hmm... To zależy co chcesz znaleźć. Są miejsca, które lepiej pozostawić nieodkryte.'",
+            "next_node": "maps_hint",
+            "requirements": {
+              "reputation": [
+                "jozef",
+                20
+              ]
+            },
+            "effects": null,
+            "result": "continue"
+          }
+        ]
+      },
+      "scholar_past": {
+        "id": "scholar_past",
+        "npc_text": "'Były czasy, gdy moje słowa miały wagę, a mój głos słuchał sam król. Ale prawda czasem jest niewygodna dla władzów.'",
+        "options": [
+          {
+            "text": "Co się stało?",
+            "response": "'Odkryłem coś, czego nie powinienem był odkrywać. O starych rytuałach, zakazanych praktytkach. Król wolał mnie uciszyć niż składać się z prawdami historii.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "forbidden_knowledge"
+            },
+            "result": "end"
+          }
+        ]
+      },
+      "teaching_offer": {
+        "id": "teaching_offer",
+        "npc_text": "'Mogę nauczyć ci czytać stare runy, rozumieć mapy, poznawać tajniki historii. Ale w zamian... przynieś mi świecę albo olej do lampy. W ciemności trudno studiować.'",
+        "options": [
+          {
+            "text": "Spróbuję znaleźć świecę.",
+            "response": "'Doskonałe. Wróć gdy będziesz miał światło, a zaczniemy lekcje.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "quest": "find_candle_for_jozef"
+            },
+            "result": "quest"
+          },
+          {
+            "text": "Nie mogę teraz.",
+            "response": "'Rozumiem. Ale pamiętaj - okazja do nauki nie zawsze się powtarza.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "maps_hint": {
+        "id": "maps_hint",
+        "npc_text": "*Józef patrzy wołoą siebie, upewniając się że nikt nie podsłuchuje*\n'Znajdują się pod nami stare tunele. Należały do dawnego zamku. Jedno wyjście prowadzi ze zbrojowni... ale to niebezpieczna droga.'",
+        "options": [
+          {
+            "text": "Dlaczego niebezpieczna?",
+            "response": "'Stare kanały są niestabilne. Powietrze to żrące. A poza tym... nie każdy kto tam zszedł wrócił. Ale dla desperata... to jedyna droga na zewnątrz.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "tunnel_dangers"
+            },
+            "result": "end"
+          }
+        ]
+      }
+    },
+    "brutus": {
+      "greeting": {
+        "id": "greeting",
+        "npc_text": "*Brutus odwraca się w twoją stronę, jego dłoń spoczywa na uchwycie miecza*\n'Co ty tutaj robisz, więźniu? Nie powinienes się tu kęcić!'",
+        "options": [
+          {
+            "text": "Przepraszam, już idę.",
+            "response": "'O tak, idź! I lepiej żebyś nie dał mi powodu do kolejnego spotkania. Mam oko na takich jak ty!'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          },
+          {
+            "text": "Tylko się rozglądam.",
+            "response": "*Brutus robi krok w twoją stronę*\n'Rozglądasz się? Szukasz może drogi ucieczki? To ci powiem - jedyna droga którą znajdziesz to droga do piór!'",
+            "next_node": "threat",
+            "requirements": null,
+            "effects": {
+              "reputation": [
+                "brutus",
+                -15
+              ]
+            },
+            "result": "continue"
+          },
+          {
+            "text": "Szanuję twoją pracę, strażniku.",
+            "response": "*Brutus marszczzy brwi, ale wydaje się lekko zaskoczony*\n'Hm. Przynajmniej masz maniery, więźniu. To rzadkość w tych murach. Ale nie myśl, że to ci da jakieś przywileje!'",
+            "next_node": "respect",
+            "requirements": null,
+            "effects": {
+              "reputation": [
+                "brutus",
+                5
+              ]
+            },
+            "result": "continue"
+          }
+        ]
+      },
+      "threat": {
+        "id": "threat",
+        "npc_text": "'Słuchaj mnie uważnie, ślaku. Widzisz ten miecz? To ostatnia rzecz jaką zobaczą ci co próbują uciekać. Nie testuj mojej cierpliwości!'",
+        "options": [
+          {
+            "text": "Zrozumiałem.",
+            "response": "'Dobrze. Teraz się wynos z mojego pola widzenia!'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "respect": {
+        "id": "respect",
+        "npc_text": "'Moja praca? Moja praca to pilnowanie żeby takie śmieci jak wy nie wywijały sztuček. I robię to cholernie dobrze od 10 lat!'",
+        "options": [
+          {
+            "text": "10 lat to długo. Musisz znać każdy kąt.",
+            "response": "'Każdy kamień, każdy korytarz, każda szpara w murze. Nie ma miejsca gdzie byście mogli się ukryć przede mną. Zapamiętaj to sobie!'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "brutus_experience"
+            },
+            "result": "end"
+          }
+        ]
+      }
+    },
+    "szczuply": {
+      "greeting": {
+        "id": "greeting",
+        "npc_text": "*Szczupły patrzy na ciebie z rozwagą, jedna ręka spoczywa na kluczach*\n'No, no... nowa twarz. Jestem Szczupły. W przeciwieństwie do mojego kolegi, preferuję... dyplomatyczne rozwiązania.'",
+        "options": [
+          {
+            "text": "Dyplomatyczne?",
+            "response": "*Szczupły uśmiecha się chytrze*\n'Każdy problem ma swoje rozwiązanie... za odpowiednią cenę. Nie lubisz swojej celi? Można się dogadać. Chcesz lepsze jedzenie? To też się da załatwić.'",
+            "next_node": "deals",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Nie jestem zainteresowany.",
+            "response": "'Nie ma problemu. Ale pamiętaj - jak będziesz potrzebować pomocy, to wiesz gdzie mnie znaleźć. Moje usługi są zawsze dostępne.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          },
+          {
+            "text": "Ile by kosztowała... wolność?",
+            "response": "*Oczy Szczupłego błyszczą chciwie*\n'Ach, od razu do rzeczy! Lubię to. Ale wolność... to duży interes. 500 sztuk złota. I to tylko za informacje o tym jak się stąd wydostać.'",
+            "next_node": "freedom_price",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          }
+        ]
+      },
+      "deals": {
+        "id": "deals",
+        "npc_text": "'Widzisz, więzienie to miejsce gdzie każdy potrzebuje czegoś. Lepsze jedzenie - 10 złotych. Klucz do innej celi - 50. Informacje o innych więźniach - 20.'",
+        "options": [
+          {
+            "text": "A co z kluczami do zbrojowni?",
+            "response": "*Szczupły marszczzy brwi*\n'To już naprawdę niebezpieczny teren. Zbrojownia to strefa zakazana. Ale... 200 złotych i mogłbym na pół godziny zapomnieć o kluczu.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "knowledge": "armory_access_price"
+            },
+            "result": "end"
+          },
+          {
+            "text": "Nie mam tyle pieniędzy.",
+            "response": "'Rozumiem. Ale pieniądze to nie wszystko. Przysługi też mają wartość. Przynieiesz mi coś wartocego z kuchni, a będziemy kwita.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "quest": "kitchen_favor_for_szczuply"
+            },
+            "result": "quest"
+          }
+        ]
+      },
+      "freedom_price": {
+        "id": "freedom_price",
+        "npc_text": "'500 złotych to uczciwa cena za informacje o tunelu pod więzieniem. Ale ostrzegam - to niebezpieczna droga. Wielu próbowało, niewielu wróciło.'",
+        "options": [
+          {
+            "text": "Dam ci 500 złotych.",
+            "response": "*Szczupły szybko liczy monety*\n'Doskonałe! Tunel zaczyna się w zbrojowni - pod kratką w podłodze. Prowadzi do starych kanałów. Ale uwaga - jest tam stare powietrze i... inne rzeczy.'",
+            "next_node": null,
+            "requirements": {
+              "gold": 500
+            },
+            "effects": {
+              "gold": -500,
+              "knowledge": "tunnel_entrance"
+            },
+            "result": "end"
+          },
+          {
+            "text": "Nie mam tyle.",
+            "response": "'Szkoda. Ale oferta jest ważna. Jak zdobdziesz pieniądze, wróć do mnie.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kilof": {
+    "nazwa": "Kilof",
+    "typ": "narzedzie",
+    "opis": "Solidny kilof do wydobywania kamieni i rud",
+    "waga": 3.0,
+    "bazowa_wartosc": 25,
+    "trwalosc": 150,
+    "kategoria": "narzędzie_wydobywcze",
+    "efekty": {
+      "wydajnosc_wydobycie": 3,
+      "bonus_kamien": 2
+    }
+  },
+  "lopata": {
+    "nazwa": "Łopata",
+    "typ": "narzedzie",
+    "opis": "Wytrzymała łopata do kopania i uprawy",
+    "waga": 2.5,
+    "bazowa_wartosc": 15,
+    "trwalosc": 120,
+    "kategoria": "narzędzie_rolnicze",
+    "efekty": {
+      "wydajnosc_rolnictwo": 2,
+      "bonus_ziemia": 1
+    }
+  },
+  "mlotek": {
+    "nazwa": "Młotek",
+    "typ": "narzedzie",
+    "opis": "Precyzyjny młotek kowalski",
+    "waga": 1.8,
+    "bazowa_wartosc": 20,
+    "trwalosc": 180,
+    "kategoria": "narzędzie_kowalskie",
+    "efekty": {
+      "wydajnosc_kowalstwo": 4,
+      "bonus_metal": 3
+    }
+  },
+  "dluto": {
+    "nazwa": "Dłuto",
+    "typ": "narzedzie",
+    "opis": "Ostre dłuto do obróbki drewna",
+    "waga": 0.8,
+    "bazowa_wartosc": 12,
+    "trwalosc": 100,
+    "kategoria": "narzędzie_stolarskie",
+    "efekty": {
+      "wydajnosc_stolarstwo": 3,
+      "bonus_drewno": 2
+    }
+  },
+  "igla": {
+    "nazwa": "Igła",
+    "typ": "narzedzie",
+    "opis": "Cienka igła do szycia i haftu",
+    "waga": 0.1,
+    "bazowa_wartosc": 8,
+    "trwalosc": 80,
+    "kategoria": "narzędzie_krawieckie",
+    "efekty": {
+      "wydajnosc_szycie": 2,
+      "bonus_tkanina": 1
+    }
+  }
+}

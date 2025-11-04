@@ -1,0 +1,71 @@
+{
+  "noz": {
+    "nazwa": "Nóż",
+    "typ": "bron",
+    "opis": "Ostry nóż bojowy i użytkowy",
+    "waga": 0.6,
+    "bazowa_wartosc": 18,
+    "trwalosc": 90,
+    "kategoria": "broń_biała",
+    "efekty": {
+      "obrazenia": 8,
+      "szybkosc": 2,
+      "bonus_precision": 1
+    }
+  },
+  "miecz": {
+    "nazwa": "Miecz",
+    "typ": "bron",
+    "opis": "Dwusieczny miecz wojownika",
+    "waga": 2.2,
+    "bazowa_wartosc": 45,
+    "trwalosc": 200,
+    "kategoria": "broń_biała",
+    "efekty": {
+      "obrazenia": 20,
+      "szybkosc": 1,
+      "bonus_blok": 2
+    }
+  },
+  "luk": {
+    "nazwa": "Łuk",
+    "typ": "bron",
+    "opis": "Giętki łuk myśliwski",
+    "waga": 1.5,
+    "bazowa_wartosc": 35,
+    "trwalosc": 120,
+    "kategoria": "broń_dystansowa",
+    "efekty": {
+      "obrazenia": 15,
+      "zasieg": 5,
+      "bonus_celnosc": 3
+    }
+  },
+  "strzaly": {
+    "nazwa": "Strzały",
+    "typ": "bron",
+    "opis": "Komplet ostrych strzał",
+    "waga": 1.0,
+    "bazowa_wartosc": 12,
+    "trwalosc": 50,
+    "kategoria": "amunicja",
+    "efekty": {
+      "obrazenia": 5,
+      "ilosc": 20
+    }
+  },
+  "maczuga": {
+    "nazwa": "Maczuga",
+    "typ": "bron",
+    "opis": "Ciężka drewniana maczuga",
+    "waga": 3.5,
+    "bazowa_wartosc": 22,
+    "trwalosc": 80,
+    "kategoria": "broń_obuchowa",
+    "efekty": {
+      "obrazenia": 18,
+      "szybkosc": -1,
+      "bonus_ogłuszenie": 2
+    }
+  }
+}

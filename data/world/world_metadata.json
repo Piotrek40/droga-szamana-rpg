@@ -1,0 +1,742 @@
+{
+  "world": {
+    "name": "Kraina Barliony",
+    "description": "Świat, gdzie granice między grą a rzeczywistością zacierają się, a każda decyzja ma konsekwencje sięgające daleko poza wyobraźnię.",
+    "current_age": "Era Pustki",
+    "calendar": {
+      "year": 1247,
+      "month": "Miesiąc Krwawego Księżyca",
+      "day": 15
+    }
+  },
+  "regions": {
+    "wiezienie_poczatku": {
+      "name": "Więzienie Początku",
+      "type": "prison",
+      "danger_level": 3,
+      "description": "Starożytna forteca przekształcona w więzienie, gdzie kamienie pamiętają krzyki tysiąca dusz. Mury nasiąknięte są cierpieniem pokoleń.",
+      "lore": "Zbudowane na ruinach świątyni Pustki, więzienie jest przeklęte. Mówi się, że duchy dawnych kapłanów wciąż błąkają się po lochach.",
+      "ambient_sounds": [
+        "krople wody",
+        "odległe jęki",
+        "szczury",
+        "echo kroków",
+        "skrzypienie łańcuchów"
+      ],
+      "smells": [
+        "pleśń",
+        "rdza",
+        "strach",
+        "krew",
+        "wilgoć"
+      ],
+      "weather_effects": {
+        "rain": "Woda przecieka przez pęknięcia w murach, tworząc kałuże krwistoczerwone od rdzy.",
+        "storm": "Grzmoty wstrząsają fundamentami, a błyskawice oświetlają cele niczym sceny z koszmaru.",
+        "fog": "Mgła wślizguje się przez kraty, przynosząc ze sobą szepty zmarłych.",
+        "snow": "Śnieg pokrywa dziedziniec białym całunem, ukrywając plamy krwi."
+      },
+      "secrets_count": 12,
+      "hidden_passages": 3,
+      "notable_features": [
+        "Szubienica Tysiąca Dusz",
+        "Studnia Zapomnienia",
+        "Komnata Oczyszczenia",
+        "Lochy Szaleństwa",
+        "Tajna Biblioteka Naczelnika"
+      ]
+    },
+    "czarny_las": {
+      "name": "Czarny Las",
+      "type": "forest",
+      "danger_level": 5,
+      "description": "Pradawna puszcza, gdzie drzewa rosną tak gęsto, że nawet w południe panuje wieczny zmierzch. Korzenie splatają się jak węże, a konary tworzą sklepienie nieprzepuszczalne dla światła.",
+      "lore": "Las istniał przed pierwszymi osadnikami. Druidzi mówią, że każde drzewo ma duszę, a niektóre pamiętają czasy, gdy bogowie chodzili po ziemi.",
+      "ambient_sounds": [
+        "szelest liści",
+        "łamanie gałęzi",
+        "wycie wilków",
+        "pohukiwanie sów",
+        "nieznane szepty"
+      ],
+      "smells": [
+        "mokre liście",
+        "grzyby",
+        "dzika zwierzyna",
+        "gnijące drewno",
+        "tajemnicze zioła"
+      ],
+      "sub_locations": {
+        "druidzki_krag": {
+          "name": "Krąg Druidów",
+          "description": "Polana otoczona kamiennymi monolitami pokrytymi runami. W centrum rośnie Drzewo Tysiąca Lat, którego korzenie sięgają samego serca ziemi.",
+          "secrets": [
+            "Portal do Pustkowi",
+            "Źródło Mocy",
+            "Grób Pierwszego Druida"
+          ],
+          "npcs": [
+            "Stary Dąb - arcydruid",
+            "Wilcza Pani - strażniczka"
+          ],
+          "time_variations": {
+            "dawn": "Poranna rosa na kamieniach lśni jak diamenty, a pierwsze promienie słońca rozpalają runy złotym blaskiem.",
+            "noon": "Cienie kamieni tworzą mistyczny wzór na polanie, wskazując ukryte ścieżki mocy.",
+            "dusk": "Kamienie zaczynają świecić bladozielonym światłem, a z lasu dochodzą odgłosy budzących się duchów.",
+            "night": "Gwiazdy układają się w konstelacje widoczne tylko z tego miejsca, a portal do innych wymiarów uchyla się."
+          }
+        },
+        "opuszczona_drwalnia": {
+          "name": "Opuszczona Drwalnia",
+          "description": "Zrujnowane baraki i warsztaty zarosły mchem i bluszczem. Zardzewiałe piły wciąż wiszą na ścianach, a w powietrzu unosi się zapach starego drewna i krwi.",
+          "secrets": [
+            "Dziennik zaginionego drwala",
+            "Ukryty schowek z bronią",
+            "Mapa głębokiego lasu"
+          ],
+          "dangers": [
+            "Zmutowane pająki",
+            "Pułapki na niedźwiedzie",
+            "Niestabilne konstrukcje"
+          ],
+          "loot": [
+            "Topór drwala",
+            "Mocna lina",
+            "Stare mapy",
+            "Konserwowane jedzenie"
+          ]
+        },
+        "swiety_gaj": {
+          "name": "Święty Gaj",
+          "description": "Miejsce, gdzie drzewa rosną w idealnym kręgu, a ich kora świeci delikatnym światłem. Zwierzęta nie boją się tu ludzi, a rany goją się szybciej.",
+          "effects": [
+            "Regeneracja +50%",
+            "Odpędzenie zła",
+            "Wizje przyszłości"
+          ],
+          "requirements": [
+            "Czyste serce",
+            "Brak przelanej krwi"
+          ],
+          "guardian": "Biały Jeleń - duch opiekuńczy"
+        },
+        "lysina_wisielcow": {
+          "name": "Łysina Wisielców",
+          "description": "Martwa polana, gdzie nic nie rośnie. Drzewa na obrzeżach są czarne i pozbawione liści, a z gałęzi zwisają strzępy lin. Ziemia jest twarda jak kamień i pokryta popiołem.",
+          "history": "Tu wieszano bandytów i czarownice. Ich duchy wciąż błąkają się nocą, szukając zemsty.",
+          "dangers": [
+            "Duchy wisielców",
+            "Przeklęta ziemia",
+            "Halucynacje"
+          ],
+          "time_variations": {
+            "night": "Duchy materializują się, szepcząc przekleństwa i obietnice zemsty. Liny na drzewach poruszają się bez wiatru."
+          }
+        },
+        "jaskinia_ciemnosci": {
+          "name": "Jaskinia Wiecznej Ciemności",
+          "description": "Wejście do systemu jaskiń, gdzie nawet pochodnie gasną. Tylko magiczne światło może rozjaśnić nieprzenikniony mrok.",
+          "depths": [
+            "Hala Ech",
+            "Jezioro Zapomnienia",
+            "Gniazdo Pajęczycy",
+            "Komnata Kryształów"
+          ],
+          "treasures": [
+            "Kryształy mocy",
+            "Starożytna zbroja",
+            "Eliksir niewidzialności"
+          ],
+          "boss": "Pajęcza Matka - starożytny koszmar"
+        }
+      },
+      "random_encounters": [
+        "Watahy wilków",
+        "Zbłąkany handlarz",
+        "Patrol druidów",
+        "Duchy lasu",
+        "Kłusownicy",
+        "Ranne zwierzę",
+        "Tajemnicza mgła",
+        "Ognisko bandytów"
+      ],
+      "weather_specific": {
+        "fog": "Mgła jest tak gęsta, że nie widać własnej dłoni. Drzewa wyłaniają się z niej jak duchy.",
+        "rain": "Krople deszczu tworzą tysiące małych wodospadów spływających z liści.",
+        "storm": "Wiatr wyje między konarami jak stado demonów, a błyskawice rozświetlają las niczym dzień."
+      }
+    },
+    "targowisko": {
+      "name": "Targowisko Trzech Dróg",
+      "type": "town",
+      "danger_level": 2,
+      "population": 3500,
+      "description": "Tętniące życiem miasteczko na skrzyżowaniu głównych szlaków handlowych. Kolorowe stragany, krzykliwi kupcy i zapach egzotycznych przypraw mieszają się w chaotyczną symfonię handlu.",
+      "lore": "Założone przez trzech braci-kupców, którzy pokłócili się o podział zysków. Każdy kontroluje teraz jedną dzielnicę, a ich rywalizacja napędza gospodarkę miasta.",
+      "districts": {
+        "plac_glowny": {
+          "name": "Plac Główny",
+          "description": "Serce miasta, gdzie życie tętni od świtu do późnej nocy. Fontanna Trzech Braci tryska czystą wodą, a wokół niej rozkładają się dziesiątki straganów.",
+          "shops": [
+            "Złoty Kufer - jubiler",
+            "Stal i Ogień - zbrojmistrz",
+            "Eliksiry Marianny - alchemik"
+          ],
+          "notable_npcs": [
+            "Burmistrz Władysław",
+            "Herold miejski",
+            "Kapitan straży"
+          ],
+          "activities": [
+            "Handel",
+            "Występy bardów",
+            "Ogłoszenia",
+            "Egzekucje publiczne"
+          ],
+          "time_events": {
+            "morning": "Kupcy rozkładają stragany, a piekarze wynoszą świeży chleb.",
+            "noon": "Tłum jest najgęstszy, herald ogłasza wieści.",
+            "evening": "Bardowie rozpoczynają występy, tawerny się zapełniają.",
+            "night": "Straż patroluje, tylko nieliczne tawerny są otwarte."
+          }
+        },
+        "dzielnica_rzemeslnicza": {
+          "name": "Dzielnica Rzemieślnicza",
+          "description": "Wąskie uliczki pełne warsztatów, gdzie dźwięk młotów miesza się z sykiem hartowanej stali. Dym z kuźni unosi się nad dachami.",
+          "workshops": [
+            "Kuźnia Mistrza Gromota",
+            "Warsztat Krawiecki Elżbiety",
+            "Garbarnia Starego Józefa"
+          ],
+          "guild_halls": [
+            "Cech Kowali",
+            "Bractwo Tkaczy",
+            "Gildia Złotników"
+          ],
+          "secrets": [
+            "Podziemna kuźnia",
+            "Magazyn skradzionej broni",
+            "Tajna świątynia"
+          ],
+          "quests": [
+            "Zamówienie na zbroję",
+            "Kradzież narzędzi",
+            "Sabotaż konkurencji"
+          ]
+        },
+        "port_rzeczny": {
+          "name": "Port Rzeczny",
+          "description": "Brzeg rzeki zastawiony pomostami i magazynami. Zapach ryb miesza się z wonią smoły i mokrego drewna.",
+          "features": [
+            "Targ rybny",
+            "Magazyny towarów",
+            "Stocznia",
+            "Karczma 'Pod Kotwicą'"
+          ],
+          "npcs": [
+            "Kapitan Burza",
+            "Przemytnicy",
+            "Dokerzy",
+            "Rybacy"
+          ],
+          "smuggling": [
+            "Nielegalne towary",
+            "Tajne przejścia",
+            "Łapówki dla straży"
+          ],
+          "time_specific": {
+            "dawn": "Rybacy wracają z połowu, rozpoczyna się targ rybny.",
+            "night": "Przemytnicy rozładowują swoje towary pod osłoną ciemności."
+          }
+        },
+        "slumsy": {
+          "name": "Dolne Miasto",
+          "description": "Brudne zaułki, gdzie prawo sięga rzadko. Wąskie uliczki tworzą labirynt, w którym łatwo się zgubić lub zginąć.",
+          "dangers": [
+            "Złodziejskie bandy",
+            "Zaraza",
+            "Nielegalne walki",
+            "Narkotyki"
+          ],
+          "notable_locations": [
+            "Arena walk",
+            "Melina 'Czarny Kruk'",
+            "Dom publiczny 'Róża'"
+          ],
+          "underground": [
+            "Gildia Złodziei",
+            "Czarny rynek",
+            "Kult Pustki"
+          ],
+          "atmosphere": {
+            "day": "Żebracy proszą o jałmużnę, przestępcy kryją się w cieniach.",
+            "night": "Ulice pustoszeją, tylko odważni lub głupi wychodzą po zmroku."
+          }
+        },
+        "dzielnica_szlachecka": {
+          "name": "Wzgórze Lordów",
+          "description": "Eleganckie rezydencje otoczone murami i ogrodami. Straż pilnuje wejść, a służba krząta się po szerokich ulicach.",
+          "mansions": [
+            "Pałac Lorda Konrada",
+            "Willa Kupca Złotoręki",
+            "Rezydencja Lady Izabeli"
+          ],
+          "features": [
+            "Ogrody publiczne",
+            "Łaźnie",
+            "Teatr",
+            "Ekskluzywne sklepy"
+          ],
+          "intrigue": [
+            "Romanse",
+            "Spiski polityczne",
+            "Szantaże",
+            "Pojedynki honorowe"
+          ],
+          "access": "Tylko dla szlachty lub z przepustką"
+        }
+      },
+      "market_dynamics": {
+        "morning_prices": "90% ceny bazowej",
+        "noon_prices": "100% ceny bazowej",
+        "evening_prices": "110% ceny bazowej",
+        "special_events": [
+          "Jarmark (ceny -20%)",
+          "Niedobór (ceny +50%)",
+          "Święto (sklepy zamknięte)"
+        ]
+      },
+      "factions": {
+        "straz_miejska": {
+          "influence": 60,
+          "leader": "Kapitan Markus Żelazna Pięść",
+          "attitude": "Lawful Neutral"
+        },
+        "gildia_kupcow": {
+          "influence": 80,
+          "leader": "Mistrz Złotoręki",
+          "attitude": "Profit-oriented"
+        },
+        "bractwo_zlodziei": {
+          "influence": 40,
+          "leader": "Cień",
+          "attitude": "Chaotic Neutral"
+        }
+      }
+    },
+    "kopalnie_zelaza": {
+      "name": "Kopalnie Żelaza Krwawej Góry",
+      "type": "mines",
+      "danger_level": 4,
+      "description": "Rozległy system tuneli i szybów drążonych w czerwonym kamieniu góry. Echo uderzeń kilofów miesza się z trzaskiem podpór i sykiem pary z głębin.",
+      "lore": "Kopalnie działają od pięciuset lat. Mówi się, że w najgłębszych szybach górnicy natrafili na coś, co nie powinno być odkryte.",
+      "levels": {
+        "poziom_0_wejscie": {
+          "name": "Wejście do Kopalni",
+          "description": "Plac przed kopalnią zastawiony wózkami z rudą. Wielkie wrota prowadzą w ciemność szybu. Wokół rozsiane są baraki górników.",
+          "features": [
+            "Biuro nadzorcy",
+            "Magazyn narzędzi",
+            "Kuźnia polowa",
+            "Baraki"
+          ],
+          "npcs": [
+            "Nadzorca kopalni",
+            "Strażnicy",
+            "Górnicy zmianowi"
+          ],
+          "sounds": [
+            "Gwizd sygnałowy",
+            "Turkot wózków",
+            "Rozmowy górników"
+          ]
+        },
+        "poziom_1_glowne_tunele": {
+          "name": "Główne Tunele",
+          "description": "Szerokie korytarze wzmocnione drewnianymi podporami. Tory dla wózków biegną w głąb góry. Na ścianach płoną pochodnie, ale cienie są długie i głębokie.",
+          "branches": [
+            "Szyb wschodni",
+            "Szyb zachodni",
+            "Tunel centralny"
+          ],
+          "dangers": [
+            "Zawały",
+            "Gaz kopalniany",
+            "Zmęczeni górnicy"
+          ],
+          "resources": [
+            "Żelazna ruda",
+            "Węgiel",
+            "Kryształy soli"
+          ]
+        },
+        "poziom_2_stare_wyrobiska": {
+          "name": "Stare Wyrobiska",
+          "description": "Opuszczone tunele, gdzie podpory są spróchniałe, a powietrze ciężkie. Nikt tu nie schodzi bez potrzeby.",
+          "secrets": [
+            "Szkielety górników",
+            "Ukryty skarb",
+            "Dziwne znaki na ścianach"
+          ],
+          "creatures": [
+            "Nietoperze",
+            "Pająki jaskiniowe",
+            "Szczury kopalniane"
+          ],
+          "environmental_hazards": [
+            "Osuwiska",
+            "Zatęchłe powietrze",
+            "Głębokie szyby"
+          ]
+        },
+        "poziom_3_krasnoludzkie_ruiny": {
+          "name": "Krasnoludzkie Ruiny",
+          "description": "Starożytne sale wykute z precyzją przekraczającą ludzkie możliwości. Ściany pokryte są runami, które pulsują bladym światłem.",
+          "chambers": [
+            "Sala Tronowa",
+            "Kuźnia Runów",
+            "Skarbiec",
+            "Świątynia"
+          ],
+          "guardians": [
+            "Kamienne golemy",
+            "Duchy krasnoludów",
+            "Pułapki mechaniczne"
+          ],
+          "treasures": [
+            "Runiczny młot",
+            "Krasnoludzka zbroja",
+            "Księga rzemiosła"
+          ],
+          "warnings": "Nie budźcie tego, co śpi w głębinach"
+        },
+        "poziom_4_glebia": {
+          "name": "Głębia",
+          "description": "Tu kończy się świat ludzi. Ciemność jest namacalna, a powietrze drży od nieznanej energii. Skały są czarne jak noc i ciepłe w dotyku.",
+          "mysteries": [
+            "Portal do Pustkowi",
+            "Śpiący Starożytny",
+            "Źródło Mroku"
+          ],
+          "effects": [
+            "Halucynacje",
+            "Szaleństwo",
+            "Mutacje"
+          ],
+          "final_warning": "Zawróć, póki możesz. Niektóre tajemnice powinny pozostać pogrzebane."
+        }
+      },
+      "mining_system": {
+        "ore_quality": [
+          "Słaba",
+          "Zwykła",
+          "Dobra",
+          "Doskonała",
+          "Legendarna"
+        ],
+        "tools_required": [
+          "Kilof",
+          "Latarnia",
+          "Lina",
+          "Dynamit"
+        ],
+        "shift_schedule": {
+          "dawn": "Zmiana poranna schodzi",
+          "noon": "Wymiana zmian",
+          "dusk": "Zmiana nocna schodzi",
+          "night": "Tylko strażnicy i śmiałkowie"
+        }
+      },
+      "events": [
+        "Zawał tunelu",
+        "Odkrycie nowej żyły",
+        "Strajk górników",
+        "Atak potworów z głębin",
+        "Eksplozja gazu",
+        "Znalezienie starożytnego artefaktu"
+      ]
+    },
+    "pustkowia": {
+      "name": "Pustkowia Utraconej Nadziei",
+      "type": "wasteland",
+      "danger_level": 6,
+      "description": "Kraina spalona i skażona przez Pustkę. Ziemia jest popękana i jałowa, niebo zawsze zachmurzone purpurowymi chmurami. Rzeczywistość jest tu niestabilna.",
+      "lore": "Kiedyś kwitnąca kraina, zniszczona podczas Wojny Pustki. Teraz tylko szaleńcy i wygnańcy zapuszczają się w te przeklęte ziemie.",
+      "phenomena": {
+        "reality_tears": {
+          "description": "Pęknięcia w rzeczywistości, przez które widać inne wymiary",
+          "effects": [
+            "Teleportacja",
+            "Duplikacja",
+            "Wymiarowe potwory"
+          ],
+          "frequency": "Losowo, częściej podczas burz"
+        },
+        "void_storms": {
+          "description": "Burze czystej energii Pustki, które zmieniają wszystko, czego dotkną",
+          "damage": "1-100 punktów Pustki",
+          "mutations": [
+            "Dodatkowe kończyny",
+            "Psychiczne moce",
+            "Szaleństwo"
+          ],
+          "shelter_required": true
+        },
+        "time_anomalies": {
+          "description": "Obszary gdzie czas płynie inaczej",
+          "types": [
+            "Przyspieszenie",
+            "Spowolnienie",
+            "Pętle czasowe",
+            "Echa przeszłości"
+          ],
+          "navigation_difficulty": "Ekstremalna"
+        }
+      },
+      "landmarks": {
+        "czarna_wieza": {
+          "name": "Czarna Wieża",
+          "description": "Samotna wieża z czarnego obsydianu, nietknięta przez czas i zniszczenie. Wewnątrz czas się zatrzymał.",
+          "guardian": "Strażnik Pustki - istota spoza rzeczywistości",
+          "treasure": "Artefakty Pustki",
+          "warning": "Wejście zmienia człowieka na zawsze"
+        },
+        "szkieletowe_pola": {
+          "name": "Szkieletowe Pola",
+          "description": "Tysiące kości pokrywają ziemię jak do horyzontu. Niektóre wciąż się poruszają.",
+          "encounters": [
+            "Ożywione szkielety",
+            "Duchy poległych",
+            "Nekromanci"
+          ],
+          "resources": [
+            "Kości do rytuałów",
+            "Ektoplazma",
+            "Dusze w butelkach"
+          ]
+        },
+        "oaza_szalenca": {
+          "name": "Oaza Szaleńca",
+          "description": "Jedyne zielone miejsce na Pustkowiach. Ale woda jest zatruta, a owoce przynoszą koszmary.",
+          "inhabitant": "Szalony Prorok - mówi prawdę, której nikt nie chce słuchać",
+          "visions": [
+            "Przeszłość",
+            "Możliwe przyszłości",
+            "Inne wymiary"
+          ],
+          "cost": "Fragment zdrowia psychicznego"
+        },
+        "most_dusz": {
+          "name": "Most Dusz",
+          "description": "Widmowy most nad przepaścią bez dna. Zbudowany z dusz potępionych.",
+          "crossing_test": "Test woli i czystości duszy",
+          "failure": "Dołączenie do konstrukcji mostu",
+          "reward": "Przejście do Zaświatów"
+        }
+      },
+      "nomad_camps": {
+        "description": "Koczownicze obozy ludzi, którzy nauczyli się żyć w Pustkowiach",
+        "services": [
+          "Handel",
+          "Przewodnicy",
+          "Uzdrowiciele szaleństwa"
+        ],
+        "knowledge": [
+          "Bezpieczne ścieżki",
+          "Schronienia",
+          "Rytuały ochronne"
+        ],
+        "trust_required": "Wysoka reputacja lub cenną wymianę"
+      },
+      "survival_rules": {
+        "water": "Cała woda jest skażona - wymaga oczyszczenia",
+        "food": "Większość roślin i zwierząt jest zmutowana",
+        "shelter": "Konieczne podczas burz Pustki",
+        "sanity": "Spada o 1 punkt dziennie bez ochrony",
+        "navigation": "Kompas nie działa, gwiazdy są fałszywe"
+      },
+      "treasures": [
+        "Fragmenty Pustki - źródło mocy",
+        "Przedmioty sprzed wojny",
+        "Zmutowane kryształy",
+        "Dusze w kamieniach",
+        "Mapy innych wymiarów"
+      ],
+      "warnings": [
+        "Nie patrz zbyt długo w Pustkę",
+        "Nie ufaj własnym oczom",
+        "Nie słuchaj głosów w wietrze",
+        "Nie śpij bez ochrony",
+        "Nie pij wody z oaz"
+      ]
+    }
+  },
+  "travel_system": {
+    "routes": {
+      "wiezienie_to_czarny_las": {
+        "distance": "2 dni marszu",
+        "difficulty": "Średnia",
+        "encounters": [
+          "Patrol straży",
+          "Bandyci",
+          "Wędrowy handlarz"
+        ],
+        "description": "Wąska ścieżka wijąca się między wzgórzami, prowadząca do mrocznej ściany lasu."
+      },
+      "czarny_las_to_targowisko": {
+        "distance": "1 dzień marszu",
+        "difficulty": "Łatwa",
+        "encounters": [
+          "Karawana kupiecka",
+          "Patrol miejski",
+          "Wędrowni artyści"
+        ],
+        "description": "Uczęszczany trakt handlowy, stosunkowo bezpieczny za dnia."
+      },
+      "targowisko_to_kopalnie": {
+        "distance": "3 dni marszu",
+        "difficulty": "Trudna",
+        "encounters": [
+          "Bandyci górskie",
+          "Lawina kamienna",
+          "Zbiegowie z kopalni"
+        ],
+        "description": "Stroma ścieżka w góry, niebezpieczna szczególnie podczas złej pogody."
+      },
+      "kopalnie_to_pustkowia": {
+        "distance": "5 dni marszu",
+        "difficulty": "Ekstremalna",
+        "encounters": [
+          "Mutanty",
+          "Burze Pustki",
+          "Szaleńcy",
+          "Anomalie"
+        ],
+        "description": "Droga wiedzie przez coraz bardziej spustoszone ziemie, gdzie rzeczywistość traci znaczenie."
+      }
+    },
+    "travel_events": [
+      {
+        "id": "broken_wagon",
+        "description": "Znajdujesz rozbity wóz kupecki. Wokół walają się towary, ale nie ma śladu ludzi.",
+        "choices": [
+          "Przeszukaj wóz",
+          "Zbadaj ślady",
+          "Odejdź szybko"
+        ],
+        "outcomes": [
+          "Znajdujesz cenne towary",
+          "Ślady prowadzą do bandytów",
+          "Unikasz zasadzki"
+        ]
+      },
+      {
+        "id": "mysterious_traveler",
+        "description": "Samotny wędrowiec w kapturze oferuje ci zagadkową radę.",
+        "choices": [
+          "Wysłuchaj",
+          "Zignoruj",
+          "Ograb"
+        ],
+        "outcomes": [
+          "Otrzymujesz wskazówkę",
+          "Nic się nie dzieje",
+          "To był potężny mag - walka!"
+        ]
+      },
+      {
+        "id": "void_echo",
+        "description": "Słyszysz swój własny głos dochodzący z lasu, wołający o pomoc.",
+        "choices": [
+          "Zbadaj",
+          "Uciekaj",
+          "Odpowiedz"
+        ],
+        "outcomes": [
+          "To pułapka Pustki",
+          "Unikasz niebezpieczeństwa",
+          "Echo odpowiada..."
+        ]
+      }
+    ]
+  },
+  "world_events": {
+    "active": [
+      {
+        "name": "Krwawy Księżyc",
+        "description": "Księżyc świeci czerwonym światłem, wzmagając agresję i przyciągając potwory.",
+        "duration": "3 noce",
+        "effects": [
+          "Potwory +50% siły",
+          "Ludzie bardziej agresywni",
+          "Rytuały krwi są silniejsze"
+        ]
+      }
+    ],
+    "upcoming": [
+      {
+        "name": "Jarmark Jesieni",
+        "location": "Targowisko",
+        "starts_in": "7 dni",
+        "description": "Największy jarmark roku, przyciągający kupców z całego królestwa."
+      }
+    ]
+  },
+  "mythology": {
+    "creation_myth": "Na początku była tylko Pustka. Z niej wyłonili się Pierwsi - istoty czystej mocy, które stworzyły świat jako więzienie dla Pustki. Ale Pustka jest cierpliwa i powoli odzyskuje to, co jej zabrano.",
+    "gods": {
+      "swiatlonosha": {
+        "name": "Światłonocha",
+        "domain": "Światło, nadzieja, porządek",
+        "followers": "Paladyni, kapłani, władcy",
+        "enemy": "Pustka"
+      },
+      "matka_lasu": {
+        "name": "Matka Lasu",
+        "domain": "Natura, życie, równowaga",
+        "followers": "Druidzi, łowcy, zielarze",
+        "neutral": true
+      },
+      "kolekcjoner_dusz": {
+        "name": "Kolekcjoner Dusz",
+        "domain": "Śmierć, pamięć, sprawiedliwość",
+        "followers": "Grabarze, sędziowie, zabójcy",
+        "neutral": true
+      },
+      "pan_pustki": {
+        "name": "Pan Pustki",
+        "domain": "Chaos, zniszczenie, przemiana",
+        "followers": "Kultyści, szaleńcy, niektórzy magowie",
+        "enemy": "Cały porządek świata"
+      }
+    },
+    "prophecies": [
+      {
+        "name": "Proroctwo Powrotu",
+        "text": "Gdy trzy księżyce spotkają się na niebie, a rzeki popłyną krwią, Pierwsi powrócą, by stawić czoła Pustce w ostatniej bitwie.",
+        "signs": [
+          "Krwawy księżyc (spełnione)",
+          "Trzęsienie ziemi w świętych miejscach",
+          "Narodziny Wybrańca"
+        ]
+      }
+    ]
+  },
+  "easter_eggs": [
+    {
+      "location": "Cela 1",
+      "trigger": "Policz wszystkie kreski na ścianie",
+      "result": "Jest ich dokładnie 1337 - więzień był hakerem?"
+    },
+    {
+      "location": "Czarny Las",
+      "trigger": "Powiedz 'Mahan' trzy razy przy Drzewie Tysiąca Lat",
+      "result": "Drzewo szepcze: 'Droga Szamana jest długa i kręta...'"
+    },
+    {
+      "location": "Kopalnie",
+      "trigger": "Zagraj melodię 'Krasnoludzkiej Pieśni' na poziomie 3",
+      "result": "Otwierają się sekretne drzwi do sali skarbów"
+    }
+  ]
+}
