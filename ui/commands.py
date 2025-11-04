@@ -814,6 +814,7 @@ class CommandParser:
             # Zapisz stan dialogu w grze
             self.game_state.current_dialogue = {
                 'npc_id': npc_found,
+                'npc_name': npc_obj.name if npc_obj else 'Nieznany',  # Dodane dla kontekstu dialogu
                 'node_id': 'greeting',
                 'options': options
             }

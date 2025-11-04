@@ -35,24 +35,44 @@ class PrologueInterface:
         # Contextual Action Menu - inteligentne menu akcji
         self.contextual_menu = ContextualActionMenu(game_state)
 
-    def display_game_screen(self):
-        """Wyświetl główny ekran gry z wszystkimi panelami."""
-        # Wyczyść ekran (opcjonalnie - można wyłączyć)
-        # self.interface.clear()
+        # Display state tracking
+        self.last_location = None  # Track last location for change detection
+        self.needs_full_refresh = True  # Flag czy pokazać pełny ekran
 
-        # Panel statusu
-        self._display_status_panel()
+    def display_game_screen(self, force_full: bool = False):
+        """
+        Wyświetl główny ekran gry - pełny lub kompaktowy w zależności od potrzeby.
 
-        print()  # Odstęp
+        Args:
+            force_full: Wymuś pełne wyświetlenie (dla komend jak 'rozejrzyj')
+        """
+        # Sprawdź czy lokacja się zmieniła
+        current_location = self.game_state.current_location
+        location_changed = (current_location != self.last_location)
 
-        # Panel lokacji
-        self._display_location_panel()
+        if location_changed:
+            self.last_location = current_location
+            self.needs_full_refresh = True
 
-        print()  # Odstęp
+        # Decyzja: pełny ekran czy kompaktowy
+        show_full = self.needs_full_refresh or force_full
 
-        # Panel szybkich akcji (jeśli hinty włączone)
-        if self.show_hints:
-            self._display_quick_actions()
+        if show_full:
+            # PEŁNY EKRAN - wszystkie panele
+            self._display_status_panel()
+            print()  # Odstęp
+            self._display_location_panel()
+            print()  # Odstęp
+
+            # Panel szybkich akcji (jeśli hinty włączone)
+            if self.show_hints:
+                self._display_quick_actions()
+
+            # Reset flag - następnym razem kompaktowy
+            self.needs_full_refresh = False
+        else:
+            # KOMPAKTOWY - tylko mini-status
+            self._display_mini_status()
 
     def _display_status_panel(self):
         """Wyświetl przyjazny panel statusu gracza."""
@@ -221,12 +241,18 @@ class PrologueInterface:
         # Sprawdź czy to numer (numbered action)
         if user_input.isdigit():
             number = int(user_input)
+
+            # WAŻNE: Sprawdź czy menu jest aktualne
+            if not self.contextual_menu.is_menu_valid():
+                self.interface.print(f"❌ Menu nie jest aktualne. Wciśnij '?' aby zobaczyć dostępne akcje.", 'red')
+                return "", False
+
             command = self.contextual_menu.get_command_by_number(number)
             if command:
                 self.interface.print(f"→ {command}", 'dim')
                 return command, False
             else:
-                self.interface.print(f"❌ Nieprawidłowy numer: {number}", 'red')
+                self.interface.print(f"❌ Nieprawidłowy numer: {number}. Wciśnij '?' aby zobaczyć dostępne akcje.", 'red')
                 return "", False
 
         user_input_lower = user_input.lower()
@@ -364,6 +390,82 @@ Powodzenia, Szamanie! 🔥
     def show_contextual_menu(self):
         """Wyświetl menu kontekstowe z dostępnymi akcjami."""
         self.contextual_menu.display_menu(self.interface)
+        # Po pokazaniu menu, następny display powinien być kompaktowy
+        self.needs_full_refresh = False
+
+    def request_full_refresh(self):
+        """Wymusz pełne odświeżenie przy następnym display_game_screen()."""
+        self.needs_full_refresh = True
+
+    def _display_mini_status(self):
+        """Wyświetl kompaktowy status w jednej linii."""
+        if not self.game_state.player:
+            return
+
+        player = self.game_state.player
+
+        # HP
+        hp = player.health
+        max_hp = player.max_health
+        hp_percent = (hp / max_hp * 100) if max_hp > 0 else 0
+        hp_color = self._get_health_color(hp_percent)
+
+        # Stamina
+        stamina = player.stamina
+        max_stamina = player.max_stamina
+        st_percent = (stamina / max_stamina * 100) if max_stamina > 0 else 0
+        st_color = self._get_stamina_color(st_percent)
+
+        # Lokacja
+        location_name = self.game_state.current_location.replace('_', ' ').title()
+
+        # Kompaktowa linia statusu
+        status_line = f"❤️{hp}/{max_hp} ⚡{stamina}/{max_stamina}"
+
+        # Dodaj ból jeśli > 0
+        if hasattr(player, 'pain') and player.pain > 0:
+            status_line += f" 💢{player.pain}%"
+
+        # Dodaj lokację
+        status_line += f" 📍{location_name}"
+
+        # Wyświetl z separatorem
+        self.interface.print("─" * 50, 'dim')
+        self.interface.print(status_line, 'cyan')
+        self.interface.print("─" * 50, 'dim')
+
+    def display_dialogue_context(self, npc_name: str):
+        """
+        Wyświetl kontekst podczas dialogu (mini-status + info o rozmówcy).
+
+        Args:
+            npc_name: Imię NPCa z którym rozmawiamy
+        """
+        if not self.game_state.player:
+            return
+
+        player = self.game_state.player
+
+        # HP i Stamina
+        hp = player.health
+        max_hp = player.max_health
+        stamina = player.stamina
+        max_stamina = player.max_stamina
+
+        # Lokacja
+        location_name = self.game_state.current_location.replace('_', ' ').title()
+
+        # Kompaktowa linia
+        status_line = f"❤️{hp}/{max_hp} ⚡{stamina}/{max_stamina} 📍{location_name} 💬{npc_name}"
+
+        # Dodaj ból jeśli > 0
+        if hasattr(player, 'pain') and player.pain > 0:
+            status_line += f" 💢{player.pain}%"
+
+        # Wyświetl
+        self.interface.print("\n" + "═" * 60, 'cyan')
+        self.interface.print(status_line, 'bright_cyan')
+        self.interface.print("═" * 60, 'cyan')
 
     # === Helper Methods ===
 
