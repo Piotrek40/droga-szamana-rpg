@@ -386,11 +386,13 @@ class DrogaSzamanaRPG:
 
         while self.game_state.game_mode == GameMode.PLAYING:
             try:
-                # Wyświetl główny ekran
+                # Wyświetl główny ekran (pełny lub kompaktowy)
                 self.prologue_interface.display_game_screen()
 
                 # Pokaż postęp tutoriali (opcjonalnie)
-                self.prologue_interface.display_tutorial_progress()
+                # TODO: Tylko jeśli tutorial nie ukończony
+                if self.game_state.tutorial_manager and len(self.game_state.first_time_commands) < 7:
+                    self.prologue_interface.display_tutorial_progress()
 
                 # Pobierz komendę z obsługą quick keys
                 command, show_menu = self.prologue_interface.get_input_with_quickkeys()
@@ -399,6 +401,7 @@ class DrogaSzamanaRPG:
                 if show_menu:
                     print()  # Odstęp
                     self.prologue_interface.show_contextual_menu()
+                    # Menu pokazane, nie resetuj needs_full_refresh (już zrobione w show_contextual_menu)
                     continue
 
                 if not command:
@@ -414,6 +417,11 @@ class DrogaSzamanaRPG:
 
                 # Obsługa dialogów
                 if hasattr(self.game_state, 'current_dialogue') and self.game_state.current_dialogue:
+                    # Wyświetl kontekst dialogu (mini-status + rozmówca)
+                    dialogue = self.game_state.current_dialogue
+                    npc_name = dialogue.get('npc_name', 'Nieznany')
+                    self.prologue_interface.display_dialogue_context(npc_name)
+
                     # W dialogu
                     if command.lower() in ['anuluj', 'wyjdź', 'exit']:
                         self.game_state.current_dialogue = None
@@ -442,6 +450,8 @@ class DrogaSzamanaRPG:
                             if result == DialogueResult.END or not next_options:
                                 self.game_state.current_dialogue = None
                                 message += "\n[Koniec rozmowy]"
+                                # Po zakończeniu dialogu - full refresh przy następnej iteracji
+                                self.prologue_interface.request_full_refresh()
                             else:
                                 dialogue['options'] = next_options
                                 dialogue['node_id'] = next_node_id if next_node_id else 'greeting'
@@ -469,6 +479,10 @@ class DrogaSzamanaRPG:
                             break
                         else:
                             continue
+
+                    # Sprawdź czy to komenda "rozejrzyj" - wymaga full refresh przy następnej iteracji
+                    if command.lower() in ['rozejrzyj', 'rozejrzyj się', 'look', 'l']:
+                        self.prologue_interface.request_full_refresh()
 
                     # Wyświetl rezultat
                     self.prologue_interface.display_command_result(success, message)

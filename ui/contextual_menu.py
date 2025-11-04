@@ -30,6 +30,7 @@ class ContextualActionMenu:
         """
         self.game_state = game_state
         self.last_menu: List[ActionOption] = []
+        self.last_menu_location: Optional[str] = None  # Track location when menu was generated
 
         # Ikony dla kategorii
         self.category_icons = {
@@ -87,6 +88,7 @@ class ContextualActionMenu:
             counter += 1
 
         self.last_menu = actions
+        self.last_menu_location = self.game_state.current_location  # Zapisz lokację
         return actions
 
     def _get_people_actions(self) -> List[ActionOption]:
@@ -382,3 +384,24 @@ class ContextualActionMenu:
             True jeśli prawidłowy
         """
         return any(action.number == number for action in self.last_menu)
+
+    def is_menu_valid(self) -> bool:
+        """
+        Sprawdź czy ostatnie menu jest nadal aktualne.
+        Menu jest nieaktualne gdy lokacja się zmieniła.
+
+        Returns:
+            True jeśli menu jest aktualne
+        """
+        # Brak menu = nieaktualne
+        if not self.last_menu:
+            return False
+
+        # Sprawdź czy lokacja się zmieniła
+        current_location = self.game_state.current_location
+        return current_location == self.last_menu_location
+
+    def invalidate_menu(self):
+        """Unieważnij ostatnie menu (wymuś regenerację)."""
+        self.last_menu = []
+        self.last_menu_location = None
