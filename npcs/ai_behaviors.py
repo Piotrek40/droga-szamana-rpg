@@ -1637,8 +1637,8 @@ def perform_work(npc: Any, context: Dict) -> NodeStatus:
     from .npc_manager import NPCState
     
     npc.change_state(NPCState.WORKING)
-    
-    work_type = npc.semantic_memory.get("current_work", "general_work")
+
+    work_type = npc.memory.semantic.get("current_work", "general_work")
     
     # Lokalizacja pracy
     work_locations = {

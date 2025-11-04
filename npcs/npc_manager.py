@@ -58,7 +58,21 @@ class Memory:
     importance: float  # 0.0 - 1.0
     emotional_impact: Dict[str, float]
     decay_rate: float = 0.01
-    
+
+    def get(self, key: str, default=None):
+        """Kompatybilność z dict - pobierz atrybut lub wartość domyślną"""
+        return getattr(self, key, default)
+
+    def __getitem__(self, key: str):
+        """Kompatybilność z dict - operator []"""
+        if not hasattr(self, key):
+            raise KeyError(key)
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value):
+        """Kompatybilność z dict - operator [] = """
+        setattr(self, key, value)
+
     def get_current_strength(self, current_time: float) -> float:
         """Oblicza aktualną siłę wspomnienia z uwzględnieniem zapominania"""
         time_passed = current_time - self.timestamp
@@ -118,6 +132,7 @@ class Relationship:
 class Goal:
     """Cel NPCa"""
     name: str
+    type: str  # Typ celu: "escape", "survive", "revenge", "wealth", "relationship", "knowledge"
     priority: float  # 0.0 - 1.0
     completion: float = 0.0  # 0.0 - 1.0
     deadline: Optional[float] = None
@@ -167,7 +182,7 @@ class NPC:
         
         # Zachowaj kompatybilność wsteczną
         self.episodic_memory: List[Memory] = []
-        self.semantic_memory: Dict[str, Any] = npc_data.get("semantic_memory", {})
+        # semantic_memory jest teraz property wskazujące na memory.semantic
         self.procedural_memory: Dict[str, float] = {}  # Wyuczone zachowania
         self.emotional_memory: Dict[str, Dict[str, float]] = {}  # Emocje związane z miejscami/osobami
         
@@ -188,6 +203,7 @@ class NPC:
         for goal_data in npc_data.get("goals", []):
             self.goals.append(Goal(
                 name=goal_data["name"],
+                type=goal_data.get("type", goal_data["name"]),  # Użyj typu lub nazwy jako fallback
                 priority=goal_data["priority"],
                 prerequisites=goal_data.get("prerequisites", [])
             ))
@@ -239,6 +255,11 @@ class NPC:
     def current_location(self, value: str):
         """Setter dla current_location."""
         self.location = value
+
+    @property
+    def semantic_memory(self):
+        """Alias dla self.memory.semantic dla kompatybilności wstecznej."""
+        return self.memory.semantic
 
     def _initialize_combat_stats(self, npc_data: Dict) -> CombatStats:
         """Inicjalizuje statystyki bojowe NPCa."""

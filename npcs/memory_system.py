@@ -403,6 +403,22 @@ class SemanticMemory:
         
         return intersection / union if union > 0 else 0.0
     
+    def get(self, concept: str, default=None):
+        """Kompatybilność z dict - pobierz wiedzę lub wartość domyślną"""
+        result = self.retrieve(concept, spread_activation=False)
+        return result if result is not None else default
+
+    def __getitem__(self, concept: str):
+        """Kompatybilność z dict - operator []"""
+        result = self.retrieve(concept, spread_activation=False)
+        if result is None:
+            raise KeyError(concept)
+        return result
+
+    def __setitem__(self, concept: str, value: Any):
+        """Kompatybilność z dict - operator [] = """
+        self.add_knowledge(concept, value)
+
     def retrieve(self, concept: str, spread_activation: bool = True) -> Optional[Any]:
         """Pobiera wiedzę o koncepcie"""
         if concept not in self.knowledge:
@@ -412,17 +428,17 @@ class SemanticMemory:
                 concept = similar
             else:
                 return None
-        
+
         trace = self.knowledge[concept]
         trace.access()
-        
+
         # Rozprzestrzenij aktywację na powiązane koncepty
         if spread_activation:
             for related, strength in self.relationships[concept].items():
                 if related in self.knowledge:
-                    self.knowledge[related].strength = min(1.0, 
+                    self.knowledge[related].strength = min(1.0,
                         self.knowledge[related].strength + strength * 0.05)
-        
+
         return trace.content
     
     def _find_similar_concept(self, query: str) -> Optional[str]:
@@ -862,9 +878,37 @@ class IntegratedMemorySystem:
         # Konsoliduj jeśli minął czas
         if time.time() - self.last_consolidation > self.consolidation_interval:
             self.consolidate_all()
-        
+
         return results
-    
+
+    def store_episodic_memory(self, event_type: str, data: Dict) -> None:
+        """Przechowuje wspomnienie epizodyczne.
+
+        Args:
+            event_type: Typ wydarzenia
+            data: Dane wydarzenia
+        """
+        event = {
+            "event_type": event_type,
+            "timestamp": time.time(),
+            **data
+        }
+        self.process_event(event)
+
+    def get(self, key: str, default=None):
+        """Kompatybilność z dict - pobierz atrybut lub wartość domyślną"""
+        return getattr(self, key, default)
+
+    def __getitem__(self, key: str):
+        """Kompatybilność z dict - operator []"""
+        if not hasattr(self, key):
+            raise KeyError(key)
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value):
+        """Kompatybilność z dict - operator [] = """
+        setattr(self, key, value)
+
     def recall_relevant(self, context: Dict) -> Dict[str, Any]:
         """Przywołuje relevantne informacje dla danego kontekstu"""
         recalled = {}

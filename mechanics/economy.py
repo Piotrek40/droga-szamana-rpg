@@ -64,7 +64,11 @@ class Item:
     def aktualna_wartosc(self) -> float:
         """Oblicza aktualną wartość przedmiotu bazując na jakości i trwałości"""
         quality_multiplier = self.quality_tier.multiplier
-        durability_multiplier = max(0.1, self.obecna_trwalosc / self.trwalosc)
+        # Zabezpieczenie przed dzieleniem przez zero
+        if self.trwalosc == 0:
+            durability_multiplier = 0.1  # Przedmiot zniszczony
+        else:
+            durability_multiplier = max(0.1, self.obecna_trwalosc / self.trwalosc)
         return self.bazowa_wartosc * quality_multiplier * durability_multiplier
     
     def zuzyj(self, ile: int = 1):
