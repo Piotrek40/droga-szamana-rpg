@@ -648,12 +648,14 @@ def run_comprehensive_tests():
     if result.failures:
         print(f"\nFAILURES:")
         for test, traceback in result.failures:
-            print(f"- {test}: {traceback.split('AssertionError: ')[-1].split('\\n')[0] if 'AssertionError:' in traceback else 'Unknown failure'}")
+            error_msg = traceback.split('AssertionError: ')[-1].split('\n')[0] if 'AssertionError:' in traceback else 'Unknown failure'
+            print(f"- {test}: {error_msg}")
     
     if result.errors:
         print(f"\nERRORS:")
         for test, traceback in result.errors:
-            print(f"- {test}: {traceback.split('\\n')[-2] if traceback else 'Unknown error'}")
+            error_line = traceback.split('\n')[-2] if traceback else 'Unknown error'
+            print(f"- {test}: {error_line}")
     
     return result.wasSuccessful()
 
