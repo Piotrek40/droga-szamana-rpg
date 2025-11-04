@@ -532,6 +532,7 @@ class TestGoalSystem(unittest.TestCase):
         """Test tworzenia celów"""
         goal = Goal(
             name="escape_prison",
+            type="escape",
             priority=0.9,
             prerequisites=["find_tunnel", "get_tools"]
         )
@@ -547,12 +548,14 @@ class TestGoalSystem(unittest.TestCase):
         
         urgent_goal = Goal(
             name="urgent_task",
+            type="survive",
             priority=0.8,
             deadline=current_time + 1800  # Za 30 minut
         )
-        
+
         non_urgent_goal = Goal(
             name="long_term",
+            type="wealth",
             priority=0.5,
             deadline=current_time + 86400  # Za dzień
         )
@@ -562,7 +565,7 @@ class TestGoalSystem(unittest.TestCase):
     
     def test_goal_completion(self):
         """Test ukończenia celu"""
-        goal = Goal(name="test_goal", priority=0.7)
+        goal = Goal(name="test_goal", type="knowledge", priority=0.7)
         self.npc.goals.append(goal)
         
         # Symuluj postęp
@@ -578,9 +581,9 @@ class TestGoalSystem(unittest.TestCase):
     def test_goal_prioritization(self):
         """Test priorytetyzacji celów"""
         goals = [
-            Goal(name="low_priority", priority=0.3),
-            Goal(name="high_priority", priority=0.9),
-            Goal(name="medium_priority", priority=0.5)
+            Goal(name="low_priority", type="knowledge", priority=0.3),
+            Goal(name="high_priority", type="survive", priority=0.9),
+            Goal(name="medium_priority", type="relationship", priority=0.5)
         ]
         
         self.npc.goals = goals
