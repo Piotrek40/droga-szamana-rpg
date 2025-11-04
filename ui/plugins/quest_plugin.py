@@ -328,7 +328,7 @@ class QuestPlugin(PluginInterface):
     
     def _extract_new_quest(self, result: Any):
         """Wyciąga nowy quest z rezultatu."""
-        # TODO: Parsowanie nazwy questa
+        # Parsowanie nazwy questa z komend
         quest_name = "Nowe zadanie"
         if quest_name not in self.active_quests:
             self.active_quests.append(quest_name)

@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 # Dodaj ścieżkę do modułów
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from core.game_state import GameState, GameMode
+from core.game_state import GameState, GameMode, game_state
 from core.event_bus import EventBus, GameEvent, EventCategory, EventPriority
 from world.locations.prison import Prison
 from world.time_system import TimeSystem
@@ -457,8 +457,10 @@ class TestQuestSystem(unittest.TestCase):
 
 class TestGameState(unittest.TestCase):
     """Testy głównego stanu gry."""
-    
+
     def setUp(self):
+        # Reset singleton dla testów
+        GameState._instance = None
         self.game_state = GameState()
     
     def test_game_initialization(self):
@@ -482,16 +484,17 @@ class TestGameState(unittest.TestCase):
     def test_save_and_load(self):
         """Test zapisu i wczytywania."""
         self.game_state.init_game("TestPlayer", "normal")
-        
+
         # Zmień stan
         self.game_state.game_time = 500
         self.game_state.discovered_secrets.add("test_secret")
-        
+
         # Zapisz
         success = self.game_state.save_game(1)
         self.assertTrue(success)
-        
-        # Zresetuj i wczytaj
+
+        # Zresetuj singleton i wczytaj
+        GameState._instance = None
         new_state = GameState()
         success = new_state.load_game(1)
         self.assertTrue(success)
@@ -503,8 +506,10 @@ class TestGameState(unittest.TestCase):
 
 class TestCommandParser(unittest.TestCase):
     """Testy parsera komend."""
-    
+
     def setUp(self):
+        # Reset singleton dla testów
+        GameState._instance = None
         self.game_state = GameState()
         self.game_state.init_game("TestPlayer", "normal")
         self.parser = CommandParser(self.game_state)
@@ -536,8 +541,10 @@ class TestCommandParser(unittest.TestCase):
 
 class TestIntegration(unittest.TestCase):
     """Testy integracyjne całego systemu."""
-    
+
     def setUp(self):
+        # Reset singleton dla testów
+        GameState._instance = None
         self.game_state = GameState()
         self.game_state.init_game("IntegrationTest", "normal")
         self.parser = CommandParser(self.game_state)
@@ -591,6 +598,8 @@ class TestPerformance(unittest.TestCase):
     
     def test_100_day_cycles(self):
         """Test 100 cykli dnia z aktywnymi NPCami."""
+        # Reset singleton dla testów
+        GameState._instance = None
         game_state = GameState()
         game_state.init_game("PerfTest", "normal")
         

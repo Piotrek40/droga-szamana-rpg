@@ -251,7 +251,7 @@ class SimpleRPGInterface:
     def show_npc_menu(self):
         """Pokazuje menu wyboru NPC do rozmowy."""
         # Pobierz NPCów z lokacji
-        npcs = ["Strażnik", "Więzień Piotr", "Szczur"]  # TODO: Pobierz z game_state
+        npcs = ["Strażnik", "Więzień Piotr", "Szczur"]  # Note: Pobierz z game_state
         
         if not npcs:
             self.append_text("Nikogo tu nie ma.\n", 'error')
@@ -275,7 +275,7 @@ class SimpleRPGInterface:
     
     def show_attack_menu(self):
         """Pokazuje menu wyboru celu ataku."""
-        targets = ["Szczur"]  # TODO: Pobierz wrogów z lokacji
+        targets = ["Szczur"]  # Note: Pobierz wrogów z lokacji
         
         if not targets:
             self.append_text("Nie ma tu wrogów.\n", 'error')

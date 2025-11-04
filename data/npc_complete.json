@@ -5,9 +5,9 @@
     "anna": {
       "id": "anna",
       "name": "Cicha Anna",
-      "display_name": "Cichy Tomek",
+      "display_name": "Cicha Anna",
       "role": "prisoner",
-      "location": "cell_4",
+      "location": "cela_2",
       "spawn_location": "cela_2",
       "personality": [
         "quiet",
@@ -56,15 +56,15 @@
         "23": "sleeping",
         "0": "sleeping",
         "1": "sleeping",
-        "2": "escape_attempt",
-        "3": "escape_attempt",
+        "2": "planning",
+        "3": "planning",
         "4": "sleeping",
         "5": "sleeping"
       },
       "schedule_template": "prisoner_standard",
       "schedule_overrides": {},
       "dialogue_tree": "anna",
-      "dialogue_id": "cichy_tomek",
+      "dialogue_id": "anna",
       "memories": [],
       "relationships": {},
       "goals": [
@@ -95,7 +95,7 @@
       "name": "Brutus",
       "display_name": "Brutus",
       "role": "warden",
-      "location": "warden_office",
+      "location": "biuro_naczelnika",
       "spawn_location": "biuro_naczelnika",
       "personality": [
         "sadistic",
@@ -321,7 +321,7 @@
       "name": "Stary Józek",
       "display_name": "Stary Józef",
       "role": "prisoner",
-      "location": "cell_2",
+      "location": "cela_2",
       "spawn_location": "cela_4",
       "personality": [
         "wise",
@@ -405,7 +405,7 @@
       "name": "Marek",
       "display_name": "Gruby Waldek",
       "role": "guard",
-      "location": "guard_room",
+      "location": "wartownia",
       "spawn_location": "cela_3",
       "personality": [
         "corruptible",
@@ -489,7 +489,7 @@
       "name": "Gadatliwy Piotr",
       "display_name": "Gadatliwy Piotr",
       "role": "prisoner",
-      "location": "cell_1",
+      "location": "cela_1",
       "spawn_location": "cela_1",
       "personality": [
         "talkative",

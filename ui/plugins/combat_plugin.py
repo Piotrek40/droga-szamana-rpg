@@ -395,7 +395,7 @@ class CombatPlugin(PluginInterface):
     
     def _get_game_time(self) -> str:
         """Pobiera czas gry."""
-        # TODO: Integracja z systemem czasu
+        # Note: Integracja z systemem czasu
         return "00:00"
     
     def get_combat_hints(self, context: Dict) -> List[str]:

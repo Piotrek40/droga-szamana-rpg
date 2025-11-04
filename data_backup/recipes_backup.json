@@ -17,6 +17,7 @@
       "ilosc": 1,
       "bonus_jakosci": 10
     },
+    "exp_za_stworzenie": 15,
     "szansa_powodzenia": 0.75
   },
   "noz": {
@@ -37,6 +38,7 @@
       "ilosc": 1,
       "bonus_jakosci": 5
     },
+    "exp_za_stworzenie": 12,
     "szansa_powodzenia": 0.80
   },
   "strzaly": {
@@ -57,6 +59,7 @@
       "ilosc": 1,
       "bonus_jakosci": 8
     },
+    "exp_za_stworzenie": 10,
     "szansa_powodzenia": 0.85
   },
   "miecz": {
@@ -78,6 +81,7 @@
       "ilosc": 1,
       "bonus_jakosci": 15
     },
+    "exp_za_stworzenie": 25,
     "szansa_powodzenia": 0.65
   },
   "luk": {
@@ -99,6 +103,7 @@
       "ilosc": 1,
       "bonus_jakosci": 12
     },
+    "exp_za_stworzenie": 20,
     "szansa_powodzenia": 0.70
   },
   "maczuga": {
@@ -118,6 +123,7 @@
       "ilosc": 1,
       "bonus_jakosci": 5
     },
+    "exp_za_stworzenie": 8,
     "szansa_powodzenia": 0.90
   },
   "lopata": {
@@ -138,6 +144,7 @@
       "ilosc": 1,
       "bonus_jakosci": 8
     },
+    "exp_za_stworzenie": 12,
     "szansa_powodzenia": 0.80
   },
   "mlotek": {
@@ -158,6 +165,7 @@
       "ilosc": 1,
       "bonus_jakosci": 12
     },
+    "exp_za_stworzenie": 18,
     "szansa_powodzenia": 0.70
   },
   "dluto": {
@@ -178,6 +186,7 @@
       "ilosc": 1,
       "bonus_jakosci": 8
     },
+    "exp_za_stworzenie": 10,
     "szansa_powodzenia": 0.85
   },
   "igla": {
@@ -197,6 +206,7 @@
       "ilosc": 1,
       "bonus_jakosci": 5
     },
+    "exp_za_stworzenie": 8,
     "szansa_powodzenia": 0.90
   }
 }

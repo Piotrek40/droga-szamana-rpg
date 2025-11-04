@@ -36,6 +36,15 @@
       "connections": {
         "zachód": "korytarz_północny"
       },
+      "secrets": [
+        {
+          "id": "cell2_lockpicks",
+          "trigger": "zbadaj warsztat",
+          "discovery_hint": "Warsztat wygląda na dobrze wykorzystywany...",
+          "description": "Pod stosem metalowych odłamków znajdujesz zestaw haczyków i wytrychów - idealnych do otwierania zamków!",
+          "rewards": ["wytrychy", "haczyki"]
+        }
+      ],
       "starting_items": ["drut", "kawałek metalu"],
       "spawn_npcs": ["cichy_tomek"]
     },
@@ -51,6 +60,15 @@
       "connections": {
         "północ": "korytarz_centralny"
       },
+      "secrets": [
+        {
+          "id": "cell3_hidden_weapon",
+          "trigger": "zbadaj dziury w ścianie",
+          "discovery_hint": "Jedna z dziur w ścianie wygląda inaczej niż pozostałe...",
+          "description": "W głębokiej dziurze w ścianie znajdujesz ukrytą prowizoryczną maczugę i sakiewkę ze złotem!",
+          "rewards": ["prowizoryczna_maczuga", "zloto:15"]
+        }
+      ],
       "spawn_npcs": ["gruby_waldek"]
     },
     "cela_4": {
@@ -166,6 +184,15 @@
         "północ": "zbrojownia",
         "wschód": "biuro_naczelnika"
       },
+      "secrets": [
+        {
+          "id": "courtyard_well",
+          "trigger": "zbadaj studnia",
+          "discovery_hint": "Studnia wydaje się głębsza niż powinna być...",
+          "description": "Zaglądając do studni dostrzegasz dziwne znaki wyryte na ściankach. Jedno z wiader ma podwójne dno z ukrytym nożem!",
+          "rewards": ["ostry_noz"]
+        }
+      ],
       "special_features": ["szubienica", "studnia", "posterunek_straży"]
     },
     "zbrojownia": {

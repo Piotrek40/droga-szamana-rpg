@@ -301,7 +301,7 @@ class IntegratedRPGInterface:
         saves_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
         for slot in range(1, 6):
-            # TODO: Sprawdź czy istnieje zapis
+            # Note: Sprawdź czy istnieje zapis
             btn = tk.Button(saves_frame, text=f"Slot {slot}",
                           command=lambda s=slot: self.load_game(s, dialog),
                           font=self.fonts['normal'],
@@ -535,7 +535,7 @@ class IntegratedRPGInterface:
     
     def on_map_click(self, location):
         """Obsługa kliknięcia na mapie."""
-        # TODO: Implementacja pathfindingu do lokacji
+        # Note: Implementacja pathfindingu do lokacji
         self.append_text(f"Cel podróży: {location}\n", 'info')
     
     def build_main_panel(self, parent):

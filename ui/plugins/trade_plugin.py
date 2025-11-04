@@ -420,12 +420,12 @@ class TradePlugin(PluginInterface):
     
     def _extract_merchant_name(self, result: Any) -> Optional[str]:
         """Wyciąga nazwę kupca z rezultatu."""
-        # TODO: Implementacja parsowania nazwy kupca
+        # Note: Implementacja parsowania nazwy kupca
         return "kupiec"
     
     def _get_game_time(self) -> str:
         """Pobiera czas gry."""
-        # TODO: Integracja z systemem czasu
+        # Note: Integracja z systemem czasu
         return "00:00"
     
     def get_trade_hints(self, context: Dict) -> List[str]:

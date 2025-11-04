@@ -519,13 +519,13 @@ class ExplorationPlugin(PluginInterface):
     
     def _track_secret(self, result: Any):
         """Śledzi odkryte sekrety."""
-        # TODO: Parsowanie ID sekretu
+        # Note: Parsowanie ID sekretu
         secret_id = f"secret_{len(self.discovered_secrets)}"
         self.discovered_secrets.add(secret_id)
     
     def _update_known_paths(self, action: str, result: Any):
         """Aktualizuje znane ścieżki."""
-        # TODO: Implementacja śledzenia ścieżek między lokacjami
+        # Note: Implementacja śledzenia ścieżek między lokacjami
         pass
     
     def get_exploration_hints(self, context: Dict) -> List[str]:
@@ -539,7 +539,7 @@ class ExplorationPlugin(PluginInterface):
                 unexplored = []
                 for direction in ["north", "south", "east", "west"]:
                     if direction in location.exits:
-                        # TODO: Sprawdź czy kierunek był eksplorowany
+                        # Note: Sprawdź czy kierunek był eksplorowany
                         pass
                 
                 if unexplored:

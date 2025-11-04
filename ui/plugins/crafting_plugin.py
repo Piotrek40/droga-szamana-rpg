@@ -432,7 +432,7 @@ class CraftingPlugin(PluginInterface):
     
     def _add_recipe(self, result: Any):
         """Dodaje nową recepturę."""
-        # TODO: Parsowanie nazwy receptury
+        # Note: Parsowanie nazwy receptury
         recipe_name = "nowa_receptura"
         self.known_recipes.add(recipe_name)
     

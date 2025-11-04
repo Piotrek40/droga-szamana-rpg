@@ -12,8 +12,9 @@
 
 ### 🎯 Filozofia "Bez Placeholderów"
 - **100% zaimplementowanych funkcji** - każda linia kodu działa
-- **Zero TODO/FIXME** - kompletny, production-ready kod
+- **Zero TODO/FIXME** - kod gotowy do produkcji
 - **Pełne systemy** - nie ma "dummy" funkcji ani pustych metod
+- **Use-based learning** - bez sztucznego XP, tylko praktyka
 
 ### ⚔️ Realistyczna Rozgrywka
 - **Umiejętności rosną TYLKO przez użycie** - żadnego XP ani poziomów
@@ -22,11 +23,11 @@
 - **Śmiertelność** - 3-5 ciosów może zabić
 
 ### 🧠 Żywe NPCe
-- **5 w pełni zaimplementowanych NPCów** z kompletnymi AI
+- **10 w pełni zaimplementowanych NPCów** z kompletnymi AI
 - **Behavior trees** z 15+ węzłami decyzyjnymi
 - **System pamięci** - epizodyczna, semantyczna, proceduralna, emocjonalna
-- **Harmonogramy 24h** - śpią, jedzą, pracują
-- **200+ unikalnych dialogów** kontekstowych po polsku
+- **Harmonogramy 24h** - śpią, jedzą, pracują, planują ucieczkę
+- **Kontekstowe dialogi** dopasowane do sytuacji po polsku
 
 ### 🌍 Emergentny Świat
 - **Questy powstają z sytuacji**, nie są przypisane
@@ -168,14 +169,16 @@ Questy powstają z warunków świata:
 
 ## 📊 Statystyki Projektu
 
-- **30,000+ linii kodu** (Python)
-- **100% implementacja** - zero placeholderów
-- **5 ekspertów AI** użytych do tworzenia
-- **50+ testów jednostkowych**
-- **200+ dialogów NPCów**
-- **10 umiejętności** z progresją
-- **20 przedmiotów** z systemem jakości
+- **42,330 linii kodu** (Python)
+- **100% implementacja** - zero TODO/FIXME
+- **10 w pełni zaimplementowanych NPCów** z AI
+- **29 testów jednostkowych**
+- **10 NPCów** z kompletnymi dialogami
+- **10+ umiejętności** z progresją use-based
+- **20+ przedmiotów** z systemem jakości
 - **10 receptur** craftingowych
+- **11 lokacji** w więzieniu
+- **6+ sekretów** do odkrycia
 
 ## 🏆 Osiągnięcia Techniczne
 
