@@ -30,9 +30,9 @@
         "intelligence": 50
       },
       "inventory": {
-        "wytrych": 2,
-        "lina": 1,
-        "nóż": 1
+        "lockpick": 2,
+        "rope": 1,
+        "knife": 1
       },
       "gold": 15,
       "schedule": {
@@ -118,9 +118,9 @@
         "intelligence": 50
       },
       "inventory": {
-        "klucze": 5,
-        "bat": 1,
-        "pochodnia": 1
+        "keys": 5,
+        "whip": 1,
+        "torch": 1
       },
       "gold": 200,
       "schedule": {
@@ -316,46 +316,8 @@
       "goals": [],
       "description": ""
     },
-    "szczuply": {
-      "id": "szczuply",
-      "name": "Szczupły",
-      "display_name": "Szczupły",
-      "role": "guard",
-      "location": "korytarz_centralny",
-      "spawn_location": "dziedziniec",
-      "personality": [
-        "corrupt",
-        "intelligent",
-        "greedy",
-        "cautious"
-      ],
-      "quirks": [],
-      "stats": {
-        "health": 100,
-        "max_health": 100,
-        "strength": 50,
-        "agility": 70,
-        "intelligence": 70
-      },
-      "inventory": {
-        "nóż": 1,
-        "klucze": 5,
-        "sakiewka": 1,
-        "księga": 1
-      },
-      "gold": 200,
-      "schedule": {},
-      "schedule_template": "guard_night_shift",
-      "schedule_overrides": {},
-      "dialogue_tree": "szczuply",
-      "dialogue_id": "szczuply",
-      "memories": [],
-      "relationships": {},
-      "goals": [],
-      "description": "Przekupny strażnik"
-    },
-    "stary_jozef": {
-      "id": "stary_jozef",
+    "jozek": {
+      "id": "jozek",
       "name": "Stary Józek",
       "display_name": "Stary Józef",
       "role": "prisoner",
@@ -382,9 +344,9 @@
         "intelligence": 50
       },
       "inventory": {
-        "chleb": 2,
-        "świeca": 1,
-        "stara_mapa": 1
+        "bread": 2,
+        "candle": 1,
+        "old_map": 1
       },
       "gold": 5,
       "schedule": {
@@ -437,6 +399,267 @@
         }
       ],
       "description": "Mądry uczony, dawny bibliotekarz"
+    },
+    "marek": {
+      "id": "marek",
+      "name": "Marek",
+      "display_name": "Gruby Waldek",
+      "role": "guard",
+      "location": "wartownia",
+      "spawn_location": "cela_3",
+      "personality": [
+        "corruptible",
+        "greedy",
+        "lazy",
+        "opportunistic"
+      ],
+      "quirks": [
+        "loves_gold",
+        "avoids_work",
+        "gossips"
+      ],
+      "stats": {
+        "health": 80,
+        "max_health": 80,
+        "energy": 70,
+        "max_energy": 80,
+        "strength": 50,
+        "agility": 50,
+        "intelligence": 50
+      },
+      "inventory": {
+        "keys": 2,
+        "baton": 1,
+        "flask": 1
+      },
+      "gold": 30,
+      "schedule": {
+        "6": "waking_routine",
+        "7": "eating",
+        "8": "patrol",
+        "9": "guard_room",
+        "10": "patrol",
+        "11": "guard_room",
+        "12": "eating",
+        "13": "patrol",
+        "14": "guard_room",
+        "15": "patrol",
+        "16": "guard_room",
+        "17": "patrol",
+        "18": "eating",
+        "19": "socializing",
+        "20": "guard_room",
+        "21": "personal_time",
+        "22": "sleeping",
+        "23": "sleeping",
+        "0": "sleeping",
+        "1": "sleeping",
+        "2": "sleeping",
+        "3": "sleeping",
+        "4": "sleeping",
+        "5": "sleeping"
+      },
+      "schedule_template": "guard_standard",
+      "schedule_overrides": {},
+      "dialogue_tree": "marek",
+      "dialogue_id": "gruby_waldek",
+      "memories": [],
+      "relationships": {},
+      "goals": [
+        {
+          "name": "gather_gold",
+          "priority": 0.8,
+          "prerequisites": []
+        },
+        {
+          "name": "avoid_work",
+          "priority": 0.6,
+          "prerequisites": []
+        },
+        {
+          "name": "stay_safe",
+          "priority": 0.7,
+          "prerequisites": []
+        }
+      ],
+      "description": "Niebezpieczny więzień, siłacz"
+    },
+    "piotr": {
+      "id": "piotr",
+      "name": "Gadatliwy Piotr",
+      "display_name": "Gadatliwy Piotr",
+      "role": "prisoner",
+      "location": "cela_1",
+      "spawn_location": "cela_1",
+      "personality": [
+        "talkative",
+        "informant",
+        "manipulative",
+        "cunning"
+      ],
+      "quirks": [
+        "never_stops_talking",
+        "trades_information",
+        "knows_everyone"
+      ],
+      "stats": {
+        "health": 75,
+        "max_health": 75,
+        "energy": 90,
+        "max_energy": 90,
+        "strength": 50,
+        "agility": 50,
+        "intelligence": 50
+      },
+      "inventory": {
+        "notes": 5,
+        "pen": 1,
+        "tobacco": 3
+      },
+      "gold": 25,
+      "schedule": {
+        "6": "waking_routine",
+        "7": "eating",
+        "8": "information_gathering",
+        "9": "socializing",
+        "10": "information_gathering",
+        "11": "trading",
+        "12": "eating",
+        "13": "work",
+        "14": "work",
+        "15": "work",
+        "16": "information_gathering",
+        "17": "socializing",
+        "18": "eating",
+        "19": "trading",
+        "20": "socializing",
+        "21": "information_gathering",
+        "22": "sleeping",
+        "23": "sleeping",
+        "0": "sleeping",
+        "1": "sleeping",
+        "2": "sleeping",
+        "3": "sleeping",
+        "4": "sleeping",
+        "5": "sleeping"
+      },
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {},
+      "dialogue_tree": "piotr",
+      "dialogue_id": "gadatliwy_piotr",
+      "memories": [],
+      "relationships": {},
+      "goals": [
+        {
+          "name": "gather_information",
+          "priority": 0.9,
+          "prerequisites": []
+        },
+        {
+          "name": "profit_from_info",
+          "priority": 0.85,
+          "prerequisites": [
+            "gather_information"
+          ]
+        },
+        {
+          "name": "stay_safe",
+          "priority": 0.7,
+          "prerequisites": []
+        }
+      ],
+      "description": "Gadatliwy złodziej z informacjami"
+    },
+    "stary_jozef": {
+      "id": "stary_jozef",
+      "name": "Stary Józef",
+      "display_name": "Józef 'Uczony'",
+      "role": "prisoner",
+      "location": "cela_4",
+      "spawn_location": "cela_4",
+      "personality": [
+        "wise",
+        "educated",
+        "mysterious",
+        "helpful"
+      ],
+      "quirks": [],
+      "stats": {
+        "health": 50,
+        "max_health": 50,
+        "strength": 20,
+        "agility": 30,
+        "intelligence": 90
+      },
+      "inventory": {
+        "węgiel": 3,
+        "papier": 5,
+        "księga": 1
+      },
+      "gold": 10,
+      "schedule": {},
+      "schedule_template": "prisoner_standard",
+      "schedule_overrides": {
+        "10:00-12:00": {
+          "activity": "studying",
+          "location": "cela_4",
+          "description": "Studiuje swoje notatki"
+        },
+        "15:00-17:00": {
+          "activity": "teaching",
+          "location": "korytarz_centralny",
+          "description": "Uczy chętnych podstaw pisania"
+        },
+        "18:00-20:00": {
+          "activity": "meditation",
+          "location": "cela_4",
+          "description": "Medytuje w ciszy"
+        }
+      },
+      "dialogue_tree": "stary_jozef",
+      "dialogue_id": "stary_jozef",
+      "memories": [],
+      "relationships": {},
+      "goals": [],
+      "description": ""
+    },
+    "szczuply": {
+      "id": "szczuply",
+      "name": "Szczupły",
+      "display_name": "Szczupły",
+      "role": "guard",
+      "location": "korytarz_centralny",
+      "spawn_location": "dziedziniec",
+      "personality": [
+        "corrupt",
+        "intelligent",
+        "greedy",
+        "cautious"
+      ],
+      "quirks": [],
+      "stats": {
+        "health": 100,
+        "max_health": 100,
+        "strength": 50,
+        "agility": 70,
+        "intelligence": 70
+      },
+      "inventory": {
+        "nóż": 1,
+        "klucze": 5,
+        "sakiewka": 1,
+        "księga": 1
+      },
+      "gold": 200,
+      "schedule": {},
+      "schedule_template": "guard_night_shift",
+      "schedule_overrides": {},
+      "dialogue_tree": "szczuply",
+      "dialogue_id": "szczuply",
+      "memories": [],
+      "relationships": {},
+      "goals": [],
+      "description": "Przekupny strażnik"
     }
   },
   "schedule_templates": {

@@ -25,7 +25,12 @@
             "text": "Czy znasz jakąś drogę ucieczki?",
             "response": "*Piotr rozgląda się nerwowo*\n'Ciii! Nie tak głośno! Strażnicy mają długie uszy. Ale... może coś wiem. Tylko musisz mi najpierw zaufać.'",
             "next_node": "escape_hint",
-            "requirements": {"skill": ["perswazja", 3]},
+            "requirements": {
+              "skill": [
+                "perswazja",
+                3
+              ]
+            },
             "effects": null,
             "result": "continue"
           },
@@ -78,7 +83,9 @@
             "response": "'Przysięgam! Ten skąpiec bardziej kocha swoje złoto niż żonę. Ale wiesz co? Słyszałem, że teraz jego syn prowadzi interes i jest jeszcze gorszy!'",
             "next_node": "merchant_info",
             "requirements": null,
-            "effects": {"knowledge": "merchant_wealth"},
+            "effects": {
+              "knowledge": "merchant_wealth"
+            },
             "result": "continue"
           },
           {
@@ -86,7 +93,9 @@
             "response": "'Prawie 200 sztuk złota! Wystarczyłoby mi na całe życie... Gdyby nie ta przeklęta straż. Teraz gniję tutaj, a Bohdan pewnie liczy swoje pieniądze.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "theft_amount"},
+            "effects": {
+              "knowledge": "theft_amount"
+            },
             "result": "continue"
           },
           {
@@ -108,7 +117,9 @@
             "response": "'W zbrojowni jest stara krata. Prowadzi do kanałów. Śmierdzi jak diabli, ale da się przejść. Problem w tym, że zbrojownia jest zawsze zamknięta.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "tunnel_escape"},
+            "effects": {
+              "knowledge": "tunnel_escape"
+            },
             "result": "continue"
           },
           {
@@ -116,7 +127,9 @@
             "response": "'Minimum 500 sztuk złota. Albo coś równie wartościowego. Słyszałem, że lubi też rzadkie księgi... dziwny gust jak na strażnika.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "guard_bribe"},
+            "effects": {
+              "knowledge": "guard_bribe"
+            },
             "result": "continue"
           },
           {
@@ -124,7 +137,9 @@
             "response": "'Codziennie o świcie i zmierzchu. Przez około 10 minut dziedziniec jest pusty. Ale musisz być szybki i mieć sposób na otworzenie bramy.'",
             "next_node": "shift_details",
             "requirements": null,
-            "effects": {"knowledge": "guard_shift"},
+            "effects": {
+              "knowledge": "guard_shift"
+            },
             "result": "continue"
           },
           {
@@ -146,7 +161,9 @@
             "response": "'Stary Józef to zagadka. Był uczonym na dworze, potem coś się stało. Nie mówi o tym. Ale wie DUŻO. Jeśli potrzebujesz wiedzy, on jest najlepszy.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "josef_scholar"},
+            "effects": {
+              "knowledge": "josef_scholar"
+            },
             "result": "continue"
           },
           {
@@ -154,7 +171,9 @@
             "response": "'Waldek... zabił człowieka gołymi rękami podczas bójki w tawernie. Jest silny jak wół i ma kiepski temperament. Lepiej go nie prowokować.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "waldek_dangerous"},
+            "effects": {
+              "knowledge": "waldek_dangerous"
+            },
             "result": "continue"
           },
           {
@@ -176,7 +195,9 @@
             "response": "'Brutus to prosty człowiek - lubi siłę i szanuje siłę. Szczupły to inna historia - inteligentny, czytuje księgi. Można z nim pogadać o filozofii, wyobrażasz sobie?'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "guard_personalities"},
+            "effects": {
+              "knowledge": "guard_personalities"
+            },
             "result": "end"
           }
         ]
@@ -190,7 +211,9 @@
             "response": "'Mówią, że ma piwnice pełne złota. Ale kto wie, może to tylko plotki. Chociaż... widziałem kiedyś jego straże. Nie zatrudniasz tylu ludzi dla ochrony pustych piwnic.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "merchant_vaults"},
+            "effects": {
+              "knowledge": "merchant_vaults"
+            },
             "result": "end"
           }
         ]
@@ -204,7 +227,9 @@
             "response": "'Strażnicy zawsze robią obchód przed zmianą. Potem idą do koszar. Jest okno około 10 minut. Ale brama... to problem. Potrzebujesz klucza albo sposobu żeby ją otworzyć.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "escape_timing"},
+            "effects": {
+              "knowledge": "escape_timing"
+            },
             "result": "end"
           }
         ]
@@ -258,7 +283,9 @@
             "response": "*Tomek kiwa głową*\n'Dobrze. Wrócisz z pilnikiem, dam ci... coś użytecznego.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"quest": "tomek_tools"},
+            "effects": {
+              "quest": "tomek_tools"
+            },
             "result": "quest"
           },
           {
@@ -280,7 +307,12 @@
             "response": "*Tomek kiwa głową z aprobatą*\n'Może... może będziesz dobrym przyjacielem.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"reputation": ["tomek", 10]},
+            "effects": {
+              "reputation": [
+                "tomek",
+                10
+              ]
+            },
             "result": "end"
           }
         ]
@@ -304,7 +336,12 @@
             "response": "*Waldek wstaje powoli, jego masa rzuca długi cień*\n'To znajdziesz ich więcej niż ci się marzy, ślaku. Ale nie dzisiaj. Dzisiaj mam dobry humor.'",
             "next_node": "warning",
             "requirements": null,
-            "effects": {"reputation": ["waldek", -10]},
+            "effects": {
+              "reputation": [
+                "waldek",
+                -10
+              ]
+            },
             "result": "continue"
           },
           {
@@ -340,7 +377,9 @@
             "response": "'Patrz ludziom prosto w oczy. Nie schylaj głowy. I nigdy, przenigdy nie płacz. Tutaj łzy to zaproszenie dla drapieżników.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "survival_tips"},
+            "effects": {
+              "knowledge": "survival_tips"
+            },
             "result": "end"
           }
         ]
@@ -371,7 +410,12 @@
             "text": "Słyszałem, że znasz mapy tego miejsca.",
             "response": "*Józef patrzy na ciebie uważnie*\n'Mapy? Hmm... To zależy co chcesz znaleźć. Są miejsca, które lepiej pozostawić nieodkryte.'",
             "next_node": "maps_hint",
-            "requirements": {"reputation": ["jozef", 20]},
+            "requirements": {
+              "reputation": [
+                "jozef",
+                20
+              ]
+            },
             "effects": null,
             "result": "continue"
           }
@@ -386,7 +430,9 @@
             "response": "'Odkryłem coś, czego nie powinienem był odkrywać. O starych rytuałach, zakazanych praktytkach. Król wolał mnie uciszyć niż składać się z prawdami historii.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "forbidden_knowledge"},
+            "effects": {
+              "knowledge": "forbidden_knowledge"
+            },
             "result": "end"
           }
         ]
@@ -400,7 +446,9 @@
             "response": "'Doskonałe. Wróć gdy będziesz miał światło, a zaczniemy lekcje.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"quest": "find_candle_for_jozef"},
+            "effects": {
+              "quest": "find_candle_for_jozef"
+            },
             "result": "quest"
           },
           {
@@ -422,7 +470,9 @@
             "response": "'Stare kanały są niestabilne. Powietrze to żrące. A poza tym... nie każdy kto tam zszedł wrócił. Ale dla desperata... to jedyna droga na zewnątrz.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "tunnel_dangers"},
+            "effects": {
+              "knowledge": "tunnel_dangers"
+            },
             "result": "end"
           }
         ]
@@ -446,7 +496,12 @@
             "response": "*Brutus robi krok w twoją stronę*\n'Rozglądasz się? Szukasz może drogi ucieczki? To ci powiem - jedyna droga którą znajdziesz to droga do piór!'",
             "next_node": "threat",
             "requirements": null,
-            "effects": {"reputation": ["brutus", -15]},
+            "effects": {
+              "reputation": [
+                "brutus",
+                -15
+              ]
+            },
             "result": "continue"
           },
           {
@@ -454,7 +509,12 @@
             "response": "*Brutus marszczzy brwi, ale wydaje się lekko zaskoczony*\n'Hm. Przynajmniej masz maniery, więźniu. To rzadkość w tych murach. Ale nie myśl, że to ci da jakieś przywileje!'",
             "next_node": "respect",
             "requirements": null,
-            "effects": {"reputation": ["brutus", 5]},
+            "effects": {
+              "reputation": [
+                "brutus",
+                5
+              ]
+            },
             "result": "continue"
           }
         ]
@@ -482,7 +542,9 @@
             "response": "'Każdy kamień, każdy korytarz, każda szpara w murze. Nie ma miejsca gdzie byście mogli się ukryć przede mną. Zapamiętaj to sobie!'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "brutus_experience"},
+            "effects": {
+              "knowledge": "brutus_experience"
+            },
             "result": "end"
           }
         ]
@@ -528,7 +590,9 @@
             "response": "*Szczupły marszczzy brwi*\n'To już naprawdę niebezpieczny teren. Zbrojownia to strefa zakazana. Ale... 200 złotych i mogłbym na pół godziny zapomnieć o kluczu.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"knowledge": "armory_access_price"},
+            "effects": {
+              "knowledge": "armory_access_price"
+            },
             "result": "end"
           },
           {
@@ -536,7 +600,9 @@
             "response": "'Rozumiem. Ale pieniądze to nie wszystko. Przysługi też mają wartość. Przynieiesz mi coś wartocego z kuchni, a będziemy kwita.'",
             "next_node": null,
             "requirements": null,
-            "effects": {"quest": "kitchen_favor_for_szczuply"},
+            "effects": {
+              "quest": "kitchen_favor_for_szczuply"
+            },
             "result": "quest"
           }
         ]
@@ -549,8 +615,13 @@
             "text": "Dam ci 500 złotych.",
             "response": "*Szczupły szybko liczy monety*\n'Doskonałe! Tunel zaczyna się w zbrojowni - pod kratką w podłodze. Prowadzi do starych kanałów. Ale uwaga - jest tam stare powietrze i... inne rzeczy.'",
             "next_node": null,
-            "requirements": {"gold": 500},
-            "effects": {"gold": -500, "knowledge": "tunnel_entrance"},
+            "requirements": {
+              "gold": 500
+            },
+            "effects": {
+              "gold": -500,
+              "knowledge": "tunnel_entrance"
+            },
             "result": "end"
           },
           {
@@ -560,6 +631,113 @@
             "requirements": null,
             "effects": null,
             "result": "end"
+          }
+        ]
+      }
+    },
+    "anna": {
+      "greeting": {
+        "id": "greeting",
+        "npc_text": "*Kobieta siedzi w rogu celi, ostrząc nóż o kamień. Podnosi wzrok i mierzy cię uważnym spojrzeniem*\n'...Nowy? Nie widziałam cię wcześniej.'",
+        "options": [
+          {
+            "text": "Tak, dopiero się tu znalazłem.",
+            "response": "*Unosi dłoń zatrzymując cię*\n'Nie mów mi swojego imienia. Im mniej wiem, tym lepiej dla nas obojga. Nazywaj mnie Anna.'",
+            "next_node": "introduction",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Widzę że jesteś zajęta. Nie będę przeszkadzać.",
+            "response": "*Kiwa głową z aprobatą*\n'Mądra decyzja. Większość ludzi nie wie kiedy się zamknąć.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          },
+          {
+            "text": "Co tam ostrzysz?",
+            "response": "*Chowa nóż szybkim ruchem*\n'To moja sprawa. Radzę trzymać się od moich rzeczy z daleka.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "relationship": [
+                "anna",
+                -5
+              ]
+            },
+            "result": "end"
+          }
+        ]
+      },
+      "introduction": {
+        "id": "introduction",
+        "npc_text": "'Siedzę tu już trzeci miesiąc. Byłam... zajmowałam się rzeczami, których strażnicy nie lubią. Ale nie zamierzam tu gnić.'",
+        "options": [
+          {
+            "text": "Planujesz ucieczkę?",
+            "response": "*Patrzy ci prosto w oczy, oceniając*\n'Każdy mądry więzień to robi. Pytanie brzmi - czy TY planujesz?'",
+            "next_node": "escape_talk",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          },
+          {
+            "text": "Co robiłaś przed więzieniem?",
+            "response": "'Byłam... rzemieślniczką. Robiłam narzędzia, otwierałam zamki, czasem kradziałam rzeczy. Miałam dobre życie, dopóki mnie nie złapali.'",
+            "next_node": "skills",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
+          }
+        ]
+      },
+      "escape_talk": {
+        "id": "escape_talk",
+        "npc_text": "'Ucieczka wymaga trzech rzeczy: narzędzi, planu i odwagi. Mam pierwsze dwa. Trzecie... zobaczymy.'",
+        "options": [
+          {
+            "text": "Mogę ci pomóc.",
+            "response": "*Długie milczenie*\n'Może. Ale najpierw muszę wiedzieć czy mogę ci zaufać. Zdobądź coś wartościowego - informację, narzędzie. Wtedy pogadamy.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "quest_hint": "anna_trust"
+            },
+            "result": "end"
+          },
+          {
+            "text": "Powodzenia. Sam dam sobie radę.",
+            "response": "*Wzrusza ramionami*\n'Jak wolisz. Ale pamiętaj - samotny wilk rzadko przeżywa w więzieniu.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": null,
+            "result": "end"
+          }
+        ]
+      },
+      "skills": {
+        "id": "skills",
+        "npc_text": "'Potrafię otworzyć większość zamków. Zrobić klucz z kawałka metalu. Rozbroić pułapkę. Takie rzeczy... które mogą się przydać.'",
+        "options": [
+          {
+            "text": "Mogłabyś mnie nauczyć?",
+            "response": "'Mogłabym. Ale wiedza nie przychodzi za darmo. Zdobądź mi pilnik i drut, a pokażę ci kilka sztuczek.'",
+            "next_node": null,
+            "requirements": null,
+            "effects": {
+              "quest_start": "anna_teaching"
+            },
+            "result": "end"
+          },
+          {
+            "text": "Może moglibyśmy współpracować?",
+            "response": "'Współpraca? *zastanawia się* Może. Ale najpierw muszę cię poznać. Działaj mądrze, a zobaczymy.'",
+            "next_node": "escape_talk",
+            "requirements": null,
+            "effects": null,
+            "result": "continue"
           }
         ]
       }

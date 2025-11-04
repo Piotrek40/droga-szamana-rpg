@@ -738,9 +738,79 @@ class GameState:
         # Ustaw początkowy stan świata wspierający questa
         self.quest_engine.world_state['guard_keys_missing'] = True
         self.quest_engine.world_state['prison.tension'] = 5
-        
+
+        # NOWY QUEST 1: Pierwszy Dzień w Więzieniu (tutorial)
+        first_day_seed = QuestSeed(
+            quest_id="first_day_survival",
+            name="Pierwszy Dzień w Więzieniu",
+            activation_conditions={},  # Zawsze aktywny na starcie
+            discovery_methods=[DiscoveryMethod.ENVIRONMENTAL],
+            initial_clues={
+                "cela_1": "Budzisz się w celi. Musisz zrozumieć gdzie jesteś i jak przetrwać.",
+                "korytarz_centralny": "Obserwujesz innych więźniów. Warto się zorientować w sytuacji.",
+                "dziedziniec": "Pierwsze spojrzenie na więzienie. Jak stąd uciec?"
+            },
+            time_sensitive=True,
+            expiry_hours=24,
+            priority=10
+        )
+        self.quest_engine.register_seed(first_day_seed)
+
+        # NOWY QUEST 2: Głód (survival)
+        hunger_seed = QuestSeed(
+            quest_id="prison_hunger",
+            name="Głód w Więzieniu",
+            activation_conditions={"player_hunger": {"operator": ">", "value": 50}},
+            discovery_methods=[DiscoveryMethod.ENVIRONMENTAL, DiscoveryMethod.OVERHEARD],
+            initial_clues={
+                "cela_1": "Twój żołądek burczy głośno. Musisz znaleźć jedzenie.",
+                "kuchnia": "Zapach jedzenia dochodzi stąd. Może coś się znajdzie?",
+                "korytarz_centralny": "Słyszysz rozmowy więźniów o posiłkach i głodzie.",
+                "dziedziniec": "Inni więźniowie wymieniają się jedzeniem. Jak to zdobyć?"
+            },
+            time_sensitive=False,
+            priority=7
+        )
+        self.quest_engine.register_seed(hunger_seed)
+
+        # NOWY QUEST 3: Znajdź Sojusznika (social)
+        ally_seed = QuestSeed(
+            quest_id="find_ally",
+            name="Znajdź Sojusznika",
+            activation_conditions={},  # Zawsze dostępny
+            discovery_methods=[DiscoveryMethod.TOLD, DiscoveryMethod.WITNESSED],
+            initial_clues={
+                "cela_1": "W więzieniu trudno przeżyć samemu. Potrzebujesz sprzymierzeńca.",
+                "cela_2": "Anna i Tomek rozmawiają o czymś. Może warto się przyłączyć?",
+                "dziedziniec": "Obserwujesz innych więźniów. Kto byłby dobrym sojusznikiem?",
+                "korytarz_centralny": "Gadatliwy Piotr zna wszystkich. Może pomoże ci się poznać?"
+            },
+            time_sensitive=False,
+            priority=6
+        )
+        self.quest_engine.register_seed(ally_seed)
+
+        # NOWY QUEST 4: Odkryj Pierwszy Sekret (exploration)
+        secret_seed = QuestSeed(
+            quest_id="discover_secret",
+            name="Odkryj Tajemnicę Więzienia",
+            activation_conditions={},  # Zawsze dostępny
+            discovery_methods=[DiscoveryMethod.FOUND, DiscoveryMethod.STUMBLED],
+            initial_clues={
+                "cela_1": "Na ścianie widzisz dziwne zarysowania. Ktoś tu coś ukrywał...",
+                "cela_4": "Stary Józef studiuje mapy na ścianie. Może podzieli się tajemnicą?",
+                "zbrojownia": "To pomieszczenie wygląda na rzadko używane. Co się tu kryje?",
+                "biuro_naczelnika": "Brutus ma sejf. Co jest w środku?",
+                "dziedziniec": "Studnia wygląda podejrzanie. Może ukrywa sekret?"
+            },
+            time_sensitive=False,
+            priority=5
+        )
+        self.quest_engine.register_seed(secret_seed)
+
         print(f"Zainicjalizowano system questów emergentnych")
         print(f"Aktywne questy: {len(self.quest_engine.active_quests)}")
+        print(f"Zarejestrowane quest seeds: 5 (keys, first_day, hunger, ally, secret)")
     
     def register_seed(self, quest_seed):
         """Rejestruj seed questa w silniku questów.
