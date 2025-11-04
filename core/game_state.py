@@ -96,7 +96,11 @@ class GameState:
         # Auto-save system
         self.auto_save_enabled = True
         self.last_auto_save = 0
-        
+
+        # Tutorial system
+        self.tutorial_manager = None  # Przypisywane przez main.py
+        self.first_time_commands = set()  # Tracking użycia komend po raz pierwszy
+
         # Statystyki
         self.statistics = {
             'enemies_killed': 0,
