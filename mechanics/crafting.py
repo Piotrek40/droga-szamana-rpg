@@ -82,7 +82,7 @@ class Recipe:
     rezultat_id: str
     rezultat_ilosc: int = 1
     bonus_jakosci: int = 0
-    exp_za_stworzenie: int = 10
+    exp_za_stworzenie: int = 0  # Use-based learning: wzrost przez praktykę, nie XP
     szansa_powodzenia: float = 1.0
     odkryta: bool = False
     
@@ -200,7 +200,7 @@ class CraftingSystem:
                 rezultat_id=recipe_data['rezultat']['przedmiot'],
                 rezultat_ilosc=recipe_data['rezultat'].get('ilosc', 1),
                 bonus_jakosci=recipe_data['rezultat'].get('bonus_jakosci', 0),
-                exp_za_stworzenie=recipe_data['exp_za_stworzenie'],
+                exp_za_stworzenie=recipe_data.get('exp_za_stworzenie', 0),  # 0 dla use-based learning
                 szansa_powodzenia=recipe_data['szansa_powodzenia']
             )
             recipes[recipe_id] = recipe

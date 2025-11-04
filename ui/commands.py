@@ -58,7 +58,7 @@ class CommandParser:
     
     def __init__(self, game_state):
         """Inicjalizacja parsera.
-        
+
         Args:
             game_state: Referencja do stanu gry
         """
@@ -66,13 +66,25 @@ class CommandParser:
         self.commands: Dict[str, Command] = {}
         self.command_history: List[str] = []
         self.history_limit = 100
-        
+
         # Wczytaj konfigurację komend
         self.commands_config = self._load_commands_config()
         self.ui_texts = self._load_ui_texts()
-        
+
         # Rejestracja komend
         self._register_commands()
+
+    def _trigger_tutorial_hint(self, command_name: str, hint_id: str):
+        """Pokaż tutorial hint przy pierwszym użyciu komendy.
+
+        Args:
+            command_name: Nazwa komendy (do trackingu)
+            hint_id: ID hintu w TutorialManager
+        """
+        if command_name not in self.game_state.first_time_commands:
+            self.game_state.first_time_commands.add(command_name)
+            if self.game_state.tutorial_manager:
+                self.game_state.tutorial_manager.show_hint(hint_id)
     
     def _load_commands_config(self) -> Dict:
         """Wczytaj konfigurację komend z JSON."""
@@ -445,9 +457,9 @@ class CommandParser:
         """Rozejrzyj się."""
         if not self.game_state.prison:
             return False, "Gra nie jest zainicjalizowana!"
-        
+
         description = self.game_state.prison.describe_current_location()
-        
+
         # Dodaj informacje o NPCach w lokacji
         if self.game_state.npc_manager:
             npcs_here = []
@@ -463,13 +475,16 @@ class CommandParser:
                         hostile_npcs.append(npc.name)
                     else:
                         npcs_here.append(npc.name)
-            
+
             if npcs_here:
                 description += f"\n\nWidzisz tutaj: {', '.join(npcs_here)}"
-            
+
             if hostile_npcs:
                 description += f"\n\n⚔ Wrogowie: {', '.join(hostile_npcs)}"
-        
+
+        # Tutorial hint przy pierwszym użyciu
+        self._trigger_tutorial_hint("look", "first_look")
+
         return True, description
     
     def _cmd_examine(self, args: List[str]) -> Tuple[bool, str]:
@@ -583,11 +598,14 @@ class CommandParser:
             
             return True, reaction
         
+        # Tutorial hint przy pierwszej rozmowie
+        self._trigger_tutorial_hint("talk", "first_npc")
+
         # Użyj DialogueSystem do przeprowadzenia rozmowy
         if hasattr(self.game_state, 'dialogue_system') and self.game_state.dialogue_system:
             # Rozpocznij dialog - przekaż też nazwę NPCa do lepszego mapowania
             npc_text, options = self.game_state.dialogue_system.start_dialogue(
-                npc_found, 
+                npc_found,
                 self.game_state.player,
                 npc_obj.name if npc_obj else None
             )
@@ -740,14 +758,17 @@ class CommandParser:
     def _cmd_attack(self, args: List[str]) -> Tuple[bool, str]:
         """Atakuj cel."""
         target = ' '.join(args)
-        
+
         if not self.game_state.player:
             return False, "Gracz nie jest zainicjalizowany!"
-        
+
         # Sprawdź czy gracz może walczyć
         if self.game_state.player.is_incapacitated():
             return False, "Jesteś zbyt osłabiony, aby walczyć!"
-        
+
+        # Tutorial hint przy pierwszej walce
+        self._trigger_tutorial_hint("attack", "first_combat")
+
         # Znajdź cel
         if self.game_state.npc_manager:
             current_location_name = self.game_state.current_location
@@ -929,7 +950,10 @@ class CommandParser:
         """Pokaż ekwipunek."""
         if not self.game_state.player:
             return False, "Gracz nie jest zainicjalizowany!"
-        
+
+        # Tutorial hint przy pierwszym użyciu
+        self._trigger_tutorial_hint("inventory", "first_inventory")
+
         return True, self.game_state.player.show_inventory()
     
     def _cmd_equip(self, args: List[str]) -> Tuple[bool, str]:
@@ -1117,7 +1141,10 @@ class CommandParser:
         """Pokaż aktywne zadania."""
         if not self.game_state.quest_engine:
             return False, "System questów nie jest zainicjalizowany!"
-        
+
+        # Tutorial hint przy pierwszym sprawdzeniu questów
+        self._trigger_tutorial_hint("quests", "first_quest")
+
         active = self.game_state.quest_engine.get_active_quests()
         
         if active:

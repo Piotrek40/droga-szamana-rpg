@@ -18,6 +18,7 @@ from core.event_bus import event_bus
 from ui.commands import CommandParser
 from ui.interface import GameInterface
 from ui.smart_interface import create_smart_interface
+from ui.cutscene_manager import CutsceneManager, TutorialManager, create_prison_intro_cutscene
 from npcs.dialogue_system import DialogueSystem, DialogueResult
 from quests.quest_engine import QuestState
 
@@ -35,11 +36,16 @@ class DrogaSzamanaRPG:
         self.dialogue_system = DialogueSystem()
         self.game_state.dialogue_system = self.dialogue_system  # Przypisz do game_state
         self.use_smart = True  # Domyślnie używaj smart interfejsu
-        
+
+        # Systemy narracyjne
+        self.cutscene_manager = CutsceneManager(self.interface)
+        self.tutorial_manager = TutorialManager(self.interface)
+        self.game_state.tutorial_manager = self.tutorial_manager  # Przypisz do game_state
+
         # Ustawienia
         self.auto_save_interval = 300  # 5 minut
         self.last_save_time = time.time()
-        
+
         # Importuj wszystkie pluginy
         self._load_plugins()
         
@@ -193,22 +199,15 @@ class DrogaSzamanaRPG:
         self.game_loop()
     
     def show_game_intro(self):
-        """Pokaż wprowadzenie do gry."""
-        intro = """
-Budzisz się na zimnej, kamiennej podłodze. Głowa pęka ci z bólu, a w ustach 
-czujesz metaliczny posmak krwi. Powoli otwierasz oczy...
+        """Pokaż wprowadzenie do gry - kinowy cutscene."""
+        # Resetuj flagę pomijania (dla nowych gier)
+        self.cutscene_manager.reset_skip()
 
-Jesteś w celi. Małej, ciemnej, cuchnącej pleśnią i rozpaczą. Przez zakratowane 
-okno wpada blade światło poranka. Słyszysz odgłosy innych więźniów - jęki, 
-przekleństwa, czasem szloch.
+        # Stwórz i odtwórz cutscene wprowadzający
+        intro_frames = create_prison_intro_cutscene()
+        self.cutscene_manager.play_cutscene(intro_frames, skippable=True)
 
-Nie pamiętasz jak się tu znalazłeś. Ostatnie co pamiętasz to... nic. Pustka.
-Ale jedno wiesz na pewno - musisz stąd uciec. Musisz przeżyć.
-
-Wstajesz powoli, czując jak każdy mięsień protestuje. Czas zacząć swoją drogę...
-"""
-        self.interface.print(intro)
-        self.interface.get_input("\n[Naciśnij Enter aby kontynuować]")
+        # Wyczyść ekran po cutscene
         self.interface.clear()
     
     def game_loop(self):
