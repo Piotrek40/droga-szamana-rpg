@@ -63,6 +63,16 @@ class Memory:
         """Kompatybilność z dict - pobierz atrybut lub wartość domyślną"""
         return getattr(self, key, default)
 
+    def __getitem__(self, key: str):
+        """Kompatybilność z dict - operator []"""
+        if not hasattr(self, key):
+            raise KeyError(key)
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value):
+        """Kompatybilność z dict - operator [] = """
+        setattr(self, key, value)
+
     def get_current_strength(self, current_time: float) -> float:
         """Oblicza aktualną siłę wspomnienia z uwzględnieniem zapominania"""
         time_passed = current_time - self.timestamp

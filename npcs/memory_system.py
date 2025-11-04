@@ -895,6 +895,20 @@ class IntegratedMemorySystem:
         }
         self.process_event(event)
 
+    def get(self, key: str, default=None):
+        """Kompatybilność z dict - pobierz atrybut lub wartość domyślną"""
+        return getattr(self, key, default)
+
+    def __getitem__(self, key: str):
+        """Kompatybilność z dict - operator []"""
+        if not hasattr(self, key):
+            raise KeyError(key)
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value):
+        """Kompatybilność z dict - operator [] = """
+        setattr(self, key, value)
+
     def recall_relevant(self, context: Dict) -> Dict[str, Any]:
         """Przywołuje relevantne informacje dla danego kontekstu"""
         recalled = {}
