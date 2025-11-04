@@ -68,11 +68,18 @@ class PrologueInterface:
             if self.show_hints:
                 self._display_quick_actions()
 
+            print()  # Odstęp
+
+            # NOWE: Persistent numbered menu - top 5 akcji
+            self._display_quick_numbered_actions()
+
             # Reset flag - następnym razem kompaktowy
             self.needs_full_refresh = False
         else:
-            # KOMPAKTOWY - tylko mini-status
+            # KOMPAKTOWY - mini-status + top 3 akcje
             self._display_mini_status()
+            print()  # Odstęp
+            self._display_quick_numbered_actions(compact=True)
 
     def _display_status_panel(self):
         """Wyświetl przyjazny panel statusu gracza."""
@@ -188,7 +195,7 @@ class PrologueInterface:
 
         actions_row2 = [
             ("[Q]", "Questy"),
-            ("[X]", "Status"),
+            ("[C]", "Status"),
             ("[H]", "Pomoc"),
         ]
 
@@ -265,22 +272,20 @@ class PrologueInterface:
             'q': 'questy',
             'h': 'pomoc',
 
-            # NOWE - Nawigacja
-            'n': 'idź północ',
-            'e': 'idź wschód',
-            'w': 'idź zachód',
+            # NOWE - Nawigacja (używamy pierwszych liter angielskich nazw)
+            'n': 'idź północ',      # North
+            's': 'idź południe',    # South
+            'e': 'idź wschód',      # East
+            'w': 'idź zachód',      # West
 
             # NOWE - Akcje
             't': None,  # Talk - pokaż menu z NPCami
             'g': None,  # Get/Grab - pokaż menu z przedmiotami
-            'x': 'status',  # eXamine self
+            'c': 'status',  # Character status (zmienione z 'x' na 'c' - bardziej intuicyjne)
 
             # NOWE - Systemy
             'm': 'mapa',
             '?': None,  # Pokaż contextual menu
-
-            # Dodatkowe aliasy
-            's': 'idź południe',  # South (konflikt ze status, ale południe ważniejsze)
         }
 
         # Jeśli to single-letter quick key
@@ -333,13 +338,14 @@ Powodzenia, Szamanie! 🔥
         self.interface.print(welcome, 'white')
         self.interface.get_input("\n[Naciśnij Enter aby rozpocząć]")
 
-    def display_command_result(self, success: bool, message: str):
+    def display_command_result(self, success: bool, message: str, show_status_change: bool = False):
         """
         Wyświetl rezultat komendy w przyjazny sposób.
 
         Args:
             success: Czy komenda się powiodła
             message: Wiadomość do wyświetlenia
+            show_status_change: Czy pokazać mini-status po rezultacie (dla akcji zmieniających stan)
         """
         if success:
             # Sukces - normalny tekst
@@ -354,6 +360,10 @@ Powodzenia, Szamanie! 🔥
                     "💡 Spróbuj wpisać 'pomoc' aby zobaczyć dostępne komendy.",
                     'yellow'
                 )
+
+        # NOWE: Po akcji która zmienia stan, pokaż zaktualizowany status
+        if show_status_change and self.game_state.player:
+            self._display_mini_status()
 
     def display_tutorial_progress(self):
         """Wyświetl postęp w tutorialu (opcjonalnie)."""
@@ -466,6 +476,53 @@ Powodzenia, Szamanie! 🔥
         self.interface.print("\n" + "═" * 60, 'cyan')
         self.interface.print(status_line, 'bright_cyan')
         self.interface.print("═" * 60, 'cyan')
+
+    def _display_quick_numbered_actions(self, compact: bool = False):
+        """
+        Wyświetl persistent numbered menu z najważniejszymi akcjami.
+
+        Args:
+            compact: Jeśli True, pokaż tylko top 3, inaczej top 5
+        """
+        # Generuj menu (to też zapisze last_menu i last_menu_location)
+        actions = self.contextual_menu.generate_menu()
+
+        if not actions:
+            # Brak akcji - pokaż tylko hint
+            self.interface.print("💡 Wpisz 'pomoc' lub 'h' aby zobaczyć co możesz zrobić", 'dim')
+            return
+
+        # Ile akcji pokazać
+        max_actions = 3 if compact else 5
+        top_actions = actions[:max_actions]
+
+        # Header
+        if compact:
+            self.interface.print("⚡ Szybkie akcje:", 'yellow')
+        else:
+            self.interface.print("╔═══════════════ SZYBKIE AKCJE ═══════════════╗", 'yellow')
+
+        # Wyświetl akcje
+        for action in top_actions:
+            if compact:
+                # Kompaktowa forma: "1. Rozmawiaj z Piotrem"
+                self.interface.print(f"  {action.number}. {action.display}", 'white')
+            else:
+                # Pełna forma z ikonami
+                self.interface.print(f"║ {action.icon} {action.number}. {action.display:<40} ║", 'white')
+
+        # Footer
+        if not compact:
+            self.interface.print("╚══════════════════════════════════════════════╝", 'yellow')
+
+        # Hint o pełnym menu
+        remaining = len(actions) - len(top_actions)
+        if remaining > 0:
+            hint = f"💡 Wpisz numer (1-{top_actions[-1].number}) lub '?' dla wszystkich akcji ({remaining} więcej)"
+        else:
+            hint = f"💡 Wpisz numer (1-{top_actions[-1].number}) lub komendę tekstową"
+
+        self.interface.print(hint, 'bright_yellow')
 
     # === Helper Methods ===
 
