@@ -88,7 +88,41 @@
           "prerequisites": []
         }
       ],
-      "description": "Majsterkowicz, tworzy przedmioty"
+      "description": "Majsterkowicz, tworzy przedmioty",
+      "initial_relationships": [
+        {
+          "target": "stary_jozef",
+          "trust": 40,
+          "affection": 20,
+          "respect": 60,
+          "fear": 0,
+          "familiarity": 80
+        },
+        {
+          "target": "cichy_tomek",
+          "trust": 35,
+          "affection": 15,
+          "respect": 30,
+          "fear": 0,
+          "familiarity": 75
+        },
+        {
+          "target": "brutus",
+          "trust": -50,
+          "affection": -30,
+          "respect": 10,
+          "fear": 70,
+          "familiarity": 60
+        },
+        {
+          "target": "guard_captain",
+          "trust": -40,
+          "affection": -20,
+          "respect": 0,
+          "fear": 50,
+          "familiarity": 40
+        }
+      ]
     },
     "brutus": {
       "id": "brutus",
@@ -172,7 +206,49 @@
           "prerequisites": []
         }
       ],
-      "description": "Brutalny strażnik więzienny"
+      "description": "Brutalny strażnik więzienny",
+      "initial_relationships": [
+        {
+          "target": "anna",
+          "trust": -20,
+          "affection": -10,
+          "respect": -30,
+          "fear": 0,
+          "familiarity": 50
+        },
+        {
+          "target": "gadatliwy_piotr",
+          "trust": -30,
+          "affection": -40,
+          "respect": -50,
+          "fear": 0,
+          "familiarity": 60
+        },
+        {
+          "target": "gruby_waldek",
+          "trust": 10,
+          "affection": 0,
+          "respect": 10,
+          "fear": 0,
+          "familiarity": 70
+        },
+        {
+          "target": "guard_captain",
+          "trust": -40,
+          "affection": -50,
+          "respect": 30,
+          "fear": 20,
+          "familiarity": 80
+        },
+        {
+          "target": "heinrich",
+          "trust": -30,
+          "affection": -70,
+          "respect": 20,
+          "fear": 40,
+          "familiarity": 60
+        }
+      ]
     },
     "cichy_tomek": {
       "id": "cichy_tomek",
@@ -220,7 +296,33 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": ""
+      "description": "",
+      "initial_relationships": [
+        {
+          "target": "anna",
+          "trust": 30,
+          "affection": 25,
+          "respect": 40,
+          "fear": 0,
+          "familiarity": 75
+        },
+        {
+          "target": "stary_jozef",
+          "trust": 50,
+          "affection": 30,
+          "respect": 60,
+          "fear": 0,
+          "familiarity": 85
+        },
+        {
+          "target": "brutus",
+          "trust": -60,
+          "affection": -40,
+          "respect": 0,
+          "fear": 80,
+          "familiarity": 50
+        }
+      ]
     },
     "gadatliwy_piotr": {
       "id": "gadatliwy_piotr",
@@ -268,7 +370,33 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": ""
+      "description": "",
+      "initial_relationships": [
+        {
+          "target": "stary_grzegorz",
+          "trust": 35,
+          "affection": 20,
+          "respect": 40,
+          "fear": 0,
+          "familiarity": 80
+        },
+        {
+          "target": "brutus",
+          "trust": -40,
+          "affection": -30,
+          "respect": 0,
+          "fear": 70,
+          "familiarity": 55
+        },
+        {
+          "target": "jenkins",
+          "trust": -20,
+          "affection": -10,
+          "respect": 0,
+          "fear": 40,
+          "familiarity": 50
+        }
+      ]
     },
     "gruby_waldek": {
       "id": "gruby_waldek",
@@ -314,7 +442,25 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": ""
+      "description": "",
+      "initial_relationships": [
+        {
+          "target": "brutus",
+          "trust": 20,
+          "affection": 0,
+          "respect": 40,
+          "fear": 30,
+          "familiarity": 65
+        },
+        {
+          "target": "anna",
+          "trust": 10,
+          "affection": 5,
+          "respect": 20,
+          "fear": 0,
+          "familiarity": 40
+        }
+      ]
     },
     "szczuply": {
       "id": "szczuply",
@@ -352,7 +498,33 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": "Przekupny strażnik"
+      "description": "Przekupny strażnik",
+      "initial_relationships": [
+        {
+          "target": "jenkins",
+          "trust": 50,
+          "affection": 20,
+          "respect": 30,
+          "fear": 0,
+          "familiarity": 75
+        },
+        {
+          "target": "guard_captain",
+          "trust": 40,
+          "affection": 10,
+          "respect": 70,
+          "fear": 20,
+          "familiarity": 60
+        },
+        {
+          "target": "brutus",
+          "trust": -30,
+          "affection": -40,
+          "respect": -10,
+          "fear": 40,
+          "familiarity": 50
+        }
+      ]
     },
     "stary_jozef": {
       "id": "stary_jozef",
@@ -436,7 +608,41 @@
           "prerequisites": []
         }
       ],
-      "description": "Mądry uczony, dawny bibliotekarz"
+      "description": "Mądry uczony, dawny bibliotekarz",
+      "initial_relationships": [
+        {
+          "target": "anna",
+          "trust": 45,
+          "affection": 30,
+          "respect": 35,
+          "fear": 0,
+          "familiarity": 80
+        },
+        {
+          "target": "cichy_tomek",
+          "trust": 50,
+          "affection": 35,
+          "respect": 25,
+          "fear": 0,
+          "familiarity": 85
+        },
+        {
+          "target": "brutus",
+          "trust": -50,
+          "affection": -40,
+          "respect": -10,
+          "fear": 60,
+          "familiarity": 70
+        },
+        {
+          "target": "stary_grzegorz",
+          "trust": 40,
+          "affection": 50,
+          "respect": 50,
+          "fear": 0,
+          "familiarity": 90
+        }
+      ]
     },
     "jenkins": {
       "id": "jenkins",
@@ -471,7 +677,33 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": "Leniwy strażnik, często gubi klucze"
+      "description": "Leniwy strażnik, często gubi klucze",
+      "initial_relationships": [
+        {
+          "target": "szczuply",
+          "trust": 45,
+          "affection": 15,
+          "respect": 25,
+          "fear": 0,
+          "familiarity": 75
+        },
+        {
+          "target": "guard_captain",
+          "trust": 50,
+          "affection": 10,
+          "respect": 80,
+          "fear": 15,
+          "familiarity": 65
+        },
+        {
+          "target": "gunter",
+          "trust": 30,
+          "affection": 0,
+          "respect": 60,
+          "fear": 30,
+          "familiarity": 50
+        }
+      ]
     },
     "guard_captain": {
       "id": "guard_captain",
@@ -513,7 +745,49 @@
           "prerequisites": []
         }
       ],
-      "description": "Surowy kapitan straży więziennej"
+      "description": "Surowy kapitan straży więziennej",
+      "initial_relationships": [
+        {
+          "target": "jenkins",
+          "trust": 45,
+          "affection": 10,
+          "respect": 30,
+          "fear": 0,
+          "familiarity": 65
+        },
+        {
+          "target": "szczuply",
+          "trust": 40,
+          "affection": 5,
+          "respect": 25,
+          "fear": 0,
+          "familiarity": 60
+        },
+        {
+          "target": "warden",
+          "trust": 50,
+          "affection": 10,
+          "respect": 90,
+          "fear": 25,
+          "familiarity": 70
+        },
+        {
+          "target": "gunter",
+          "trust": 35,
+          "affection": 0,
+          "respect": 70,
+          "fear": 20,
+          "familiarity": 55
+        },
+        {
+          "target": "brutus",
+          "trust": -40,
+          "affection": -50,
+          "respect": 0,
+          "fear": 20,
+          "familiarity": 70
+        }
+      ]
     },
     "warden": {
       "id": "warden",
@@ -557,7 +831,41 @@
           "prerequisites": []
         }
       ],
-      "description": "Naczelnik więzienia, biurokrata z ambicjami"
+      "description": "Naczelnik więzienia, biurokrata z ambicjami",
+      "initial_relationships": [
+        {
+          "target": "guard_captain",
+          "trust": 60,
+          "affection": 10,
+          "respect": 50,
+          "fear": 0,
+          "familiarity": 75
+        },
+        {
+          "target": "gunter",
+          "trust": 40,
+          "affection": 0,
+          "respect": 60,
+          "fear": 10,
+          "familiarity": 60
+        },
+        {
+          "target": "heinrich",
+          "trust": 30,
+          "affection": -20,
+          "respect": 40,
+          "fear": 15,
+          "familiarity": 50
+        },
+        {
+          "target": "klaus",
+          "trust": 55,
+          "affection": 15,
+          "respect": 45,
+          "fear": 0,
+          "familiarity": 70
+        }
+      ]
     },
     "klaus": {
       "id": "klaus",
@@ -593,7 +901,33 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": "Zbrojmistrz więzienia, pilnuje arsenału"
+      "description": "Zbrojmistrz więzienia, pilnuje arsenału",
+      "initial_relationships": [
+        {
+          "target": "warden",
+          "trust": 50,
+          "affection": 10,
+          "respect": 70,
+          "fear": 15,
+          "familiarity": 65
+        },
+        {
+          "target": "guard_captain",
+          "trust": 45,
+          "affection": 5,
+          "respect": 50,
+          "fear": 5,
+          "familiarity": 60
+        },
+        {
+          "target": "gunter",
+          "trust": 35,
+          "affection": 0,
+          "respect": 55,
+          "fear": 20,
+          "familiarity": 50
+        }
+      ]
     },
     "gunter": {
       "id": "gunter",
@@ -630,7 +964,41 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": "Wojskowy kapitan, weteran wojen"
+      "description": "Wojskowy kapitan, weteran wojen",
+      "initial_relationships": [
+        {
+          "target": "warden",
+          "trust": 40,
+          "affection": 0,
+          "respect": 60,
+          "fear": 10,
+          "familiarity": 55
+        },
+        {
+          "target": "guard_captain",
+          "trust": 30,
+          "affection": -5,
+          "respect": 40,
+          "fear": 0,
+          "familiarity": 60
+        },
+        {
+          "target": "heinrich",
+          "trust": 20,
+          "affection": -30,
+          "respect": 30,
+          "fear": 25,
+          "familiarity": 45
+        },
+        {
+          "target": "brutus",
+          "trust": -30,
+          "affection": -40,
+          "respect": 10,
+          "fear": 10,
+          "familiarity": 55
+        }
+      ]
     },
     "heinrich": {
       "id": "heinrich",
@@ -666,7 +1034,33 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": "Kat więzienny, wykonawca wyroków"
+      "description": "Kat więzienny, wykonawca wyroków",
+      "initial_relationships": [
+        {
+          "target": "warden",
+          "trust": 35,
+          "affection": 0,
+          "respect": 60,
+          "fear": 20,
+          "familiarity": 50
+        },
+        {
+          "target": "gunter",
+          "trust": 20,
+          "affection": -10,
+          "respect": 40,
+          "fear": 10,
+          "familiarity": 45
+        },
+        {
+          "target": "brutus",
+          "trust": -20,
+          "affection": -60,
+          "respect": 0,
+          "fear": 5,
+          "familiarity": 60
+        }
+      ]
     },
     "stary_grzegorz": {
       "id": "stary_grzegorz",
@@ -730,7 +1124,33 @@
       "memories": [],
       "relationships": {},
       "goals": [],
-      "description": "Wychudzony starzec o dlugiej siwej brodzie. Jego oczy blyszcza szalenstwem, a rece drza nieustannie."
+      "description": "Wychudzony starzec o dlugiej siwej brodzie. Jego oczy blyszcza szalenstwem, a rece drza nieustannie.",
+      "initial_relationships": [
+        {
+          "target": "stary_jozef",
+          "trust": 45,
+          "affection": 50,
+          "respect": 50,
+          "fear": 0,
+          "familiarity": 90
+        },
+        {
+          "target": "gadatliwy_piotr",
+          "trust": 30,
+          "affection": 15,
+          "respect": 10,
+          "fear": 0,
+          "familiarity": 75
+        },
+        {
+          "target": "brutus",
+          "trust": -45,
+          "affection": -35,
+          "respect": -20,
+          "fear": 55,
+          "familiarity": 60
+        }
+      ]
     }
   },
   "schedule_templates": {

@@ -10,7 +10,7 @@ from enum import Enum
 
 from player.skills import SkillSystem, SkillName
 from player.classes import CharacterClass, ClassName, ClassManager
-from mechanics.combat import CombatStats, Injury, BodyPart, DamageType, CombatAction, CombatSystem
+from mechanics.combat import CombatStats, Injury, BodyPart, DamageType, CombatAction, combat_system
 
 
 class CharacterState(Enum):
@@ -367,8 +367,6 @@ class Character:
         Returns:
             (sukces, opis)
         """
-        combat_system = CombatSystem()
-        
         # Mapuj akcję
         action_mapping = {
             'atak_podstawowy': CombatAction.ATAK_PODSTAWOWY,
@@ -551,9 +549,8 @@ class Character:
         # Uszkodzenie pancerza
         if armor_protection > 0:
             self.equipment.damage_armor(body_part, damage)
-        
-        # Aplikuj obrażenia
-        combat_system = CombatSystem()
+
+        # Aplikuj obrażenia (używa singletona combat_system)
         effect = combat_system.apply_damage(
             self.combat_stats,
             final_damage,
@@ -615,8 +612,7 @@ class Character:
         Returns:
             (zawsze True, opis efektów)
         """
-        # Regeneracja staminy
-        combat_system = CombatSystem()
+        # Regeneracja staminy (używa singletona combat_system)
         stamina_recovered = combat_system.recover_stamina(
             self.combat_stats,
             is_resting=True,
@@ -706,9 +702,8 @@ class Character:
             most_severe.bleeding = False
             most_severe.bleeding_rate = 0
             most_severe.time_to_heal = int(most_severe.time_to_heal * 0.7)
-            
-            # Redukcja bólu
-            combat_system = CombatSystem()
+
+            # Redukcja bólu (używa singletona combat_system)
             pain_reduced = combat_system.reduce_pain(
                 self.combat_stats,
                 most_severe.severity * 0.3,

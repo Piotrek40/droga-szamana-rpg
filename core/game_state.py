@@ -1,13 +1,13 @@
 """Globalny stan gry - zarządzanie wszystkimi systemami."""
 
-from typing import Dict, Any, Optional, List, Tuple
+from typing import Dict, Any, Optional, List, Tuple, TYPE_CHECKING
 from dataclasses import dataclass, field
 from datetime import datetime
 import json
 import os
 from enum import Enum
 
-from core.event_bus import event_bus, EventCategory, GameEvent, EventPriority
+from .event_bus import event_bus, EventCategory, GameEvent, EventPriority
 from world.locations.prison import Prison
 from world.time_system import TimeSystem
 from world.weather import WeatherSystem
@@ -15,8 +15,12 @@ from player.character import Player, CharacterState
 from npcs.npc_manager import NPCManager
 from mechanics.economy import Economy
 from mechanics.crafting import CraftingSystem
-from quests.quest_engine import QuestEngine, QuestState, RewardSystem
-from quests.consequences import ConsequenceManager
+from mechanics.combat import combat_system as _combat_system_singleton
+
+# TYPE_CHECKING - unika circular import, używane tylko do type hints
+if TYPE_CHECKING:
+    from quests.quest_engine import QuestEngine, QuestState, RewardSystem
+    from quests.consequences import ConsequenceManager
 
 
 class GameMode(Enum):
@@ -82,8 +86,9 @@ class GameState:
         self.npc_manager: Optional[NPCManager] = None
         self.economy: Optional[Economy] = None
         self.crafting_system: Optional[CraftingSystem] = None
-        self.quest_engine: Optional[QuestEngine] = None
-        self.consequence_manager: Optional[ConsequenceManager] = None
+        self.combat_system = _combat_system_singleton  # Singleton systemu walki
+        self.quest_engine: Optional['QuestEngine'] = None
+        self.consequence_manager: Optional['ConsequenceManager'] = None
         
         # Stan gry
         self.is_running = False  # Czy gra jest aktywna
@@ -208,7 +213,9 @@ class GameState:
         # Auto-odkrycie podstawowych receptur dla gracza
         self.crafting.auto_discover_basic_recipes(self.player)
 
-        # Inicjalizacja questów
+        # Inicjalizacja questów (lazy import - unika circular import)
+        from quests.quest_engine import QuestEngine, RewardSystem
+        from quests.consequences import ConsequenceManager
         print("Aktywacja questów emergentnych...")
         self.quest_engine = QuestEngine()
         self.quest_engine.reward_system = RewardSystem()  # Inicjalizacja systemu nagród
@@ -603,7 +610,9 @@ class GameState:
             'npcs': self.npc_manager.get_save_state() if self.npc_manager else None,
             'economy': self.economy.save_state() if self.economy else None,
             'quests': self.quest_engine.save_state() if self.quest_engine else None,
-            'consequences': self.consequence_manager.save_state() if self.consequence_manager else None
+            'consequences': self.consequence_manager.save_state() if self.consequence_manager else None,
+            'crafting': self.crafting_system.save_state() if self.crafting_system else None,
+            'combat': self.combat_system.save_state() if self.combat_system else None
         }
         
         # Utwórz folder saves jeśli nie istnieje
@@ -686,7 +695,15 @@ class GameState:
             # Wczytaj konsekwencje
             if save_data['consequences'] and self.consequence_manager:
                 self.consequence_manager.load_state(save_data['consequences'])
-            
+
+            # Wczytaj crafting
+            if save_data.get('crafting') and self.crafting_system:
+                self.crafting_system.load_state(save_data['crafting'])
+
+            # Wczytaj combat
+            if save_data.get('combat') and self.combat_system:
+                self.combat_system.load_state(save_data['combat'])
+
             # Ustaw lokację w więzieniu
             if self.prison:
                 self.prison.current_location = self.prison.locations.get(self.current_location)
@@ -760,7 +777,7 @@ class GameState:
     def _initialize_prison_quests(self):
         """Inicjalizacja questów więziennych."""
         from quests.quest_chains import GuardKeysLostQuest
-        from quests.quest_engine import QuestSeed, DiscoveryMethod
+        from quests.quest_engine import QuestSeed, DiscoveryMethod, QuestState
         
         # Prosty quest startowy - zgubione klucze
         simple_keys_seed = QuestSeed(

@@ -5,15 +5,15 @@ Dodaje kontekstowe akcje bojowe, widgety stanu walki i inteligentne podpowiedzi.
 
 from typing import List, Dict, Any, Callable, Optional
 from ui.smart_interface import PluginInterface, ContextualAction, ActionType
-from mechanics.combat import CombatAction, CombatSystem
+from mechanics.combat import CombatAction, combat_system
 from player.skills import SkillName
 
 
 class CombatPlugin(PluginInterface):
     """Plugin rozszerzający interfejs o funkcje bojowe."""
-    
+
     def __init__(self):
-        self.combat_system = CombatSystem()
+        self.combat_system = combat_system  # Używa singletona
         self.in_combat = False
         self.current_target = None
         self.combat_log = []
