@@ -536,6 +536,559 @@
       },
 
       "tags": ["prison", "keys", "emergent", "opportunity", "choice"]
+    },
+    {
+      "quest_id": "hole_in_wall",
+      "name": "Tunel w murze",
+      "description": "Ktos zaczal kopac tunel w twojej celi gdy ciebie nie bylo. Co z tym zrobisz?",
+      "category": "emergent",
+
+      "activation": {
+        "conditions": {
+          "player.absent_from_cell_days": { "operator": ">=", "value": 2 },
+          "prison.security": { "operator": "!=", "value": "maximum" }
+        },
+        "auto_activate": false
+      },
+
+      "discovery": {
+        "methods": ["FOUND", "TOLD", "ENVIRONMENTAL"],
+        "clues": {
+          "player_cell": "Twoja prycza zostala przesunieta. Za nia widac slady kopania.",
+          "adjacent_cell": "Z sasiedniej celi slychac ciche skrobanie.",
+          "prison_wall": "Przy murze lezy kupka gruzu przykryta szmatami."
+        },
+        "dialogues": {
+          "found": [
+            "Wracasz do celi i zauwazasz ze ktos przy niej majstrowal. Za prycza znajdujesz rozpoczety tunel!",
+            "Potykasz sie o luzne kamienie. Ktos kopie tunel!"
+          ],
+          "told": [
+            "Wspolwiezien szepcze: 'Ktos wykorzystal twoja nieobecnosc. Sprawdz za lozkiem.'",
+            "Brutus: 'Szamanie, ktos grzebie w twojej celi. Lepiej to sprawdz.'"
+          ],
+          "environmental": [
+            "Mur w twojej celi wyglada inaczej. Jakby ktos go naruszyl.",
+            "Czujesz przeciag ktorego wczesniej nie bylo."
+          ]
+        }
+      },
+
+      "timing": {
+        "time_sensitive": true,
+        "expiry_hours": 36,
+        "priority": 7
+      },
+
+      "branches": [
+        {
+          "id": "continue_digging",
+          "description": "Kontynuuj kopanie tunelu",
+          "requirements": [
+            { "type": "skill", "target": "strength", "value": 5 },
+            { "type": "skill", "target": "stealth", "value": 6 }
+          ],
+          "dialogue": {
+            "preview": "Ktos zaczal, ja dokoncze...",
+            "resolution": "Kontynuujesz kopanie. Po tygodniu tunel jest gotowy do ucieczki.",
+            "npc_reactions": {
+              "brutus": "Brutus: 'Kiedy uciekamy? Musimy to zaplanowac. Jedna szansa.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.tunnel_complete": true,
+              "prison.escape_route": true
+            },
+            "relationships": {
+              "Brutus": 30,
+              "fellow_prisoners": 25
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 24,
+              "description": "Planowanie ucieczki",
+              "world_changes": { "prison.escape_planning": true },
+              "npc_reactions": {},
+              "new_quests": ["great_escape_quest"]
+            }
+          ],
+          "moral_weight": 5
+        },
+        {
+          "id": "report_tunnel",
+          "description": "Zglos tunel straznikom",
+          "requirements": [],
+          "dialogue": {
+            "preview": "To zbyt niebezpieczne. Musze to zglosic.",
+            "resolution": "Zglaszasz tunel. Straznicy sa wdzieczni, ale wiezniowie uwazaja cie za donosiciela.",
+            "npc_reactions": {
+              "captain": "Kapitan: 'Dobra robota wiezniu. Gdyby nie ty, mielibysmy masowa ucieczke.'",
+              "brutus": "Brutus: 'Donosiciel... Nie spodziewalem sie tego po tobie szamanie.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.tunnel_discovered": true,
+              "prison.security": "high",
+              "player.marked_as_snitch": true
+            },
+            "relationships": {
+              "guards": 40,
+              "warden": 30,
+              "prisoners": -60,
+              "Brutus": -50
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 48,
+              "description": "Proba zemsty wiezniow",
+              "world_changes": { "player.targeted": true },
+              "npc_reactions": {
+                "prisoners": "Donosiciele nie zyja dlugo..."
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": -20
+        },
+        {
+          "id": "hide_tunnel",
+          "description": "Zasypac tunel i ukryc slady",
+          "requirements": [
+            { "type": "skill", "target": "crafting", "value": 4 }
+          ],
+          "dialogue": {
+            "preview": "Musze to zasypac zanim ktos zauważy...",
+            "resolution": "Zasypujesz tunel i maskujesz slady. Nikt sie nie dowiaduje.",
+            "npc_reactions": {
+              "brutus": "Brutus: 'Nigdy tego nie bylo, jasne?' Gracz: 'Jakiego tunelu?'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.tunnel_hidden": true
+            },
+            "relationships": {
+              "Brutus": 20
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 168,
+              "description": "Ktos probuje znowu kopac",
+              "world_changes": { "prison.new_tunnel_attempt": true },
+              "npc_reactions": {},
+              "new_quests": []
+            }
+          ],
+          "moral_weight": 0
+        },
+        {
+          "id": "set_trap",
+          "description": "Zastawic pulapke na tego kto kopie",
+          "requirements": [
+            { "type": "skill", "target": "traps", "value": 5 },
+            { "type": "item", "target": "rope_or_wire", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Zlapie gnoja ktory grzebie w mojej celi...",
+            "resolution": "Zastawiasz pulapke. Lapiesz wieznia ktory kopal tunel - Szczura.",
+            "npc_reactions": {
+              "szczur": "Szczur: 'Pusc! Myslalem ze cie przeniesli! Moge sie przylaczyc do ucieczki!'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "caught_digger": "Szczur",
+              "tunnel_discovered_by_player": true
+            },
+            "relationships": {
+              "Szczur": -20
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 1,
+              "description": "Musisz zdecydowac co ze Szczurem",
+              "world_changes": {},
+              "npc_reactions": {},
+              "new_quests": ["szczur_decision_quest"]
+            }
+          ],
+          "moral_weight": 0
+        },
+        {
+          "id": "sell_tunnel_info",
+          "description": "Sprzedac informacje o tunelu",
+          "requirements": [
+            { "type": "skill", "target": "barter", "value": 5 }
+          ],
+          "dialogue": {
+            "preview": "Ktos zaplaci dobrze za taka informacje...",
+            "resolution": "Sprzedajesz informacje o tunelu roznym stronom. Chaos wybucha.",
+            "npc_reactions": {
+              "brutus": "Brutus: 'Zgoda na ochrone za tunel.'",
+              "kruk": "Kruk: 'Dam ci sztylet za to info.'",
+              "wilson": "Wilson: 'Dostaniesz 50 zlotych i nie zabije cie.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.tunnel_known": true,
+              "prison.gang_war_brewing": true,
+              "player.gold": 50
+            },
+            "relationships": {
+              "Brutus": 10,
+              "Kruk": 5,
+              "Wilson": 15,
+              "other_prisoners": -30
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 12,
+              "description": "Wojna o tunel",
+              "world_changes": { "prison.gang_war": true },
+              "npc_reactions": {},
+              "new_quests": ["tunnel_war_quest"]
+            }
+          ],
+          "moral_weight": -10
+        },
+        {
+          "id": "expand_tunnel",
+          "description": "Przeksztalcic tunel w siec przejsc",
+          "requirements": [
+            { "type": "skill", "target": "engineering", "value": 7 },
+            { "type": "skill", "target": "leadership", "value": 6 }
+          ],
+          "dialogue": {
+            "preview": "Ten tunel to poczatek. Moge stworzyc cala siec...",
+            "resolution": "Organizujesz wiezniow do stworzenia sieci tuneli. Wiezienie staje sie labiryntem.",
+            "npc_reactions": {
+              "prisoners": "Gracz do wiezniow: 'To dopiero poczatek naszego krolestwa pod ziemia.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.tunnel_network": true,
+              "prison.underground_kingdom": true,
+              "prison.prisoner_morale": 9
+            },
+            "relationships": {
+              "prisoners": 50,
+              "Brutus": 40
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 720,
+              "description": "Odkrycie sieci tuneli",
+              "world_changes": { "prison.tunnel_discovered": true },
+              "npc_reactions": {},
+              "new_quests": ["tunnel_network_defense"]
+            }
+          ],
+          "moral_weight": 15
+        }
+      ],
+
+      "rewards": {
+        "experience": 150,
+        "reputation": {
+          "prison": 15
+        }
+      },
+
+      "tags": ["prison", "tunnel", "emergent", "escape", "choice"]
+    },
+    {
+      "quest_id": "prisoner_revolt",
+      "name": "Bunt w wiezieniu",
+      "description": "Brutus planuje krwawy bunt. Twoje relacje z nim sa fatalne - jestes na celowniku.",
+      "category": "emergent",
+
+      "activation": {
+        "conditions": {
+          "relationships.Brutus": { "operator": "<", "value": -50 },
+          "prison.tension": { "operator": ">", "value": 7 }
+        },
+        "auto_activate": false
+      },
+
+      "discovery": {
+        "methods": ["OVERHEARD", "WITNESSED", "CONSEQUENCE"],
+        "clues": {
+          "prison_yard": "Grupy wiezniow szepcza agresywnie. Brutus cos planuje.",
+          "cafeteria": "Napiecie przy posilkach. Wiezniowie gromadza improwizowana bron.",
+          "cell_block_b": "Ktos napisal na scianie: 'JUTRO WOLNOSC LUB SMIERC'"
+        },
+        "dialogues": {
+          "overheard": [
+            "Slyszysz Brutusa: 'Jutro o swicie. Bierzemy straznikow i szamana!'",
+            "Dwoch wiezniow szepcze: 'Brutus powiedzial - albo z nami, albo przeciw nam.'"
+          ],
+          "witnessed": [
+            "Widzisz jak wiezniowie ostrza samorobki. Brutus kieruje przygotowaniami.",
+            "Straznicy sa nerwowi. Czuja ze cos wisi w powietrzu."
+          ],
+          "consequence": [
+            "Twoje wrogie relacje z Brutusem doprowadzily do tego. Bunt jest nieunikniony.",
+            "Brutus wykorzystal twoja slabosc. Wiezniowie sa przeciwko tobie."
+          ]
+        }
+      },
+
+      "timing": {
+        "time_sensitive": true,
+        "expiry_hours": 24,
+        "priority": 10
+      },
+
+      "branches": [
+        {
+          "id": "join_revolt",
+          "description": "Dolacz do buntu mimo wrogosci",
+          "requirements": [
+            { "type": "skill", "target": "persuasion", "value": 8 },
+            { "type": "skill", "target": "combat", "value": 6 }
+          ],
+          "dialogue": {
+            "preview": "Moze uda sie przekonac Brutusa ze jestem po jego stronie...",
+            "resolution": "Przekonujesz Brutusa i dolaczasz do buntu. Razem przejmujecie wiezienie.",
+            "npc_reactions": {
+              "brutus": "Brutus: 'Dobrze walczyles szamanie. Moze sie myle co do ciebie.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.controlled_by": "prisoners",
+              "prison.guards_captured": true,
+              "prison.revolt_successful": true
+            },
+            "relationships": {
+              "Brutus": 70,
+              "prisoners": 60,
+              "guards": -100
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 24,
+              "description": "Wojsko otacza wiezienie",
+              "world_changes": { "prison.under_siege": true },
+              "npc_reactions": {},
+              "new_quests": ["siege_negotiation_quest"]
+            }
+          ],
+          "moral_weight": -5
+        },
+        {
+          "id": "warn_guards",
+          "description": "Ostrzez straznikow o buncie",
+          "requirements": [],
+          "dialogue": {
+            "preview": "Musze ostrzec straz. Bedzie masakra.",
+            "resolution": "Ostrzegasz straznikow. Bunt jest stumiony, ale wiezniowie cie nienawidza.",
+            "npc_reactions": {
+              "brutus": "Brutus: 'TY! ZDRAJCA! ZABIJE CIE!'",
+              "captain": "Kapitan: 'Uratowales zycia straznikow. Nie zapomnę tego.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.revolt_failed": true,
+              "prison.lockdown": true,
+              "prison.brutus_in_solitary": true
+            },
+            "relationships": {
+              "guards": 70,
+              "warden": 50,
+              "prisoners": -100,
+              "Brutus": -200
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 168,
+              "description": "Proba zabojstwa przez wiezniow",
+              "world_changes": { "assassination_attempt": true },
+              "npc_reactions": {},
+              "new_quests": ["survive_assassination_quest"]
+            }
+          ],
+          "moral_weight": -15
+        },
+        {
+          "id": "take_over_revolt",
+          "description": "Przejmij przywodztwo buntu od Brutusa",
+          "requirements": [
+            { "type": "skill", "target": "leadership", "value": 8 },
+            { "type": "skill", "target": "intimidation", "value": 7 }
+          ],
+          "dialogue": {
+            "preview": "Moge obalic Brutusa i sam poprowadzic bunt...",
+            "resolution": "Wyzywasz Brutusa na pojedynek. Wygrywasz i prowadzisz madrzejszy, bezkrwawy bunt.",
+            "npc_reactions": {
+              "prisoners": "Wiezniowie: 'SZAMAN! SZAMAN!'",
+              "brutus": "Brutus: '*pluje krwia* 'Zastepca... na razie.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.revolt_leader": "player",
+              "prison.peaceful_revolt": true,
+              "prison.reforms_promised": true
+            },
+            "relationships": {
+              "prisoners": 80,
+              "Brutus": -30,
+              "guards": -20,
+              "warden": 10
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 72,
+              "description": "Negocjacje z wladzami",
+              "world_changes": { "reform_negotiations": true },
+              "npc_reactions": {},
+              "new_quests": ["prison_reform_quest"]
+            }
+          ],
+          "moral_weight": 20
+        },
+        {
+          "id": "sabotage_revolt",
+          "description": "Potajemnie sabotuj przygotowania do buntu",
+          "requirements": [
+            { "type": "skill", "target": "stealth", "value": 7 },
+            { "type": "skill", "target": "sabotage", "value": 6 }
+          ],
+          "dialogue": {
+            "preview": "Moge pokrzyzowac ich plany nie ujawniajac sie...",
+            "resolution": "Sabotujesz bron i plany. Bunt sie nie udaje, ale nikt nie wie ze to ty.",
+            "npc_reactions": {
+              "brutus": "Brutus: 'Ktos nas wydal! Znajde gnoja!'",
+              "player": "Ty udajesz zaskoczenie: 'Niemozliwe! Kto mogl?'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.revolt_failed": true,
+              "prison.saboteur_unknown": true,
+              "prison.paranoia": 8
+            },
+            "relationships": {
+              "Brutus": -60,
+              "prisoners": -30
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 96,
+              "description": "Brutus rozpoczyna sledztwo",
+              "world_changes": { "brutus_investigation": true },
+              "npc_reactions": {
+                "Brutus": "Znajde zdrajce. I wtedy..."
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": -10
+        },
+        {
+          "id": "escalate_chaos",
+          "description": "Przeksztalc bunt w totalny chaos",
+          "requirements": [
+            { "type": "skill", "target": "chaos_magic", "value": 6 },
+            { "type": "skill", "target": "deception", "value": 7 }
+          ],
+          "dialogue": {
+            "preview": "Niech wszyscy walcza ze wszystkimi...",
+            "resolution": "Podzegasz wszystkie strony. Wiezienie plonie. W chaosie uciekasz.",
+            "npc_reactions": {
+              "narrator": "Za toba plonace wiezienie. Wolnosc... ale za jaka cene?"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.destroyed": true,
+              "prison.mass_escape": true,
+              "player.escaped": true,
+              "death_toll": 47
+            },
+            "relationships": {
+              "everyone": -100,
+              "chaos_gods": 50
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 720,
+              "description": "Lowcy nagrod szukaja ciebie",
+              "world_changes": { "bounty_on_player": 10000 },
+              "npc_reactions": {},
+              "new_quests": ["fugitive_life_quest"]
+            }
+          ],
+          "moral_weight": -50
+        },
+        {
+          "id": "mediate_peace",
+          "description": "Sprobuj mediacji miedzy stronami",
+          "requirements": [
+            { "type": "skill", "target": "diplomacy", "value": 9 },
+            { "type": "skill", "target": "empathy", "value": 7 }
+          ],
+          "dialogue": {
+            "preview": "Moze uda sie zapobiec rozlewowi krwi...",
+            "resolution": "Organizujesz negocjacje. Znajdujesz kompromis ktory ratuje zycia.",
+            "npc_reactions": {
+              "brutus": "Brutus: '...Dobra. Ale jesli nie dotrzymaja slowa...'",
+              "warden": "Naczelnik: 'Zgoda na jedzenie i listy. Spacery co drugi dzien.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.reforms_implemented": true,
+              "prison.tension": 3,
+              "prison.revolt_prevented": true
+            },
+            "relationships": {
+              "Brutus": 40,
+              "prisoners": 50,
+              "guards": 40,
+              "warden": 60
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 240,
+              "description": "Propozycja wczesniejszego zwolnienia",
+              "world_changes": { "early_release_possible": true },
+              "npc_reactions": {
+                "warden": "Za twoja pomoc, mozemy skrocic wyrok..."
+              },
+              "new_quests": ["early_release_quest"]
+            }
+          ],
+          "moral_weight": 30
+        }
+      ],
+
+      "rewards": {
+        "experience": 200,
+        "reputation": {
+          "prison": 20
+        }
+      },
+
+      "tags": ["prison", "revolt", "emergent", "major", "conflict"]
     }
   ]
 }
