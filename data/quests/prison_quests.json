@@ -255,6 +255,287 @@
       },
 
       "tags": ["prison", "survival", "emergent", "food", "conflict"]
+    },
+    {
+      "quest_id": "guard_keys_lost",
+      "name": "Zgubione klucze",
+      "description": "Straznik Jenkins zgubil klucze do cel. To moze byc szansa... lub pulapka.",
+      "category": "emergent",
+
+      "activation": {
+        "conditions": {
+          "days_passed": { "operator": ">=", "value": 3 },
+          "random_chance": { "operator": ">", "value": 0.3 }
+        },
+        "auto_activate": false
+      },
+
+      "discovery": {
+        "methods": ["OVERHEARD", "WITNESSED", "FOUND"],
+        "clues": {
+          "wartownia": "Straznik nerwowo przeszukuje kieszenie i rozglada sie.",
+          "dziedziniec": "Cos metalowego blyszczy w kacie dziedzinca.",
+          "jadalnia": "Slychac brzek metalu w koszu z brudnym praniem."
+        },
+        "dialogues": {
+          "overheard": [
+            "Slyszysz spanikowanego straznika:\n'Kurwa, gdzie sa moje klucze?! Kapitan mnie zabije!'",
+            "Dwoch straznikow szepcze:\n'Jenkins zgubil klucze. Jesli dowodca sie dowie...'"
+          ],
+          "witnessed": [
+            "Widzisz jak straznik Jenkins goraczkowo przeszukuje dziedziniec.",
+            "Zauwazasz ze jeden straznik nie moze otworzyc celi. Wyglada na przerazonego."
+          ],
+          "found": [
+            "Potykasz sie o cos metalowego. To pek kluczy z symbolem strazy!",
+            "W pralni znajdujesz klucze do cel. Ktos musial je zgubic."
+          ]
+        }
+      },
+
+      "timing": {
+        "time_sensitive": true,
+        "expiry_hours": 24,
+        "priority": 6
+      },
+
+      "branches": [
+        {
+          "id": "return_keys",
+          "description": "Zwroc klucze straznikowi Jenkins",
+          "requirements": [],
+          "dialogue": {
+            "preview": "Powinienem oddac klucze. Jenkins wyglada na zdesperowanego.",
+            "resolution": "Oddajesz klucze wdziecznemu straznikowi. Zyskujesz jego wdziecznosc.",
+            "npc_reactions": {
+              "jenkins": "Jenkins: *chwyta klucze* 'Dzieki... Jestem ci winien przysluge. Duza przysluge.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "guard_jenkins.has_keys": true,
+              "guard_jenkins.owes_favor": true
+            },
+            "relationships": {
+              "Jenkins": 50,
+              "guards": 10
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 72,
+              "description": "Jenkins oferuje pomoc",
+              "world_changes": {},
+              "npc_reactions": {
+                "Jenkins": "Hej, pamietasz jak mi pomogles? Moge zalatwic ci dodatkowa porcje..."
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": 15
+        },
+        {
+          "id": "use_for_escape",
+          "description": "Uzyj kluczy do proby ucieczki",
+          "requirements": [
+            { "type": "skill", "target": "stealth", "value": 7 },
+            { "type": "skill", "target": "athletics", "value": 6 }
+          ],
+          "dialogue": {
+            "preview": "Te klucze to moja szansa na wolnosc...",
+            "resolution": "Uzywasz kluczy do otwarcia cel, ale ucieczka konczy sie niepowodzeniem. Tracisz klucze i wolnosc.",
+            "npc_reactions": {
+              "captain": "Kapitan: 'Do karceru z nim! Miesiac o chlebie i wodzie!'",
+              "brutus": "Brutus: 'Glupiec... Trzeba bylo ze mna gadac.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "player.in_solitary": true,
+              "prison.security": "maximum",
+              "guard_keys.lost": false
+            },
+            "relationships": {
+              "guards": -50,
+              "Jenkins": -30,
+              "Brutus": -20,
+              "prisoners": 15
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 720,
+              "description": "Wychodzisz z karceru",
+              "world_changes": { "player.in_solitary": false },
+              "npc_reactions": {
+                "Brutus": "Wygladasz jak smierc. Nastepnym razem pomysl zanim zrobisz cos glupiego."
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": -10
+        },
+        {
+          "id": "sell_to_brutus",
+          "description": "Sprzedaj klucze Brutusowi",
+          "requirements": [
+            { "type": "reputation", "target": "Brutus", "value": -10 }
+          ],
+          "dialogue": {
+            "preview": "Brutus na pewno zaplaci dobrze za takie klucze...",
+            "resolution": "Sprzedajesz klucze Brutusowi. Zyskujesz przyslugi ale Jenkins bedzie mial klopoty.",
+            "npc_reactions": {
+              "brutus": "Brutus: *bierze klucze* 'Dobry jestes szamanie. Jenkins bedzie plakal haha!'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "brutus.has_keys": true,
+              "guard_jenkins.in_trouble": true,
+              "prison.contraband_level": 8
+            },
+            "relationships": {
+              "Brutus": 40,
+              "Jenkins": -60,
+              "guards": -20
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 24,
+              "description": "Jenkins zostaje ukarany",
+              "world_changes": { "guard_jenkins.demoted": true },
+              "npc_reactions": {
+                "Jenkins": "To ty! Ty mi to zrobiles! Pozalujesz tego!"
+              },
+              "new_quests": []
+            },
+            {
+              "delay_hours": 48,
+              "description": "Brutus uzywa kluczy",
+              "world_changes": { "prison.brutus_escape_plan": true },
+              "npc_reactions": {},
+              "new_quests": ["brutus_escape_conspiracy"]
+            }
+          ],
+          "moral_weight": -20
+        },
+        {
+          "id": "frame_enemy",
+          "description": "Podruc klucze wrogowi zeby go wrobić",
+          "requirements": [
+            { "type": "skill", "target": "deception", "value": 5 }
+          ],
+          "dialogue": {
+            "preview": "Moge wykorzystac to zeby pozbyc sie wroga...",
+            "resolution": "Podrzucasz klucze wrogowi i donosisz straznikom. Twoj wrog trafia do karceru.",
+            "npc_reactions": {
+              "enemy": "Szczur gdy go prowadza: 'TO TY SZAMANIE! WIEM ZE TO TY! ZEMSTA!'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "enemy.in_solitary": true,
+              "guard_keys.recovered": true
+            },
+            "relationships": {
+              "enemy": -100,
+              "enemy_gang": -40,
+              "guards": 5
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 360,
+              "description": "Wrog wraca z karceru",
+              "world_changes": { "enemy.seeking_revenge": true },
+              "npc_reactions": {
+                "enemy": "Szamanie... przygotuj sie na pieklo."
+              },
+              "new_quests": ["enemy_revenge_quest"]
+            }
+          ],
+          "moral_weight": -30
+        },
+        {
+          "id": "make_copies",
+          "description": "Zrob kopie kluczy zanim je zwrocisz",
+          "requirements": [
+            { "type": "skill", "target": "crafting", "value": 6 },
+            { "type": "item", "target": "wax_or_clay", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Jesli zrobie odlewy, bede mial kopie...",
+            "resolution": "Robisz woskowe odlewy kluczy. Zwracasz oryginaly ale zachowujesz mozliwosc zrobienia kopii.",
+            "npc_reactions": {
+              "jenkins": "Jenkins: 'Dzieki! Uratowales mi skore!'",
+              "brutus": "Brutus: 'Widzialem co robiles w warsztacie. Madry ruch.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "player.has_key_molds": true,
+              "guard_keys.returned": true
+            },
+            "relationships": {
+              "Jenkins": 40,
+              "Brutus": 20
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 96,
+              "description": "Mozliwosc wykucia kopii",
+              "world_changes": { "forge.keys_available": true },
+              "npc_reactions": {},
+              "new_quests": ["forge_keys_quest"]
+            }
+          ],
+          "moral_weight": 0
+        },
+        {
+          "id": "trade_for_info",
+          "description": "Wymien klucze na cenne informacje",
+          "requirements": [
+            { "type": "skill", "target": "investigation", "value": 4 }
+          ],
+          "dialogue": {
+            "preview": "Ktos na pewno da mi cos cennego za te klucze...",
+            "resolution": "Wymieniasz klucze na informacje o planowanym transporcie wiezniow.",
+            "npc_reactions": {
+              "kruk": "Kruk: 'Za trzy dni bedzie transport. Przenoszą trzech do lzejszego wiezienia.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "player.knows_transport_schedule": true,
+              "player.knows_warden_secret": true
+            },
+            "relationships": {
+              "Kruk": 30
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 72,
+              "description": "Transport wiezniow",
+              "world_changes": { "prison.transport_happening": true },
+              "npc_reactions": {},
+              "new_quests": ["transport_opportunity"]
+            }
+          ],
+          "moral_weight": 5
+        }
+      ],
+
+      "rewards": {
+        "experience": 75,
+        "reputation": {
+          "prison": 5
+        }
+      },
+
+      "tags": ["prison", "keys", "emergent", "opportunity", "choice"]
     }
   ]
 }
