@@ -224,6 +224,14 @@ class GameState:
         self.quest_engine.reward_system = RewardSystem()  # Inicjalizacja systemu nagród
         self.consequence_manager = ConsequenceManager()
 
+        # Ładowanie questów z JSON (nowy system)
+        try:
+            from quests.quest_loader import register_json_quests
+            json_quest_count = register_json_quests(self.quest_engine)
+            print(f"  Załadowano {json_quest_count} questów z JSON")
+        except Exception as e:
+            print(f"  Warning: Nie udało się załadować questów JSON: {e}")
+
         # Inicjalizacja nowego systemu dialogów z pamięcią
         # Lazy import aby uniknąć circular import
         from npcs.dialogue.dialogue_controller import get_dialogue_controller

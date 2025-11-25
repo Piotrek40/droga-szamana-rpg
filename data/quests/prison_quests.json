@@ -1,0 +1,541 @@
+{
+  "quests": [
+    {
+      "quest_id": "prison_food_conflict",
+      "name": "Glod w celach",
+      "description": "Zapasy jedzenia w wiezieniu drastycznie spadly. Wiezniowie sa glodni i zdesperowani.",
+      "category": "emergent",
+
+      "activation": {
+        "conditions": {
+          "prison.food_supplies": { "operator": "<", "value": 10 },
+          "player.location": { "operator": "==", "value": "prison" }
+        },
+        "auto_activate": false
+      },
+
+      "discovery": {
+        "methods": ["OVERHEARD", "WITNESSED", "ENVIRONMENTAL"],
+        "clues": {
+          "prison_corridor": "Slychac podniesione glosy dobiegajace z cel. Ktos krzyczy o jedzeniu.",
+          "prison_cafeteria": "Kuchnia jest prawie pusta. Straznicy wygladaja na zaniepokojonych.",
+          "cell_block_a": "Wiezniowie szepcza miedzy soba, niektorzy ukrywaja male porcje jedzenia."
+        },
+        "dialogues": {
+          "overheard": [
+            "Podsluchujesz rozmowe straznikow:\n'Zapasy sie koncza. Jesli nie dostaniemy dostawy, bedzie bunt.'",
+            "Slyszysz jak Brutus warczy:\n'Kto ukrywa zarcie, ten nie dozyje rana!'"
+          ],
+          "witnessed": [
+            "Widzisz jak dwoch wiezniow bije sie o kawalek chleba. Straznicy tylko patrza.",
+            "Dostrzegasz jak mlody wiezien zemdlal z glodu. Nikt mu nie pomaga."
+          ],
+          "environmental": [
+            "Atmosfera w wiezieniu jest napieta. Wszyscy sa glodni i zdesperowani.",
+            "Zauwazasz ze porcje jedzenia sa coraz mniejsze. Niektorzy wiezniowie juz drugi dzien nic nie jedli."
+          ]
+        }
+      },
+
+      "timing": {
+        "time_sensitive": true,
+        "expiry_hours": 48,
+        "priority": 8
+      },
+
+      "branches": [
+        {
+          "id": "stealth_theft",
+          "description": "Wykradnij jedzenie z magazynu straznikow",
+          "requirements": [
+            { "type": "skill", "target": "stealth", "value": 5 },
+            { "type": "item", "target": "lockpick", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Moglbym sie zakrasc do magazynu straznikow...",
+            "resolution": "Udalo ci sie wykrasc zapasy. Rozdajesz je potajemnie wspolwiezniom. Zyskujesz ich szacunek, ale ryzykujesz gniew straznikow.",
+            "npc_reactions": {
+              "brutus": "Brutus kiwa glowa z uznaniem: 'Masz jaja, szamanie. Pamietaj tylko, ze nie widzialem nic.'",
+              "guard": "Straznik podejrzliwie sie rozglada: 'Ktos byl w magazynie... Znajde skurwysyna.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 25,
+              "prison.guard_alert_level": 8,
+              "prison.tension": -20
+            },
+            "relationships": {
+              "Brutus": 15,
+              "prisoners": 20,
+              "guards": -30
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 24,
+              "description": "Straznicy przeprowadzaja rewizje cel",
+              "world_changes": { "prison.security": "high" },
+              "npc_reactions": {
+                "guard_captain": "Ktokolwiek to zrobil, znajde go i bedzie zalowal!"
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": 10
+        },
+        {
+          "id": "diplomacy_warden",
+          "description": "Przekonaj naczelnika do sprowadzenia dostaw",
+          "requirements": [
+            { "type": "skill", "target": "persuasion", "value": 6 },
+            { "type": "reputation", "target": "guards", "value": 10 }
+          ],
+          "dialogue": {
+            "preview": "Moze da sie porozmawiac z naczelnikiem...",
+            "resolution": "Przekonales naczelnika. Obiecal zwiekszyc dostawy zywnosci. Zyskujesz szacunek straznikow, ale niektorzy wiezniowie uwazaja cie za lizusa.",
+            "npc_reactions": {
+              "warden": "Naczelnik kiwa glowa: 'Rozumiem sytuacje. Zajme sie tym.'",
+              "brutus": "Brutus pluje na ziemie: 'Lizus. Ale chleb to chleb.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 30,
+              "prison.tension": -30,
+              "prison.guard_trust": 15
+            },
+            "relationships": {
+              "warden": 25,
+              "guards": 15,
+              "Brutus": -10,
+              "prisoners": -5
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 12,
+              "description": "Dostawa zywnosci przybywa",
+              "world_changes": { "prison.food_supplies": 50 },
+              "npc_reactions": {},
+              "new_quests": []
+            }
+          ],
+          "moral_weight": 5
+        },
+        {
+          "id": "organize_hunt",
+          "description": "Zorganizuj potajemne polowanie w podziemiach",
+          "requirements": [
+            { "type": "skill", "target": "survival", "value": 4 },
+            { "type": "item", "target": "weapon", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Slyszalem ze w podziemiach zyja szczury... duze szczury.",
+            "resolution": "Zorganizowal potajemne polowanie. Mieso nie jest wyborne, ale nakarmi glodnych.",
+            "npc_reactions": {
+              "prisoner": "Wiezniowie patrza z wdziecznoscia: 'Szaman nas nakarmi!'",
+              "guard": "Straznik marszczy brwi: 'Co to za zapach? Cos tu smierdzi...'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 15,
+              "prison.tension": -15,
+              "prison.rat_population": -10
+            },
+            "relationships": {
+              "prisoners": 15,
+              "guards": -5
+            }
+          },
+          "delayed_consequences": [],
+          "moral_weight": 0
+        },
+        {
+          "id": "prisoner_trade",
+          "description": "Stworz system wymiany miedzy wiezniami",
+          "requirements": [
+            { "type": "skill", "target": "trading", "value": 3 },
+            { "type": "reputation", "target": "prisoners", "value": 5 }
+          ],
+          "dialogue": {
+            "preview": "Moze mozna zorganizowac wymiane? Jedni maja jedzenie, inni przedmioty...",
+            "resolution": "Stworzyles system barterowy. Teraz kazdy moze wymienic sie na to, czego potrzebuje.",
+            "npc_reactions": {
+              "prisoners": "Wiezniowie zaczynaja handlowac miedzy soba. System dziala."
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.barter_system": true,
+              "prison.tension": -10,
+              "prison.economy_active": true
+            },
+            "relationships": {
+              "prisoners": 20
+            }
+          },
+          "delayed_consequences": [],
+          "moral_weight": 5
+        },
+        {
+          "id": "force_redistribution",
+          "description": "Zabierz zapasy sila od tych, ktorzy je gromadza",
+          "requirements": [
+            { "type": "skill", "target": "strength", "value": 5 },
+            { "type": "stat", "target": "intimidation", "value": 3 }
+          ],
+          "dialogue": {
+            "preview": "Niektorzy gromadza jedzenie dla siebie. Czas to zmienic.",
+            "resolution": "Sila odebrales zapasy od chomikujacych i rozdzieliles wsrod glodnych. Zyskales wrogow, ale nakarmiles innych.",
+            "npc_reactions": {
+              "hoarder": "Chomikujacy patrzy z nienawiscia: 'Jeszcze za to zaplacisz!'",
+              "hungry_prisoner": "Glodny wiezien dziękuje: 'Dzieki, szamanie. Nie zapomnę.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 20,
+              "prison.tension": 5,
+              "prison.violence_level": 10
+            },
+            "relationships": {
+              "prisoners_hungry": 25,
+              "prisoners_rich": -40
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 48,
+              "description": "Ofiary kradziez planuja zemste",
+              "world_changes": { "revenge_plot_active": true },
+              "npc_reactions": {},
+              "new_quests": ["revenge_against_player"]
+            }
+          ],
+          "moral_weight": -15
+        },
+        {
+          "id": "abundance_ritual",
+          "description": "Przeprowadz szamanski rytual obfitosci",
+          "requirements": [
+            { "type": "skill", "target": "shamanism", "value": 4 },
+            { "type": "item", "target": "ritual_herbs", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Duchy moga pomoc... jesli ich o to poprosisz.",
+            "resolution": "Rytual zakonczony. Duchy wskazaly ukryte zapasy w starym skladzie. Magia szamanizmu raz jeszcze udowodnila swoja moc.",
+            "npc_reactions": {
+              "spirits": "*Duchy szepcza:* 'Pod starym kamieniem, za zachodnia sciana...'",
+              "prisoners": "Wiezniowie patrza z podziwem i strachem: 'Szaman rozmawia z duchami!'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 35,
+              "prison.tension": -25,
+              "player.shamanic_reputation": 20
+            },
+            "relationships": {
+              "prisoners": 30,
+              "spirits": 15
+            }
+          },
+          "delayed_consequences": [],
+          "moral_weight": 20
+        }
+      ],
+
+      "rewards": {
+        "experience": 100,
+        "reputation": {
+          "prison": 10
+        }
+      },
+
+      "tags": ["prison", "survival", "emergent", "food", "conflict"]
+    },
+    {
+      "quest_id": "guard_keys_lost",
+      "name": "Zgubione klucze",
+      "description": "Straznik Jenkins zgubil klucze do cel. To moze byc szansa... lub pulapka.",
+      "category": "emergent",
+
+      "activation": {
+        "conditions": {
+          "days_passed": { "operator": ">=", "value": 3 },
+          "random_chance": { "operator": ">", "value": 0.3 }
+        },
+        "auto_activate": false
+      },
+
+      "discovery": {
+        "methods": ["OVERHEARD", "WITNESSED", "FOUND"],
+        "clues": {
+          "wartownia": "Straznik nerwowo przeszukuje kieszenie i rozglada sie.",
+          "dziedziniec": "Cos metalowego blyszczy w kacie dziedzinca.",
+          "jadalnia": "Slychac brzek metalu w koszu z brudnym praniem."
+        },
+        "dialogues": {
+          "overheard": [
+            "Slyszysz spanikowanego straznika:\n'Kurwa, gdzie sa moje klucze?! Kapitan mnie zabije!'",
+            "Dwoch straznikow szepcze:\n'Jenkins zgubil klucze. Jesli dowodca sie dowie...'"
+          ],
+          "witnessed": [
+            "Widzisz jak straznik Jenkins goraczkowo przeszukuje dziedziniec.",
+            "Zauwazasz ze jeden straznik nie moze otworzyc celi. Wyglada na przerazonego."
+          ],
+          "found": [
+            "Potykasz sie o cos metalowego. To pek kluczy z symbolem strazy!",
+            "W pralni znajdujesz klucze do cel. Ktos musial je zgubic."
+          ]
+        }
+      },
+
+      "timing": {
+        "time_sensitive": true,
+        "expiry_hours": 24,
+        "priority": 6
+      },
+
+      "branches": [
+        {
+          "id": "return_keys",
+          "description": "Zwroc klucze straznikowi Jenkins",
+          "requirements": [],
+          "dialogue": {
+            "preview": "Powinienem oddac klucze. Jenkins wyglada na zdesperowanego.",
+            "resolution": "Oddajesz klucze wdziecznemu straznikowi. Zyskujesz jego wdziecznosc.",
+            "npc_reactions": {
+              "jenkins": "Jenkins: *chwyta klucze* 'Dzieki... Jestem ci winien przysluge. Duza przysluge.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "guard_jenkins.has_keys": true,
+              "guard_jenkins.owes_favor": true
+            },
+            "relationships": {
+              "Jenkins": 50,
+              "guards": 10
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 72,
+              "description": "Jenkins oferuje pomoc",
+              "world_changes": {},
+              "npc_reactions": {
+                "Jenkins": "Hej, pamietasz jak mi pomogles? Moge zalatwic ci dodatkowa porcje..."
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": 15
+        },
+        {
+          "id": "use_for_escape",
+          "description": "Uzyj kluczy do proby ucieczki",
+          "requirements": [
+            { "type": "skill", "target": "stealth", "value": 7 },
+            { "type": "skill", "target": "athletics", "value": 6 }
+          ],
+          "dialogue": {
+            "preview": "Te klucze to moja szansa na wolnosc...",
+            "resolution": "Uzywasz kluczy do otwarcia cel, ale ucieczka konczy sie niepowodzeniem. Tracisz klucze i wolnosc.",
+            "npc_reactions": {
+              "captain": "Kapitan: 'Do karceru z nim! Miesiac o chlebie i wodzie!'",
+              "brutus": "Brutus: 'Glupiec... Trzeba bylo ze mna gadac.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "player.in_solitary": true,
+              "prison.security": "maximum",
+              "guard_keys.lost": false
+            },
+            "relationships": {
+              "guards": -50,
+              "Jenkins": -30,
+              "Brutus": -20,
+              "prisoners": 15
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 720,
+              "description": "Wychodzisz z karceru",
+              "world_changes": { "player.in_solitary": false },
+              "npc_reactions": {
+                "Brutus": "Wygladasz jak smierc. Nastepnym razem pomysl zanim zrobisz cos glupiego."
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": -10
+        },
+        {
+          "id": "sell_to_brutus",
+          "description": "Sprzedaj klucze Brutusowi",
+          "requirements": [
+            { "type": "reputation", "target": "Brutus", "value": -10 }
+          ],
+          "dialogue": {
+            "preview": "Brutus na pewno zaplaci dobrze za takie klucze...",
+            "resolution": "Sprzedajesz klucze Brutusowi. Zyskujesz przyslugi ale Jenkins bedzie mial klopoty.",
+            "npc_reactions": {
+              "brutus": "Brutus: *bierze klucze* 'Dobry jestes szamanie. Jenkins bedzie plakal haha!'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "brutus.has_keys": true,
+              "guard_jenkins.in_trouble": true,
+              "prison.contraband_level": 8
+            },
+            "relationships": {
+              "Brutus": 40,
+              "Jenkins": -60,
+              "guards": -20
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 24,
+              "description": "Jenkins zostaje ukarany",
+              "world_changes": { "guard_jenkins.demoted": true },
+              "npc_reactions": {
+                "Jenkins": "To ty! Ty mi to zrobiles! Pozalujesz tego!"
+              },
+              "new_quests": []
+            },
+            {
+              "delay_hours": 48,
+              "description": "Brutus uzywa kluczy",
+              "world_changes": { "prison.brutus_escape_plan": true },
+              "npc_reactions": {},
+              "new_quests": ["brutus_escape_conspiracy"]
+            }
+          ],
+          "moral_weight": -20
+        },
+        {
+          "id": "frame_enemy",
+          "description": "Podruc klucze wrogowi zeby go wrobić",
+          "requirements": [
+            { "type": "skill", "target": "deception", "value": 5 }
+          ],
+          "dialogue": {
+            "preview": "Moge wykorzystac to zeby pozbyc sie wroga...",
+            "resolution": "Podrzucasz klucze wrogowi i donosisz straznikom. Twoj wrog trafia do karceru.",
+            "npc_reactions": {
+              "enemy": "Szczur gdy go prowadza: 'TO TY SZAMANIE! WIEM ZE TO TY! ZEMSTA!'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "enemy.in_solitary": true,
+              "guard_keys.recovered": true
+            },
+            "relationships": {
+              "enemy": -100,
+              "enemy_gang": -40,
+              "guards": 5
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 360,
+              "description": "Wrog wraca z karceru",
+              "world_changes": { "enemy.seeking_revenge": true },
+              "npc_reactions": {
+                "enemy": "Szamanie... przygotuj sie na pieklo."
+              },
+              "new_quests": ["enemy_revenge_quest"]
+            }
+          ],
+          "moral_weight": -30
+        },
+        {
+          "id": "make_copies",
+          "description": "Zrob kopie kluczy zanim je zwrocisz",
+          "requirements": [
+            { "type": "skill", "target": "crafting", "value": 6 },
+            { "type": "item", "target": "wax_or_clay", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Jesli zrobie odlewy, bede mial kopie...",
+            "resolution": "Robisz woskowe odlewy kluczy. Zwracasz oryginaly ale zachowujesz mozliwosc zrobienia kopii.",
+            "npc_reactions": {
+              "jenkins": "Jenkins: 'Dzieki! Uratowales mi skore!'",
+              "brutus": "Brutus: 'Widzialem co robiles w warsztacie. Madry ruch.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "player.has_key_molds": true,
+              "guard_keys.returned": true
+            },
+            "relationships": {
+              "Jenkins": 40,
+              "Brutus": 20
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 96,
+              "description": "Mozliwosc wykucia kopii",
+              "world_changes": { "forge.keys_available": true },
+              "npc_reactions": {},
+              "new_quests": ["forge_keys_quest"]
+            }
+          ],
+          "moral_weight": 0
+        },
+        {
+          "id": "trade_for_info",
+          "description": "Wymien klucze na cenne informacje",
+          "requirements": [
+            { "type": "skill", "target": "investigation", "value": 4 }
+          ],
+          "dialogue": {
+            "preview": "Ktos na pewno da mi cos cennego za te klucze...",
+            "resolution": "Wymieniasz klucze na informacje o planowanym transporcie wiezniow.",
+            "npc_reactions": {
+              "kruk": "Kruk: 'Za trzy dni bedzie transport. Przenoszą trzech do lzejszego wiezienia.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "player.knows_transport_schedule": true,
+              "player.knows_warden_secret": true
+            },
+            "relationships": {
+              "Kruk": 30
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 72,
+              "description": "Transport wiezniow",
+              "world_changes": { "prison.transport_happening": true },
+              "npc_reactions": {},
+              "new_quests": ["transport_opportunity"]
+            }
+          ],
+          "moral_weight": 5
+        }
+      ],
+
+      "rewards": {
+        "experience": 75,
+        "reputation": {
+          "prison": 5
+        }
+      },
+
+      "tags": ["prison", "keys", "emergent", "opportunity", "choice"]
+    }
+  ]
+}
