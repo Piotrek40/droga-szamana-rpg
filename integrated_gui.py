@@ -23,7 +23,7 @@ from player.classes import ClassName
 from quests.emergent_quests import QuestIntegrationManager, create_quest_seed_library
 from quests.quest_engine import QuestEngine, QuestState
 from quests.consequences import ConsequenceTracker
-from npcs.dialogue_system import DialogueResult, DialogueSystem
+from npcs.dialogue.dialogue_controller import DialogueResult, DialogueController
 
 
 class IntegratedRPGInterface:
@@ -275,8 +275,8 @@ class IntegratedRPGInterface:
         game_state.init_game(name, difficulty, character_class.value if character_class else None)
         self.game_state = game_state
 
-        # KRYTYCZNE: Inicjalizuj system dialogów z drzewami dialogowymi
-        self.game_state.dialogue_system = DialogueSystem(self.game_state)
+        # System dialogów z pamięcią jest teraz inicjalizowany w init_game()
+        # dialogue_system jest już ustawiony przez game_state.init_game()
         self.game_state.current_dialogue = None  # KROK 1: Inicjalizacja stanu dialogu
 
         self.command_parser = CommandParser(game_state)
@@ -321,8 +321,8 @@ class IntegratedRPGInterface:
         if game_state.load_game(slot):
             self.game_state = game_state
 
-            # KRYTYCZNE: Inicjalizuj system dialogów z drzewami dialogowymi
-            self.game_state.dialogue_system = DialogueSystem(self.game_state)
+            # System dialogów z pamięcią jest wczytywany przez load_game()
+            # dialogue_system i dialogue_controller są już ustawione
             self.game_state.current_dialogue = None  # KROK 1: Inicjalizacja stanu dialogu
 
             self.command_parser = CommandParser(game_state)

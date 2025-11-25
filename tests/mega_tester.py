@@ -350,8 +350,8 @@ class MegaTester:
         
         # Test dialogów
         def test_npc_dialogue():
-            from npcs.dialogue_system import DialogueSystem
-            dialogue = DialogueSystem(self.game_state)
+            from npcs.dialogue.dialogue_controller import get_dialogue_controller
+            dialogue = get_dialogue_controller(self.game_state)
             
             # Spróbuj porozmawiać z pierwszym NPCem
             if manager.npcs:

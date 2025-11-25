@@ -20,7 +20,7 @@ from ui.interface import GameInterface
 from ui.smart_interface import create_smart_interface
 from ui.prologue_interface import create_prologue_interface
 from ui.cutscene_manager import CutsceneManager, TutorialManager, create_prison_intro_cutscene
-from npcs.dialogue_system import DialogueSystem, DialogueResult
+from npcs.dialogue.dialogue_controller import DialogueResult  # Nowy system dialogów
 from quests.quest_engine import QuestState
 
 
@@ -34,8 +34,8 @@ class DrogaSzamanaRPG:
         self.interface = GameInterface()
         self.command_parser = CommandParser(self.game_state)
         self.smart_interface = None  # Będzie utworzony po init_game
-        self.dialogue_system = DialogueSystem()
-        self.game_state.dialogue_system = self.dialogue_system  # Przypisz do game_state
+        # dialogue_system będzie ustawiony przez game_state.init_game() - nowy system z pamięcią
+        self.dialogue_system = None  # Ustawione po init_game
         self.use_smart = True  # Domyślnie używaj smart interfejsu
 
         # Systemy narracyjne
@@ -196,7 +196,10 @@ class DrogaSzamanaRPG:
         # Inicjalizacja gry
         self.interface.print("\n" + "="*50)
         self.game_state.init_game(name, difficulty, selected_class)
-        
+
+        # Pobierz referencję do systemu dialogów (tworzony w init_game)
+        self.dialogue_system = self.game_state.dialogue_system
+
         # Pokaż wprowadzenie
         self.show_game_intro()
         
@@ -446,7 +449,7 @@ class DrogaSzamanaRPG:
                             if next_text:
                                 message += f"\n{next_text}\n"
 
-                            from npcs.dialogue_system import DialogueResult
+                            # DialogueResult już zaimportowany na górze z nowego systemu
                             if result == DialogueResult.END or not next_options:
                                 self.game_state.current_dialogue = None
                                 message += "\n[Koniec rozmowy]"
@@ -653,6 +656,8 @@ class DrogaSzamanaRPG:
                 return
             if 1 <= slot <= 5:
                 if self.game_state.load_game(slot):
+                    # Pobierz referencję do systemu dialogów po wczytaniu
+                    self.dialogue_system = self.game_state.dialogue_system
                     self.interface.print("Gra wczytana pomyślnie!")
                     time.sleep(1)
                     self.game_loop()
