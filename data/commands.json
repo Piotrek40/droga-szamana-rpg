@@ -1,0 +1,191 @@
+{
+  "commands": {
+    "movement": {
+      "go": {
+        "aliases": ["idź", "idz", "go", "move"],
+        "description": "Przemieść się w danym kierunku",
+        "usage": "idź [kierunek]",
+        "examples": ["idź północ", "idź na wschód"],
+        "requires_args": true
+      },
+      "north": {
+        "aliases": ["północ", "polnoc", "n", "north"],
+        "description": "Idź na północ",
+        "usage": "północ",
+        "direction": "północ"
+      },
+      "south": {
+        "aliases": ["południe", "poludnie", "s", "south"],
+        "description": "Idź na południe",
+        "usage": "południe",
+        "direction": "południe"
+      },
+      "east": {
+        "aliases": ["wschód", "wschod", "e", "east"],
+        "description": "Idź na wschód",
+        "usage": "wschód",
+        "direction": "wschód"
+      },
+      "west": {
+        "aliases": ["zachód", "zachod", "w", "west"],
+        "description": "Idź na zachód",
+        "usage": "zachód",
+        "direction": "zachód"
+      },
+      "look": {
+        "aliases": ["rozejrzyj", "rozejrzyj się", "patrz", "look", "l"],
+        "description": "Opisz obecną lokację",
+        "usage": "rozejrzyj"
+      },
+      "examine": {
+        "aliases": ["zbadaj", "sprawdź", "sprawdz", "obejrzyj", "examine", "x"],
+        "description": "Zbadaj obiekt dokładnie",
+        "usage": "zbadaj [obiekt]",
+        "requires_args": true
+      },
+      "search": {
+        "aliases": ["szukaj", "przeszukaj", "search"],
+        "description": "Przeszukaj lokację",
+        "usage": "szukaj"
+      }
+    },
+    "interaction": {
+      "talk": {
+        "aliases": ["rozmawiaj", "mów", "mow", "gadaj", "talk", "speak"],
+        "description": "Rozpocznij rozmowę",
+        "usage": "rozmawiaj [osoba]",
+        "requires_args": true
+      },
+      "take": {
+        "aliases": ["weź", "wez", "podnieś", "podnies", "take", "get", "grab"],
+        "description": "Podnieś przedmiot",
+        "usage": "weź [przedmiot]",
+        "requires_args": true
+      },
+      "use": {
+        "aliases": ["użyj", "uzyj", "wykorzystaj", "use"],
+        "description": "Użyj przedmiotu",
+        "usage": "użyj [przedmiot]",
+        "requires_args": true
+      },
+      "give": {
+        "aliases": ["daj", "podaj", "give"],
+        "description": "Daj przedmiot osobie",
+        "usage": "daj [przedmiot] [osoba]",
+        "requires_args": true,
+        "min_args": 2
+      },
+      "buy": {
+        "aliases": ["kup", "kupuj", "buy", "purchase"],
+        "description": "Kup od kupca",
+        "usage": "kup [przedmiot]",
+        "requires_args": true
+      },
+      "sell": {
+        "aliases": ["sprzedaj", "sell"],
+        "description": "Sprzedaj kupcowi",
+        "usage": "sprzedaj [przedmiot]",
+        "requires_args": true
+      }
+    },
+    "inventory": {
+      "inventory": {
+        "aliases": ["ekwipunek", "eq", "plecak", "inventory", "inv", "i"],
+        "description": "Pokaż ekwipunek",
+        "usage": "ekwipunek"
+      },
+      "equip": {
+        "aliases": ["załóż", "zaloz", "ubierz", "equip", "wear"],
+        "description": "Załóż przedmiot",
+        "usage": "załóż [przedmiot]",
+        "requires_args": true
+      },
+      "unequip": {
+        "aliases": ["zdejmij", "remove", "unequip"],
+        "description": "Zdejmij przedmiot",
+        "usage": "zdejmij [przedmiot]",
+        "requires_args": true
+      },
+      "drop": {
+        "aliases": ["upuść", "upusc", "wyrzuć", "wyrzuc", "drop"],
+        "description": "Upuść przedmiot",
+        "usage": "upuść [przedmiot]",
+        "requires_args": true
+      }
+    },
+    "combat": {
+      "attack": {
+        "aliases": ["atakuj", "atak", "bij", "uderz", "attack", "hit", "strike"],
+        "description": "Zaatakuj cel",
+        "usage": "atakuj [cel]",
+        "requires_args": true
+      },
+      "defend": {
+        "aliases": ["broń", "bron", "obrona", "defend", "block"],
+        "description": "Przyjmij postawę obronną",
+        "usage": "broń"
+      },
+      "flee": {
+        "aliases": ["uciekaj", "ucieknij", "zwiń", "zwin", "flee", "run", "escape"],
+        "description": "Spróbuj uciec z walki",
+        "usage": "uciekaj"
+      }
+    },
+    "system": {
+      "status": {
+        "aliases": ["status", "stan", "kondycja", "s"],
+        "description": "Pokaż stan postaci",
+        "usage": "status"
+      },
+      "skills": {
+        "aliases": ["umiejętności", "umiejetnosci", "skills", "skill"],
+        "description": "Pokaż umiejętności",
+        "usage": "umiejętności"
+      },
+      "quests": {
+        "aliases": ["zadania", "questy", "misje", "quests", "q"],
+        "description": "Pokaż aktywne zadania",
+        "usage": "zadania"
+      },
+      "map": {
+        "aliases": ["mapa", "map", "m"],
+        "description": "Pokaż mapę okolicy",
+        "usage": "mapa"
+      },
+      "save": {
+        "aliases": ["zapisz", "save"],
+        "description": "Zapisz grę",
+        "usage": "zapisz [1-5]",
+        "requires_args": true
+      },
+      "load": {
+        "aliases": ["wczytaj", "load"],
+        "description": "Wczytaj grę",
+        "usage": "wczytaj [1-5]",
+        "requires_args": true
+      },
+      "help": {
+        "aliases": ["pomoc", "help", "h", "?"],
+        "description": "Pokaż pomoc",
+        "usage": "pomoc"
+      },
+      "exit": {
+        "aliases": ["wyjdź", "wyjdz", "wyjście", "wyjscie", "quit", "exit", "q"],
+        "description": "Wyjdź z gry",
+        "usage": "wyjdź"
+      }
+    }
+  },
+  "directions": {
+    "north": ["północ", "polnoc", "n", "north"],
+    "south": ["południe", "poludnie", "s", "south"],
+    "east": ["wschód", "wschod", "e", "east", "w"],
+    "west": ["zachód", "zachod", "z", "west"],
+    "northeast": ["północny wschód", "polnocny wschod", "ne", "northeast"],
+    "northwest": ["północny zachód", "polnocny zachod", "nw", "northwest"],
+    "southeast": ["południowy wschód", "poludniowy wschod", "se", "southeast"],
+    "southwest": ["południowy zachód", "poludniowy zachod", "sw", "southwest"],
+    "up": ["góra", "gora", "u", "up"],
+    "down": ["dół", "dol", "d", "down"]
+  }
+}

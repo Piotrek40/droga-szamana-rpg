@@ -1,0 +1,66 @@
+{
+  "chleb": {
+    "nazwa": "Chleb",
+    "typ": "jedzenie",
+    "opis": "Podstawowy pokarm dający sytość",
+    "waga": 0.5,
+    "bazowa_wartosc": 2,
+    "trwalosc": 100,
+    "kategoria": "żywność",
+    "efekty": {
+      "zdrowie": 5,
+      "sytosc": 20
+    }
+  },
+  "woda": {
+    "nazwa": "Woda",
+    "typ": "jedzenie",
+    "opis": "Czysta woda pitna",
+    "waga": 1.0,
+    "bazowa_wartosc": 1,
+    "trwalosc": 200,
+    "kategoria": "napój",
+    "efekty": {
+      "pragnienie": 30
+    }
+  },
+  "mieso": {
+    "nazwa": "Mięso",
+    "typ": "jedzenie",
+    "opis": "Świeże mięso z polowania",
+    "waga": 1.5,
+    "bazowa_wartosc": 8,
+    "trwalosc": 50,
+    "kategoria": "żywność",
+    "efekty": {
+      "zdrowie": 15,
+      "sytosc": 40
+    }
+  },
+  "ser": {
+    "nazwa": "Ser",
+    "typ": "jedzenie",
+    "opis": "Dojrzały ser z mleka kóz",
+    "waga": 0.8,
+    "bazowa_wartosc": 5,
+    "trwalosc": 80,
+    "kategoria": "żywność",
+    "efekty": {
+      "zdrowie": 8,
+      "sytosc": 25
+    }
+  },
+  "jablko": {
+    "nazwa": "Jabłko",
+    "typ": "jedzenie",
+    "opis": "Soczyste jabłko z sadu",
+    "waga": 0.3,
+    "bazowa_wartosc": 3,
+    "trwalosc": 60,
+    "kategoria": "owoc",
+    "efekty": {
+      "zdrowie": 3,
+      "sytosc": 10
+    }
+  }
+}

@@ -1,0 +1,8 @@
+language = "python3"
+run = "python main.py"
+
+[packager]
+language = "python3"
+
+[nix]
+channel = "stable-22_11"

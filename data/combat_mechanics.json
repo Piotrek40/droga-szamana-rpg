@@ -1,0 +1,231 @@
+{
+  "pain_system": {
+    "thresholds": {
+      "minor": {
+        "min": 0,
+        "max": 30,
+        "effects": {
+          "skill_penalty": 0,
+          "action_penalty": 0,
+          "description": "Lekki dyskomfort"
+        }
+      },
+      "moderate": {
+        "min": 30,
+        "max": 50,
+        "effects": {
+          "skill_penalty": -15,
+          "action_penalty": 0,
+          "description": "Umiarkowany ból wpływający na koncentrację"
+        }
+      },
+      "severe": {
+        "min": 50,
+        "max": 70,
+        "effects": {
+          "skill_penalty": -30,
+          "action_penalty": -1,
+          "description": "Silny ból utrudniający działanie"
+        }
+      },
+      "extreme": {
+        "min": 70,
+        "max": 80,
+        "effects": {
+          "skill_penalty": -45,
+          "action_penalty": -1,
+          "stun_chance": 0.2,
+          "description": "Ekstremalny ból, ryzyko oszołomienia"
+        }
+      },
+      "critical": {
+        "min": 80,
+        "max": 100,
+        "effects": {
+          "skill_penalty": -60,
+          "action_penalty": -2,
+          "unconscious": true,
+          "description": "Utrata przytomności z bólu"
+        }
+      }
+    },
+    "recovery": {
+      "base_rate": 1,
+      "rest_multiplier": 3,
+      "medical_multiplier": 5
+    }
+  },
+  "injury_system": {
+    "body_parts": {
+      "head": {
+        "name": "Głowa",
+        "critical_chance": 0.3,
+        "pain_multiplier": 1.5,
+        "effects": ["confusion", "vision_blur", "knockout"]
+      },
+      "torso": {
+        "name": "Tułów",
+        "critical_chance": 0.2,
+        "pain_multiplier": 1.0,
+        "effects": ["bleeding", "breathing_difficulty"]
+      },
+      "left_arm": {
+        "name": "Lewa ręka",
+        "critical_chance": 0.1,
+        "pain_multiplier": 0.8,
+        "effects": ["weapon_drop", "shield_drop"]
+      },
+      "right_arm": {
+        "name": "Prawa ręka",
+        "critical_chance": 0.1,
+        "pain_multiplier": 0.8,
+        "effects": ["weapon_drop", "attack_penalty"]
+      },
+      "left_leg": {
+        "name": "Lewa noga",
+        "critical_chance": 0.1,
+        "pain_multiplier": 0.7,
+        "effects": ["movement_penalty", "fall_risk"]
+      },
+      "right_leg": {
+        "name": "Prawa noga",
+        "critical_chance": 0.1,
+        "pain_multiplier": 0.7,
+        "effects": ["movement_penalty", "fall_risk"]
+      }
+    },
+    "injury_types": {
+      "bruise": {
+        "name": "Stłuczenie",
+        "pain": 10,
+        "duration": 100,
+        "bleeding": false
+      },
+      "cut": {
+        "name": "Rozcięcie",
+        "pain": 20,
+        "duration": 200,
+        "bleeding": true,
+        "bleeding_rate": 1
+      },
+      "fracture": {
+        "name": "Złamanie",
+        "pain": 40,
+        "duration": 1000,
+        "bleeding": false,
+        "movement_penalty": -50
+      },
+      "deep_wound": {
+        "name": "Głęboka rana",
+        "pain": 35,
+        "duration": 500,
+        "bleeding": true,
+        "bleeding_rate": 3
+      }
+    }
+  },
+  "combat_formulas": {
+    "damage": {
+      "base_formula": "strength + weapon_damage",
+      "critical_multiplier": 2.0,
+      "variance": {
+        "min": 0.8,
+        "max": 1.2
+      }
+    },
+    "defense": {
+      "dodge_formula": "agility * 2 + skill_dodge",
+      "block_formula": "strength + skill_block + shield_value",
+      "armor_reduction": "damage * (1 - armor_value / 100)"
+    },
+    "hit_chance": {
+      "base": 70,
+      "skill_bonus": "skill_level * 2",
+      "pain_penalty": "pain_level * 0.5",
+      "formula": "base + skill_bonus - pain_penalty - target_dodge"
+    }
+  },
+  "weapon_types": {
+    "unarmed": {
+      "damage": 3,
+      "speed": 3,
+      "reach": 1,
+      "skill": "walka_wręcz"
+    },
+    "knife": {
+      "damage": 8,
+      "speed": 2,
+      "reach": 1,
+      "skill": "broń_krótka"
+    },
+    "sword": {
+      "damage": 15,
+      "speed": 1,
+      "reach": 2,
+      "skill": "broń_jednoręczna"
+    },
+    "axe": {
+      "damage": 18,
+      "speed": 0,
+      "reach": 2,
+      "skill": "broń_jednoręczna"
+    },
+    "mace": {
+      "damage": 20,
+      "speed": -1,
+      "reach": 2,
+      "skill": "broń_obuchowa"
+    },
+    "bow": {
+      "damage": 12,
+      "speed": 1,
+      "reach": 10,
+      "skill": "łucznictwo"
+    }
+  },
+  "armor_types": {
+    "cloth": {
+      "protection": 5,
+      "weight": 1,
+      "movement_penalty": 0
+    },
+    "leather": {
+      "protection": 15,
+      "weight": 3,
+      "movement_penalty": -5
+    },
+    "chainmail": {
+      "protection": 30,
+      "weight": 8,
+      "movement_penalty": -15
+    },
+    "plate": {
+      "protection": 50,
+      "weight": 15,
+      "movement_penalty": -30
+    }
+  },
+  "combat_states": {
+    "normal": {
+      "description": "Gotowy do walki"
+    },
+    "defensive": {
+      "description": "Postawa obronna",
+      "defense_bonus": 20,
+      "attack_penalty": -10
+    },
+    "aggressive": {
+      "description": "Agresywny atak",
+      "attack_bonus": 15,
+      "defense_penalty": -20
+    },
+    "stunned": {
+      "description": "Oszołomiony",
+      "skip_turn": true
+    },
+    "fleeing": {
+      "description": "Próba ucieczki",
+      "defense_penalty": -30
+    }
+  }
+}

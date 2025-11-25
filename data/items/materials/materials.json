@@ -1,0 +1,62 @@
+{
+  "drewno": {
+    "nazwa": "Drewno",
+    "typ": "material",
+    "opis": "Kawałki twardego drewna",
+    "waga": 2.0,
+    "bazowa_wartosc": 3,
+    "trwalosc": 300,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 1
+    }
+  },
+  "metal": {
+    "nazwa": "Metal",
+    "typ": "material",
+    "opis": "Kawałki żelaza gotowe do kucia",
+    "waga": 4.0,
+    "bazowa_wartosc": 8,
+    "trwalosc": 500,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 3
+    }
+  },
+  "skora": {
+    "nazwa": "Skóra",
+    "typ": "material",
+    "opis": "Wygarbowana skóra zwierzęca",
+    "waga": 1.5,
+    "bazowa_wartosc": 6,
+    "trwalosc": 200,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 2
+    }
+  },
+  "tkanina": {
+    "nazwa": "Tkanina",
+    "typ": "material",
+    "opis": "Tkany materiał z włókien roślinnych",
+    "waga": 0.8,
+    "bazowa_wartosc": 4,
+    "trwalosc": 150,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 1
+    }
+  },
+  "kamien": {
+    "nazwa": "Kamień",
+    "typ": "material",
+    "opis": "Twardy kamień nadający się do obróbki",
+    "waga": 5.0,
+    "bazowa_wartosc": 2,
+    "trwalosc": 800,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 1
+    }
+  }
+}

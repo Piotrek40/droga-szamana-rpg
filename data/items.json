@@ -1,0 +1,260 @@
+{
+  "chleb": {
+    "nazwa": "Chleb",
+    "typ": "jedzenie",
+    "opis": "Podstawowy pokarm dający sytość",
+    "waga": 0.5,
+    "bazowa_wartosc": 2,
+    "trwalosc": 100,
+    "kategoria": "żywność",
+    "efekty": {
+      "zdrowie": 5,
+      "sytosc": 20
+    }
+  },
+  "woda": {
+    "nazwa": "Woda",
+    "typ": "jedzenie",
+    "opis": "Czysta woda pitna",
+    "waga": 1.0,
+    "bazowa_wartosc": 1,
+    "trwalosc": 200,
+    "kategoria": "napój",
+    "efekty": {
+      "pragnienie": 30
+    }
+  },
+  "mieso": {
+    "nazwa": "Mięso",
+    "typ": "jedzenie",
+    "opis": "Świeże mięso z polowania",
+    "waga": 1.5,
+    "bazowa_wartosc": 8,
+    "trwalosc": 50,
+    "kategoria": "żywność",
+    "efekty": {
+      "zdrowie": 15,
+      "sytosc": 40
+    }
+  },
+  "ser": {
+    "nazwa": "Ser",
+    "typ": "jedzenie",
+    "opis": "Dojrzały ser z mleka kóz",
+    "waga": 0.8,
+    "bazowa_wartosc": 5,
+    "trwalosc": 80,
+    "kategoria": "żywność",
+    "efekty": {
+      "zdrowie": 8,
+      "sytosc": 25
+    }
+  },
+  "jablko": {
+    "nazwa": "Jabłko",
+    "typ": "jedzenie",
+    "opis": "Soczyste jabłko z sadu",
+    "waga": 0.3,
+    "bazowa_wartosc": 3,
+    "trwalosc": 60,
+    "kategoria": "owoc",
+    "efekty": {
+      "zdrowie": 3,
+      "sytosc": 10
+    }
+  },
+  "kilof": {
+    "nazwa": "Kilof",
+    "typ": "narzedzie",
+    "opis": "Solidny kilof do wydobywania kamieni i rud",
+    "waga": 3.0,
+    "bazowa_wartosc": 25,
+    "trwalosc": 150,
+    "kategoria": "narzędzie_wydobywcze",
+    "efekty": {
+      "wydajnosc_wydobycie": 3,
+      "bonus_kamien": 2
+    }
+  },
+  "lopata": {
+    "nazwa": "Łopata",
+    "typ": "narzedzie",
+    "opis": "Wytrzymała łopata do kopania i uprawy",
+    "waga": 2.5,
+    "bazowa_wartosc": 15,
+    "trwalosc": 120,
+    "kategoria": "narzędzie_rolnicze",
+    "efekty": {
+      "wydajnosc_rolnictwo": 2,
+      "bonus_ziemia": 1
+    }
+  },
+  "mlotek": {
+    "nazwa": "Młotek",
+    "typ": "narzedzie",
+    "opis": "Precyzyjny młotek kowalski",
+    "waga": 1.8,
+    "bazowa_wartosc": 20,
+    "trwalosc": 180,
+    "kategoria": "narzędzie_kowalskie",
+    "efekty": {
+      "wydajnosc_kowalstwo": 4,
+      "bonus_metal": 3
+    }
+  },
+  "dluto": {
+    "nazwa": "Dłuto",
+    "typ": "narzedzie",
+    "opis": "Ostre dłuto do obróbki drewna",
+    "waga": 0.8,
+    "bazowa_wartosc": 12,
+    "trwalosc": 100,
+    "kategoria": "narzędzie_stolarskie",
+    "efekty": {
+      "wydajnosc_stolarstwo": 3,
+      "bonus_drewno": 2
+    }
+  },
+  "igla": {
+    "nazwa": "Igła",
+    "typ": "narzedzie",
+    "opis": "Cienka igła do szycia i haftu",
+    "waga": 0.1,
+    "bazowa_wartosc": 8,
+    "trwalosc": 80,
+    "kategoria": "narzędzie_krawieckie",
+    "efekty": {
+      "wydajnosc_szycie": 2,
+      "bonus_tkanina": 1
+    }
+  },
+  "noz": {
+    "nazwa": "Nóż",
+    "typ": "bron",
+    "opis": "Ostry nóż bojowy i użytkowy",
+    "waga": 0.6,
+    "bazowa_wartosc": 18,
+    "trwalosc": 90,
+    "kategoria": "broń_biała",
+    "efekty": {
+      "obrazenia": 8,
+      "szybkosc": 2,
+      "bonus_precision": 1
+    }
+  },
+  "miecz": {
+    "nazwa": "Miecz",
+    "typ": "bron",
+    "opis": "Dwusieczny miecz wojownika",
+    "waga": 2.2,
+    "bazowa_wartosc": 45,
+    "trwalosc": 200,
+    "kategoria": "broń_biała",
+    "efekty": {
+      "obrazenia": 20,
+      "szybkosc": 1,
+      "bonus_blok": 2
+    }
+  },
+  "luk": {
+    "nazwa": "Łuk",
+    "typ": "bron",
+    "opis": "Giętki łuk myśliwski",
+    "waga": 1.5,
+    "bazowa_wartosc": 35,
+    "trwalosc": 120,
+    "kategoria": "broń_dystansowa",
+    "efekty": {
+      "obrazenia": 15,
+      "zasieg": 5,
+      "bonus_celnosc": 3
+    }
+  },
+  "strzaly": {
+    "nazwa": "Strzały",
+    "typ": "bron",
+    "opis": "Komplet ostrych strzał",
+    "waga": 1.0,
+    "bazowa_wartosc": 12,
+    "trwalosc": 50,
+    "kategoria": "amunicja",
+    "efekty": {
+      "obrazenia": 5,
+      "ilosc": 20
+    }
+  },
+  "maczuga": {
+    "nazwa": "Maczuga",
+    "typ": "bron",
+    "opis": "Ciężka drewniana maczuga",
+    "waga": 3.5,
+    "bazowa_wartosc": 22,
+    "trwalosc": 80,
+    "kategoria": "broń_obuchowa",
+    "efekty": {
+      "obrazenia": 18,
+      "szybkosc": -1,
+      "bonus_ogłuszenie": 2
+    }
+  },
+  "drewno": {
+    "nazwa": "Drewno",
+    "typ": "material",
+    "opis": "Kawałki twardego drewna",
+    "waga": 2.0,
+    "bazowa_wartosc": 3,
+    "trwalosc": 300,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 1
+    }
+  },
+  "metal": {
+    "nazwa": "Metal",
+    "typ": "material",
+    "opis": "Kawałki żelaza gotowe do kucia",
+    "waga": 4.0,
+    "bazowa_wartosc": 8,
+    "trwalosc": 500,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 3
+    }
+  },
+  "skora": {
+    "nazwa": "Skóra",
+    "typ": "material",
+    "opis": "Wygarbowana skóra zwierzęca",
+    "waga": 1.5,
+    "bazowa_wartosc": 6,
+    "trwalosc": 200,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 2
+    }
+  },
+  "tkanina": {
+    "nazwa": "Tkanina",
+    "typ": "material",
+    "opis": "Tkany materiał z włókien roślinnych",
+    "waga": 0.8,
+    "bazowa_wartosc": 4,
+    "trwalosc": 150,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 1
+    }
+  },
+  "kamien": {
+    "nazwa": "Kamień",
+    "typ": "material",
+    "opis": "Twardy kamień nadający się do obróbki",
+    "waga": 5.0,
+    "bazowa_wartosc": 2,
+    "trwalosc": 800,
+    "kategoria": "surowiec",
+    "efekty": {
+      "craft_bonus": 1
+    }
+  }
+}
