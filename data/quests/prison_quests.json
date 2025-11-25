@@ -1,0 +1,260 @@
+{
+  "quests": [
+    {
+      "quest_id": "prison_food_conflict",
+      "name": "Glod w celach",
+      "description": "Zapasy jedzenia w wiezieniu drastycznie spadly. Wiezniowie sa glodni i zdesperowani.",
+      "category": "emergent",
+
+      "activation": {
+        "conditions": {
+          "prison.food_supplies": { "operator": "<", "value": 10 },
+          "player.location": { "operator": "==", "value": "prison" }
+        },
+        "auto_activate": false
+      },
+
+      "discovery": {
+        "methods": ["OVERHEARD", "WITNESSED", "ENVIRONMENTAL"],
+        "clues": {
+          "prison_corridor": "Slychac podniesione glosy dobiegajace z cel. Ktos krzyczy o jedzeniu.",
+          "prison_cafeteria": "Kuchnia jest prawie pusta. Straznicy wygladaja na zaniepokojonych.",
+          "cell_block_a": "Wiezniowie szepcza miedzy soba, niektorzy ukrywaja male porcje jedzenia."
+        },
+        "dialogues": {
+          "overheard": [
+            "Podsluchujesz rozmowe straznikow:\n'Zapasy sie koncza. Jesli nie dostaniemy dostawy, bedzie bunt.'",
+            "Slyszysz jak Brutus warczy:\n'Kto ukrywa zarcie, ten nie dozyje rana!'"
+          ],
+          "witnessed": [
+            "Widzisz jak dwoch wiezniow bije sie o kawalek chleba. Straznicy tylko patrza.",
+            "Dostrzegasz jak mlody wiezien zemdlal z glodu. Nikt mu nie pomaga."
+          ],
+          "environmental": [
+            "Atmosfera w wiezieniu jest napieta. Wszyscy sa glodni i zdesperowani.",
+            "Zauwazasz ze porcje jedzenia sa coraz mniejsze. Niektorzy wiezniowie juz drugi dzien nic nie jedli."
+          ]
+        }
+      },
+
+      "timing": {
+        "time_sensitive": true,
+        "expiry_hours": 48,
+        "priority": 8
+      },
+
+      "branches": [
+        {
+          "id": "stealth_theft",
+          "description": "Wykradnij jedzenie z magazynu straznikow",
+          "requirements": [
+            { "type": "skill", "target": "stealth", "value": 5 },
+            { "type": "item", "target": "lockpick", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Moglbym sie zakrasc do magazynu straznikow...",
+            "resolution": "Udalo ci sie wykrasc zapasy. Rozdajesz je potajemnie wspolwiezniom. Zyskujesz ich szacunek, ale ryzykujesz gniew straznikow.",
+            "npc_reactions": {
+              "brutus": "Brutus kiwa glowa z uznaniem: 'Masz jaja, szamanie. Pamietaj tylko, ze nie widzialem nic.'",
+              "guard": "Straznik podejrzliwie sie rozglada: 'Ktos byl w magazynie... Znajde skurwysyna.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 25,
+              "prison.guard_alert_level": 8,
+              "prison.tension": -20
+            },
+            "relationships": {
+              "Brutus": 15,
+              "prisoners": 20,
+              "guards": -30
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 24,
+              "description": "Straznicy przeprowadzaja rewizje cel",
+              "world_changes": { "prison.security": "high" },
+              "npc_reactions": {
+                "guard_captain": "Ktokolwiek to zrobil, znajde go i bedzie zalowal!"
+              },
+              "new_quests": []
+            }
+          ],
+          "moral_weight": 10
+        },
+        {
+          "id": "diplomacy_warden",
+          "description": "Przekonaj naczelnika do sprowadzenia dostaw",
+          "requirements": [
+            { "type": "skill", "target": "persuasion", "value": 6 },
+            { "type": "reputation", "target": "guards", "value": 10 }
+          ],
+          "dialogue": {
+            "preview": "Moze da sie porozmawiac z naczelnikiem...",
+            "resolution": "Przekonales naczelnika. Obiecal zwiekszyc dostawy zywnosci. Zyskujesz szacunek straznikow, ale niektorzy wiezniowie uwazaja cie za lizusa.",
+            "npc_reactions": {
+              "warden": "Naczelnik kiwa glowa: 'Rozumiem sytuacje. Zajme sie tym.'",
+              "brutus": "Brutus pluje na ziemie: 'Lizus. Ale chleb to chleb.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 30,
+              "prison.tension": -30,
+              "prison.guard_trust": 15
+            },
+            "relationships": {
+              "warden": 25,
+              "guards": 15,
+              "Brutus": -10,
+              "prisoners": -5
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 12,
+              "description": "Dostawa zywnosci przybywa",
+              "world_changes": { "prison.food_supplies": 50 },
+              "npc_reactions": {},
+              "new_quests": []
+            }
+          ],
+          "moral_weight": 5
+        },
+        {
+          "id": "organize_hunt",
+          "description": "Zorganizuj potajemne polowanie w podziemiach",
+          "requirements": [
+            { "type": "skill", "target": "survival", "value": 4 },
+            { "type": "item", "target": "weapon", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Slyszalem ze w podziemiach zyja szczury... duze szczury.",
+            "resolution": "Zorganizowal potajemne polowanie. Mieso nie jest wyborne, ale nakarmi glodnych.",
+            "npc_reactions": {
+              "prisoner": "Wiezniowie patrza z wdziecznoscia: 'Szaman nas nakarmi!'",
+              "guard": "Straznik marszczy brwi: 'Co to za zapach? Cos tu smierdzi...'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 15,
+              "prison.tension": -15,
+              "prison.rat_population": -10
+            },
+            "relationships": {
+              "prisoners": 15,
+              "guards": -5
+            }
+          },
+          "delayed_consequences": [],
+          "moral_weight": 0
+        },
+        {
+          "id": "prisoner_trade",
+          "description": "Stworz system wymiany miedzy wiezniami",
+          "requirements": [
+            { "type": "skill", "target": "trading", "value": 3 },
+            { "type": "reputation", "target": "prisoners", "value": 5 }
+          ],
+          "dialogue": {
+            "preview": "Moze mozna zorganizowac wymiane? Jedni maja jedzenie, inni przedmioty...",
+            "resolution": "Stworzyles system barterowy. Teraz kazdy moze wymienic sie na to, czego potrzebuje.",
+            "npc_reactions": {
+              "prisoners": "Wiezniowie zaczynaja handlowac miedzy soba. System dziala."
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.barter_system": true,
+              "prison.tension": -10,
+              "prison.economy_active": true
+            },
+            "relationships": {
+              "prisoners": 20
+            }
+          },
+          "delayed_consequences": [],
+          "moral_weight": 5
+        },
+        {
+          "id": "force_redistribution",
+          "description": "Zabierz zapasy sila od tych, ktorzy je gromadza",
+          "requirements": [
+            { "type": "skill", "target": "strength", "value": 5 },
+            { "type": "stat", "target": "intimidation", "value": 3 }
+          ],
+          "dialogue": {
+            "preview": "Niektorzy gromadza jedzenie dla siebie. Czas to zmienic.",
+            "resolution": "Sila odebrales zapasy od chomikujacych i rozdzieliles wsrod glodnych. Zyskales wrogow, ale nakarmiles innych.",
+            "npc_reactions": {
+              "hoarder": "Chomikujacy patrzy z nienawiscia: 'Jeszcze za to zaplacisz!'",
+              "hungry_prisoner": "Glodny wiezien dziękuje: 'Dzieki, szamanie. Nie zapomnę.'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 20,
+              "prison.tension": 5,
+              "prison.violence_level": 10
+            },
+            "relationships": {
+              "prisoners_hungry": 25,
+              "prisoners_rich": -40
+            }
+          },
+          "delayed_consequences": [
+            {
+              "delay_hours": 48,
+              "description": "Ofiary kradziez planuja zemste",
+              "world_changes": { "revenge_plot_active": true },
+              "npc_reactions": {},
+              "new_quests": ["revenge_against_player"]
+            }
+          ],
+          "moral_weight": -15
+        },
+        {
+          "id": "abundance_ritual",
+          "description": "Przeprowadz szamanski rytual obfitosci",
+          "requirements": [
+            { "type": "skill", "target": "shamanism", "value": 4 },
+            { "type": "item", "target": "ritual_herbs", "value": 1 }
+          ],
+          "dialogue": {
+            "preview": "Duchy moga pomoc... jesli ich o to poprosisz.",
+            "resolution": "Rytual zakonczony. Duchy wskazaly ukryte zapasy w starym skladzie. Magia szamanizmu raz jeszcze udowodnila swoja moc.",
+            "npc_reactions": {
+              "spirits": "*Duchy szepcza:* 'Pod starym kamieniem, za zachodnia sciana...'",
+              "prisoners": "Wiezniowie patrza z podziwem i strachem: 'Szaman rozmawia z duchami!'"
+            }
+          },
+          "consequences": {
+            "world_state": {
+              "prison.food_supplies": 35,
+              "prison.tension": -25,
+              "player.shamanic_reputation": 20
+            },
+            "relationships": {
+              "prisoners": 30,
+              "spirits": 15
+            }
+          },
+          "delayed_consequences": [],
+          "moral_weight": 20
+        }
+      ],
+
+      "rewards": {
+        "experience": 100,
+        "reputation": {
+          "prison": 10
+        }
+      },
+
+      "tags": ["prison", "survival", "emergent", "food", "conflict"]
+    }
+  ]
+}

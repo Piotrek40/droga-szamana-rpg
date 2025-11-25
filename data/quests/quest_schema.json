@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Quest Definition Schema",
+  "description": "Schema dla emergentnych questów w Droga Szamana RPG",
+
+  "definitions": {
+    "condition": {
+      "type": "object",
+      "properties": {
+        "operator": { "enum": ["<", ">", "<=", ">=", "==", "!=", "in", "contains"] },
+        "value": { "type": ["number", "string", "boolean", "array"] }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["skill", "item", "reputation", "stat", "quest_completed"] },
+        "target": { "type": "string" },
+        "value": { "type": ["number", "string"] }
+      },
+      "required": ["type", "target"]
+    },
+    "consequence": {
+      "type": "object",
+      "properties": {
+        "world_state": { "type": "object" },
+        "relationships": { "type": "object" },
+        "items": { "type": "object" },
+        "stats": { "type": "object" }
+      }
+    },
+    "delayed_consequence": {
+      "type": "object",
+      "properties": {
+        "delay_hours": { "type": "number" },
+        "description": { "type": "string" },
+        "world_changes": { "type": "object" },
+        "npc_reactions": { "type": "object" },
+        "new_quests": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["delay_hours", "description"]
+    },
+    "branch": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "requirements": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/requirement" }
+        },
+        "dialogue": {
+          "type": "object",
+          "properties": {
+            "preview": { "type": "string" },
+            "resolution": { "type": "string" },
+            "npc_reactions": { "type": "object" }
+          }
+        },
+        "consequences": { "$ref": "#/definitions/consequence" },
+        "delayed_consequences": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/delayed_consequence" }
+        },
+        "moral_weight": { "type": "integer", "minimum": -100, "maximum": 100 }
+      },
+      "required": ["id", "description"]
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "quest_id": {
+      "type": "string",
+      "description": "Unikalny identyfikator questa - musi pasowac do referencji w dialogues.json"
+    },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "category": {
+      "enum": ["main", "side", "emergent", "tutorial", "hidden"]
+    },
+
+    "activation": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/condition" }
+        },
+        "auto_activate": { "type": "boolean", "default": false }
+      }
+    },
+
+    "discovery": {
+      "type": "object",
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": { "enum": ["OVERHEARD", "WITNESSED", "FOUND", "TOLD", "STUMBLED", "CONSEQUENCE", "ENVIRONMENTAL"] }
+        },
+        "clues": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "dialogues": {
+          "type": "object",
+          "properties": {
+            "overheard": { "type": "array", "items": { "type": "string" } },
+            "witnessed": { "type": "array", "items": { "type": "string" } },
+            "found": { "type": "array", "items": { "type": "string" } },
+            "told": { "type": "array", "items": { "type": "string" } },
+            "environmental": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+
+    "timing": {
+      "type": "object",
+      "properties": {
+        "time_sensitive": { "type": "boolean", "default": false },
+        "expiry_hours": { "type": "number" },
+        "priority": { "type": "integer", "minimum": 1, "maximum": 10 }
+      }
+    },
+
+    "branches": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/branch" },
+      "minItems": 1
+    },
+
+    "rewards": {
+      "type": "object",
+      "properties": {
+        "experience": { "type": "integer" },
+        "gold": { "type": "integer" },
+        "items": { "type": "array", "items": { "type": "string" } },
+        "reputation": { "type": "object" }
+      }
+    },
+
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["quest_id", "name", "branches"]
+}
