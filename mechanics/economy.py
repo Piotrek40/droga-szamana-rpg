@@ -899,8 +899,9 @@ class EnhancedEconomy(Economy):
                 'demand_factor': self._calculate_demand_factor(item_id),
                 'competition_factor': self._calculate_competition_factor(item_id)
             }
-            
-            ai_price = merchant_ai.calculate_selling_price(item_id, base_price, player_id, market_data)
+
+            # Użyj market_price (z event/seasonal modifiers) zamiast base_price
+            ai_price = merchant_ai.calculate_selling_price(item_id, market_price, player_id, market_data)
             return ai_price
         
         return market_price

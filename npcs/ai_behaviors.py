@@ -2029,11 +2029,22 @@ def create_behavior_tree(role: str, personality: List[str]) -> BehaviorNode:
     
     # Zagrożenie życia - natychmiastowa reakcja
     life_threat_parallel = ParallelNode("life_threat_response", success_threshold=1)
-    
-    # Sprawdź różne zagrożenia równolegle
+
+    # PRIORYTET 1: Deterministyczna ucieczka gdy pod atakiem i niskie zdrowie
+    # NPCe z niskim zdrowiem ZAWSZE uciekają gdy są atakowani
+    desperate_flee = SequenceNode("desperate_flee")
+    desperate_flee.add_child(ConditionalNode("is_under_attack", is_under_attack))
+    desperate_flee.add_child(ConditionalNode("is_low_health",
+        lambda n, c: n.health < n.max_health * 0.5))  # Poniżej 50% HP
+    desperate_flee.add_child(ActionNode("flee_desperate", flee))
+    life_threat_parallel.add_child(desperate_flee)
+
+    # PRIORYTET 2: Probabilistyczna reakcja fight/flight dla zdrowych NPCów
     attack_check = SequenceNode("attack_response")
     attack_check.add_child(ConditionalNode("is_under_attack", is_under_attack))
-    attack_check.add_child(ProbabilityNode("fight_or_flight", 
+    attack_check.add_child(ConditionalNode("is_healthy_enough",
+        lambda n, c: n.health >= n.max_health * 0.5))  # Powyżej 50% HP
+    attack_check.add_child(ProbabilityNode("fight_or_flight",
         ActionNode("defend", defend) if "brave" in personality else ActionNode("flee", flee),
         0.7 if "brave" in personality else 0.3
     ))
