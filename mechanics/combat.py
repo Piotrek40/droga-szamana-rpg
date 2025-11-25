@@ -378,28 +378,49 @@ class CombatStats:
 
 
 class CombatSystem:
-    """System zarządzania walką."""
-    
+    """System zarządzania walką - SINGLETON.
+
+    WAŻNE: Używaj globalnej instancji `combat_system` zamiast tworzyć nowe!
+
+    Przykład użycia:
+        from mechanics.combat import combat_system
+        combat_system.perform_attack(...)
+    """
+
+    _instance = None
+
+    def __new__(cls, combat_data_path: str = "data/combat_mechanics.json"):
+        """Singleton pattern - zwraca zawsze tę samą instancję."""
+        if cls._instance is None:
+            cls._instance = super(CombatSystem, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
     def __init__(self, combat_data_path: str = "data/combat_mechanics.json"):
         """Inicjalizacja systemu walki z danymi z JSON."""
+        # Singleton: inicjalizuj tylko raz
+        if self._initialized:
+            return
+        self._initialized = True
+
         # Inicjalizacja podstawowych atrybutów
         self.combat_log: List[str] = []
         self.turn_count: int = 0
         self.last_actions: Dict[str, CombatAction] = {}
-        
+
         # Wczytaj dane z JSON
         self.combat_data = self._load_combat_data(combat_data_path)
         self.pain_thresholds = self.combat_data.get('pain_system', {}).get('thresholds', {})
         self.body_parts_data = self.combat_data.get('injury_system', {}).get('body_parts', {})
         self.weapon_types = self.combat_data.get('weapon_types', {})
         self.combat_formulas = self.combat_data.get('combat_formulas', {})
-        
+
         # Enhanced combat features
         self.combat_techniques: Dict[str, CombatTechnique] = self._initialize_techniques()
         self.void_abilities: Dict[str, VoidWalkerAbility] = self._initialize_void_abilities()
         self.ai_patterns: Dict[str, Dict[str, Any]] = self._initialize_ai_patterns()
         self.combat_environment: List[EnvironmentalFactor] = []
-        
+
         # Ensure pain_thresholds is available as class attribute for compatibility
         if hasattr(self, 'pain_thresholds'):
             CombatSystem.pain_thresholds = self.pain_thresholds
@@ -1209,5 +1230,49 @@ class CombatSystem:
         defender_stats.health -= final_damage
         
         message = f"Wykonujesz {technique.polish_name} zadając {final_damage:.1f} obrażeń{special_message}"
-        
+
         return True, message, final_damage
+
+    def save_state(self) -> Dict[str, Any]:
+        """Serializuje stan systemu walki do słownika.
+
+        Returns:
+            Dict z danymi do zapisania
+        """
+        return {
+            'turn_count': self.turn_count,
+            'combat_environment': [env.value for env in self.combat_environment],
+            'combat_log': self.combat_log[-50:],  # Ostatnie 50 wpisów
+        }
+
+    def load_state(self, data: Dict[str, Any]) -> None:
+        """Wczytuje stan systemu walki ze słownika.
+
+        Args:
+            data: Dane zapisanego stanu
+        """
+        if data is None:
+            return
+
+        self.turn_count = data.get('turn_count', 0)
+        self.combat_log = data.get('combat_log', [])
+
+        # Przywróć czynniki środowiskowe
+        if 'combat_environment' in data:
+            self.combat_environment = []
+            for env_value in data['combat_environment']:
+                try:
+                    self.combat_environment.append(EnvironmentalFactor(env_value))
+                except ValueError:
+                    pass  # Ignoruj nieznane wartości
+
+    def reset_combat_state(self) -> None:
+        """Resetuje stan walki (między walkami)."""
+        self.combat_log = []
+        self.turn_count = 0
+        self.last_actions = {}
+        self.combat_environment = []
+
+
+# Globalna instancja singletona - UŻYWAJ TEJ ZAMIAST CombatSystem()
+combat_system = CombatSystem()

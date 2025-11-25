@@ -409,3 +409,66 @@ class GameInterface:
         
         if art_type in arts:
             self.print(arts[art_type], 'dim')
+
+    def display_game_panels(self, message: str, game_state, location_info: dict):
+        """Wyświetl główne panele gry z informacjami o lokacji i stanie gracza.
+
+        Args:
+            message: Główna wiadomość do wyświetlenia
+            game_state: Aktualny stan gry (GameState)
+            location_info: Słownik z informacjami o lokacji:
+                - description: Opis lokacji
+                - exits: Lista dostępnych wyjść
+                - npcs: Lista NPC w lokacji
+                - items: Lista przedmiotów w lokacji
+        """
+        # Panel statusu gracza
+        if game_state.player:
+            player = game_state.player
+            self.print_status(
+                health=int(player.health),
+                stamina=int(player.stamina),
+                pain=int(getattr(player, 'pain', 0)),
+                hunger=int(getattr(player, 'hunger', 0))
+            )
+            self.print("")
+
+        # Panel lokacji
+        if location_info.get('description'):
+            self.print_box("LOKACJA", location_info['description'], 'cyan')
+            self.print("")
+
+        # Główna wiadomość
+        if message:
+            self.print(message)
+            self.print("")
+
+        # Panel wyjść
+        exits = location_info.get('exits', [])
+        if exits:
+            self.print("Wyjścia:", 'green')
+            for exit_dir in exits:
+                self.print(f"  → {exit_dir}")
+            self.print("")
+
+        # Panel NPC
+        npcs = location_info.get('npcs', [])
+        if npcs:
+            self.print("Osoby tutaj:", 'yellow')
+            for npc in npcs:
+                if isinstance(npc, dict):
+                    self.print(f"  • {npc.get('name', 'Nieznany')}")
+                else:
+                    self.print(f"  • {npc}")
+            self.print("")
+
+        # Panel przedmiotów
+        items = location_info.get('items', [])
+        if items:
+            self.print("Przedmioty:", 'magenta')
+            for item in items:
+                if isinstance(item, dict):
+                    self.print(f"  ◆ {item.get('name', 'Nieznany przedmiot')}")
+                else:
+                    self.print(f"  ◆ {item}")
+            self.print("")

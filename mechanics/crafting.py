@@ -693,7 +693,7 @@ class CraftingSystem:
     
     def get_quality_system(self) -> Dict[str, Any]:
         """Zwraca informacje o systemie jakości.
-        
+
         Returns:
             Słownik z informacjami o systemie jakości
         """
@@ -711,6 +711,39 @@ class CraftingSystem:
                 'effectiveness': [0.7, 1.0, 1.1, 1.3, 1.6]
             }
         }
+
+    def save_state(self) -> Dict[str, Any]:
+        """Serializuje stan systemu craftingu do słownika.
+
+        Returns:
+            Dict z danymi do zapisania
+        """
+        return {
+            'discovered_recipes': list(self.discovered_recipes),
+            'crafting_stations_available': {
+                station_id: station.dostepna
+                for station_id, station in self.crafting_stations.items()
+            }
+        }
+
+    def load_state(self, data: Dict[str, Any]) -> None:
+        """Wczytuje stan systemu craftingu ze słownika.
+
+        Args:
+            data: Dane zapisanego stanu
+        """
+        if data is None:
+            return
+
+        # Przywróć odkryte receptury
+        if 'discovered_recipes' in data:
+            self.discovered_recipes = set(data['discovered_recipes'])
+
+        # Przywróć dostępność stacji
+        if 'crafting_stations_available' in data:
+            for station_id, available in data['crafting_stations_available'].items():
+                if station_id in self.crafting_stations:
+                    self.crafting_stations[station_id].dostepna = available
 
 
 # Przykładowa klasa gracza do testów

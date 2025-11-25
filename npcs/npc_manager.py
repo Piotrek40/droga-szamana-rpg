@@ -13,7 +13,7 @@ from enum import Enum
 import logging
 
 # Import systemów walki
-from mechanics.combat import CombatStats, Injury, BodyPart, DamageType, CombatAction, CombatSystem
+from mechanics.combat import CombatStats, Injury, BodyPart, DamageType, CombatAction, combat_system
 from player.skills import SkillSystem, SkillName
 
 # Konfiguracja loggera - tylko poważne błędy
@@ -769,9 +769,8 @@ class NPC:
         # Redukcja przez pancerz
         armor_protection = self._get_armor_protection(body_part)
         final_damage = damage * (1.0 - armor_protection)
-        
-        # Aplikuj obrażenia
-        combat_system = CombatSystem()
+
+        # Aplikuj obrażenia (używa singletona combat_system)
         effect = combat_system.apply_damage(
             self.combat_stats,
             final_damage,
@@ -825,8 +824,6 @@ class NPC:
         Returns:
             (sukces, wiadomość)
         """
-        combat_system = CombatSystem()
-        
         # Wybierz akcję bojową na podstawie osobowości
         if "aggressive" in self.personality:
             action = CombatAction.ATAK_SILNY
@@ -874,7 +871,6 @@ class NPC:
         Returns:
             (sukces, wiadomość)
         """
-        combat_system = CombatSystem()
         # Użyj wytrzymałości jako umiejętności obronnej
         skill_level = self.skills.get_skill(SkillName.WYTRZYMALOSC).level
         
@@ -959,8 +955,6 @@ class NPC:
         Args:
             minutes: Czas regeneracji w minutach
         """
-        combat_system = CombatSystem()
-        
         # Regeneracja staminy
         combat_system.recover_stamina(
             self.combat_stats,
