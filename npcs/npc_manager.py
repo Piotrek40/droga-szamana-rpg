@@ -468,9 +468,9 @@ class NPC:
             g.completion
         ), reverse=True)
         
-        # Dezaktywuj ukończone cele
+        # Dezaktywuj ukończone cele (tolerancja dla błędów floating point)
         for goal in self.goals:
-            if goal.completion >= 1.0:
+            if goal.completion >= 0.9999:
                 goal.active = False
     
     def change_state(self, new_state: NPCState):

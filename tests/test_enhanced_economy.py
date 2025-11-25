@@ -69,13 +69,15 @@ class TestEconomicEvents(unittest.TestCase):
         """Test that events expire correctly"""
         current_time = 1000
         self.event_manager.force_event('niedobor_metalu', current_time)
-        
+
         # Event should be active
         self.assertEqual(len(self.event_manager.get_active_events()), 1)
-        
+
         # Fast forward past expiration
+        # Mock random to prevent new random events during update
         future_time = current_time + 800  # 800 minutes later (event lasts 720 minutes)
-        self.event_manager.update(future_time, {})
+        with patch('mechanics.economic_events.random.random', return_value=1.0):
+            self.event_manager.update(future_time, {})
         
         # Event should be expired
         self.assertEqual(len(self.event_manager.get_active_events()), 0)

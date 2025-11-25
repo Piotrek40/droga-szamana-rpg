@@ -125,12 +125,13 @@ class MerchantMemory:
         """Zwraca całkowitą kwotę wydaną przez gracza"""
         if player_id not in self.player_transactions:
             return 0.0
-        
+
         total = 0.0
         for transaction in self.player_transactions[player_id]:
-            if transaction['type'] == 'purchase':
+            # 'sale' = handlarz sprzedał = gracz kupił = gracz wydał pieniądze
+            if transaction['type'] == 'sale':
                 total += transaction['amount']
-        
+
         return total
     
     def get_interaction_frequency(self, player_id: str, current_time: int) -> float:
