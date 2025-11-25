@@ -4,13 +4,13 @@ Final verification that dialogue system works correctly.
 Shows dialogue flow for all NPCs.
 """
 
-from npcs.dialogue_system import DialogueSystem
+from npcs.dialogue.dialogue_controller import get_dialogue_controller, DialogueController
 from player.character import Player
 
 
 def demonstrate_dialogue():
     """Demonstrate working dialogue system."""
-    dialogue_system = DialogueSystem()
+    dialogue_system = get_dialogue_controller()  # Użyj nowego systemu z pamięcią
     player = Player("TestPlayer")
     
     print("=" * 70)

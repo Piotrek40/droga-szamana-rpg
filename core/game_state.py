@@ -16,6 +16,7 @@ from npcs.npc_manager import NPCManager
 from mechanics.economy import Economy
 from mechanics.crafting import CraftingSystem
 from mechanics.combat import combat_system as _combat_system_singleton
+# UWAGA: Import dialogue_controller jest lazy (wewnątrz metod) aby uniknąć circular import
 
 # TYPE_CHECKING - unika circular import, używane tylko do type hints
 if TYPE_CHECKING:
@@ -89,6 +90,8 @@ class GameState:
         self.combat_system = _combat_system_singleton  # Singleton systemu walki
         self.quest_engine: Optional['QuestEngine'] = None
         self.consequence_manager: Optional['ConsequenceManager'] = None
+        self.dialogue_controller = None  # Nowy system dialogów z pamięcią
+        self.dialogue_system = None  # Kompatybilność wsteczna ze starym systemem
         
         # Stan gry
         self.is_running = False  # Czy gra jest aktywna
@@ -220,6 +223,14 @@ class GameState:
         self.quest_engine = QuestEngine()
         self.quest_engine.reward_system = RewardSystem()  # Inicjalizacja systemu nagród
         self.consequence_manager = ConsequenceManager()
+
+        # Inicjalizacja nowego systemu dialogów z pamięcią
+        # Lazy import aby uniknąć circular import
+        from npcs.dialogue.dialogue_controller import get_dialogue_controller
+        print("Inicjalizacja systemu dialogów z pamięcią...")
+        self.dialogue_controller = get_dialogue_controller(self)
+        # Ustaw też stary alias dla kompatybilności wstecznej
+        self.dialogue_system = self.dialogue_controller
         
         # Inicjalizuj questy więzienne
         self._initialize_prison_quests()
@@ -612,7 +623,8 @@ class GameState:
             'quests': self.quest_engine.save_state() if self.quest_engine else None,
             'consequences': self.consequence_manager.save_state() if self.consequence_manager else None,
             'crafting': self.crafting_system.save_state() if self.crafting_system else None,
-            'combat': self.combat_system.save_state() if self.combat_system else None
+            'combat': self.combat_system.save_state() if self.combat_system else None,
+            'dialogue': self.dialogue_controller.save_state() if self.dialogue_controller else None
         }
         
         # Utwórz folder saves jeśli nie istnieje
@@ -703,6 +715,15 @@ class GameState:
             # Wczytaj combat
             if save_data.get('combat') and self.combat_system:
                 self.combat_system.load_state(save_data['combat'])
+
+            # Wczytaj dialogi (nowy system z pamięcią)
+            if save_data.get('dialogue'):
+                if not self.dialogue_controller:
+                    # Lazy import aby uniknąć circular import
+                    from npcs.dialogue.dialogue_controller import get_dialogue_controller
+                    self.dialogue_controller = get_dialogue_controller(self)
+                    self.dialogue_system = self.dialogue_controller
+                self.dialogue_controller.load_state(save_data['dialogue'])
 
             # Ustaw lokację w więzieniu
             if self.prison:

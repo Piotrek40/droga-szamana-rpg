@@ -10,7 +10,7 @@ import random
 from npcs.npc_manager import NPCState
 from player.character import CharacterState
 from core.game_state import GameMode
-from npcs.dialogue_system import DialogueResult  # KROK 4: Import dla obsługi dialogów
+from npcs.dialogue.dialogue_controller import DialogueResult  # Nowy system dialogów z pamięcią
 
 
 class CommandCategory(Enum):
