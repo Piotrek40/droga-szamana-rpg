@@ -1157,18 +1157,17 @@ class NPCManager:
             for npc2_id, npc2 in self.npcs.items():
                 if npc1_id == npc2_id:
                     continue
-                    
+
                 # Sprawdź czy są w tym samym miejscu
                 if npc1.location != npc2.location:
                     continue
-                
+
                 # Sprawdź czy mogą wejść w interakcję
                 if npc2.current_state not in [NPCState.SOCIALIZING, NPCState.IDLE]:
                     continue
-                
-                # Losowa szansa na interakcję
-                if random.random() < 0.1:  # 10% szans na interakcję
-                    self._simulate_npc_interaction(npc1, npc2)
+
+                # Deterministycznie wywołuj interakcję gdy NPCe spełniają warunki
+                self._simulate_npc_interaction(npc1, npc2)
     
     def _simulate_npc_interaction(self, npc1: NPC, npc2: NPC):
         """Symuluje interakcję między dwoma NPCami"""
