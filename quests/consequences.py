@@ -903,7 +903,7 @@ class EconomicConsequence:
 
 class ConsequenceTracker:
     """System śledzący i zarządzający konsekwencjami"""
-    
+
     def __init__(self):
         self.active_consequences: Dict[str, Consequence] = {}
         self.consequence_history: List[Consequence] = []
@@ -911,10 +911,29 @@ class ConsequenceTracker:
         self.reputation_tracker = ReputationConsequence()
         self.moral_tracker = MoralConsequence()
         self.economic_tracker = EconomicConsequence()
+        self.timeline: List[Dict[str, Any]] = []
     
-    def add_consequence(self, consequence: Consequence):
-        """Dodaje konsekwencję do śledzenia."""
+    def add_consequence(self, quest_id: str | Consequence, event_type: str | None = None,
+                       data: Dict[str, Any] | None = None):
+        """Dodaje konsekwencję do śledzenia.
+
+        Obsługuje zarówno istniejący obiekt :class:`Consequence`, jak i uproszczoną
+        ścieżkę słownikową używaną w testach integracyjnych.
+        """
+
+        if isinstance(quest_id, Consequence):
+            consequence = quest_id
+        else:
+            consequence = self._build_consequence_from_data(quest_id, event_type, data or {})
+
         self.active_consequences[consequence.id] = consequence
+        self.timeline.append({
+            'id': consequence.id,
+            'quest': consequence.quest_id,
+            'type': consequence.consequence_type.value,
+            'time': consequence.trigger_time or datetime.now(),
+        })
+        return consequence.id
     
     def process_consequences(self, world_state: Dict[str, Any], current_time: datetime) -> List[Dict]:
         """Przetwarza aktywne konsekwencje."""
@@ -934,7 +953,7 @@ class ConsequenceTracker:
         
         return triggered_events
     
-    def trigger_consequence(self, consequence: Consequence, world_state: Dict[str, Any], 
+    def trigger_consequence(self, consequence: Consequence, world_state: Dict[str, Any],
                            current_time: datetime) -> Dict:
         """Uruchamia konsekwencję."""
         consequence.triggered = True
@@ -973,7 +992,47 @@ class ConsequenceTracker:
     def add_moral_consequence(self, choice_type: str, weight: int):
         """Dodaje konsekwencję moralną."""
         return self.moral_tracker.apply_moral_choice(choice_type, weight)
-    
+
     def add_economic_consequence(self, change_type: str, magnitude: float):
         """Dodaje konsekwencję ekonomiczną."""
         return self.economic_tracker.apply_economic_change(change_type, magnitude)
+
+    def get_consequence_timeline(self) -> List[Dict[str, Any]]:
+        """Zwraca uporządkowaną listę wydarzeń konsekwencji."""
+
+        return sorted(self.timeline, key=lambda e: e['time'])
+
+    def get_karma_score(self) -> Dict[str, float]:
+        """Zwraca uproszczony wynik karmy oparty na bieżącym wyrównaniu moralnym."""
+
+        alignment = self.moral_tracker.moral_alignment
+        total = sum(abs(v) for v in alignment.values()) or 1
+        return {aspect: (value / total) * 100 for aspect, value in alignment.items()}
+
+    # Internal helper -------------------------------------------------------------
+    def _build_consequence_from_data(self, quest_id: str, event_type: str,
+                                     data: Dict[str, Any]) -> Consequence:
+        """Konstruuje obiekt Consequence na podstawie słownika z testów."""
+
+        cons_id = f"{quest_id}:{event_type}:{len(self.active_consequences) + 1}"
+        cons_type = ConsequenceType[data.get('type', 'IMMEDIATE')]
+        severity = ConsequenceSeverity.MINOR
+
+        effects: Dict[str, Any] = {'raw_effects': data.get('effects', [])}
+        trigger_time = None
+        if data.get('delay_hours'):
+            trigger_time = datetime.now() + timedelta(hours=data['delay_hours'])
+
+        consequence = Consequence(
+            id=cons_id,
+            quest_id=quest_id,
+            consequence_type=cons_type,
+            severity=severity,
+            description=event_type,
+            trigger_conditions={},
+            effects=effects,
+            dialogue=[],
+            trigger_time=trigger_time,
+        )
+
+        return consequence
